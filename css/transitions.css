@@ -17,31 +17,41 @@
 }
 
 /* ── Seam 1: Hero → Stories ─────────────────────
-   Night canvas fades up into the stories ring-space sand. */
+   Both sections are night-dark; a gold thread grows downward as cue. */
 .seam-hero-stories {
   height: 15vh;
   background: linear-gradient(
     to bottom,
     #050403 0%,
-    #0c0906 22%,
-    #4a4238 62%,
-    #c7c2ba 88%,
-    #e4e6e9 100%
+    #080604 55%,
+    #0a0806 100%
   );
-  margin-top: -1px; /* seal against hero-fade */
+  margin-top: -1px;
+}
+.seam-thread {
+  position: absolute;
+  top: 0; left: 50%;
+  width: 1px; height: 100%;
+  transform: translateX(-50%) scaleY(0);
+  transform-origin: top center;
+  background: linear-gradient(
+    to bottom,
+    rgba(200, 160, 80, .0),
+    rgba(200, 160, 80, .65) 40%,
+    rgba(200, 160, 80, .25)
+  );
+  pointer-events: none;
 }
 
 /* ── Seam 2: Stories → Vehicles ─────────────────
-   Sand backdrop descends to pitch black; a gold hairline sweeps
-   across the middle on scroll-enter (see transitions.js). */
+   Dark stories into vehicles black; gold hairline sweeps on enter. */
 .seam-stories-vehicles {
   height: 20vh;
   background: linear-gradient(
     to bottom,
-    #e4e6e9 0%,
-    #8a8078 30%,
-    #2a2218 65%,
-    #0a0604 90%,
+    #0a0806 0%,
+    #080604 40%,
+    #060402 75%,
     #050403 100%
   );
 }

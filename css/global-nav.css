@@ -1,0 +1,38 @@
+/* ═══════════════════════════════════════════
+   GLOBAL NAV — persistent mark + scroll hairline
+   Both elements live outside all sections at body root.
+═══════════════════════════════════════════ */
+
+/* ─── Tariq wordmark (top-left, fades in after hero) ─ */
+#tariq-mark {
+  position: fixed; top: 20px; left: 24px;
+  z-index: 1000;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-size: 18px; font-weight: 300;
+  letter-spacing: 0.06em;
+  color: rgba(200, 160, 80, .82);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease;
+  text-decoration: none;
+  cursor: none;
+}
+#tariq-mark.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ─── Scroll progress hairline (1px gold, top of viewport) ─ */
+#scroll-hairline {
+  position: fixed; top: 0; left: 0;
+  z-index: 1001;
+  height: 1px; width: 0%;
+  background: linear-gradient(
+    90deg,
+    rgba(200, 160, 80, .9) 0%,
+    rgba(245, 225, 153, .65) 60%,
+    rgba(200, 160, 80, .4) 100%
+  );
+  pointer-events: none;
+  will-change: width;
+}

@@ -5,16 +5,16 @@
   width: 100%;
   background: linear-gradient(170deg, #e8e0d0 0%, #c8b898 25%, #6a5840 55%, #1e1608 100%);
   background-attachment: fixed;
-  padding: 100px 0;
+  padding: 56px 0 48px;
   overflow: hidden;
   position: relative;
   z-index: 5;
 }
 .cities-header {
   padding: 0 64px;
-  margin-bottom: 64px;
+  margin-bottom: 36px;
   display: flex; flex-direction: column;
-  align-items: center; text-align: center; gap: 20px;
+  align-items: center; text-align: center; gap: 14px;
 }
 .cities-eyebrow {
   font-size: 10px; font-weight: 600; letter-spacing: 0.28em;
@@ -26,7 +26,7 @@
 }
 .cities-h2 {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(40px, 5vw, 64px); font-weight: 600;
+  font-size: clamp(28px, 3.6vw, 48px); font-weight: 600;
   color: #1a1206; line-height: 1.15; letter-spacing: -0.02em;
 }
 .cities-h2 em { font-style: italic; font-weight: 400; color: #7a5020; }
@@ -43,7 +43,7 @@
 
 .city-card { width: 320px; flex-shrink: 0; cursor: pointer; position: relative; }
 .city-card-image {
-  width: 100%; height: 210px; border-radius: 14px; overflow: hidden;
+  width: 100%; height: 180px; border-radius: 14px; overflow: hidden;
   margin-bottom: 0; position: relative;
   box-shadow: 0 6px 28px rgba(20,12,0,0.35);
 }

@@ -10,6 +10,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/global-nav.css">
 <link rel="stylesheet" href="css/hero.css">
 <link rel="stylesheet" href="css/stories.css">
 <link rel="stylesheet" href="css/vehicles.css">
@@ -17,6 +18,12 @@
 <link rel="stylesheet" href="css/transitions.css">
 </head>
 <body>
+
+<!-- Scroll progress hairline -->
+<div id="scroll-hairline"></div>
+
+<!-- Persistent wordmark (fades in after hero) -->
+<a id="tariq-mark" href="#s-hero">tariq</a>
 
 <!-- Global gold cursor dot -->
 <div id="cursor"></div>
@@ -38,9 +45,10 @@
   <div class="hero-fade"></div>
 </section>
 
-<!-- Seam: hero → stories (flare fades up, rings fade in) -->
+<!-- Seam: hero → stories (gold thread grows downward on scroll) -->
 <div class="seam seam-hero-stories" aria-hidden="true">
   <div class="seam-overlay"></div>
+  <div class="seam-thread"></div>
 </div>
 
 <!-- ════════════════════════════════════════
@@ -51,18 +59,18 @@
   <!-- Fixed backdrop -->
   <div id="sec-stories-backdrop">
     <svg id="sec-stories-rings" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
-      <ellipse cx="720" cy="920" rx="160"  ry="100" fill="none" stroke="rgba(0,0,0,.042)" stroke-width="1"/>
-      <ellipse cx="720" cy="920" rx="300"  ry="188" fill="none" stroke="rgba(0,0,0,.040)" stroke-width="1"/>
-      <ellipse cx="720" cy="920" rx="448"  ry="282" fill="none" stroke="rgba(0,0,0,.036)" stroke-width="1"/>
-      <ellipse cx="720" cy="920" rx="610"  ry="384" fill="none" stroke="rgba(0,0,0,.031)" stroke-width="1"/>
-      <ellipse cx="720" cy="920" rx="788"  ry="496" fill="none" stroke="rgba(0,0,0,.025)" stroke-width="1"/>
-      <ellipse cx="720" cy="920" rx="985"  ry="620" fill="none" stroke="rgba(0,0,0,.019)" stroke-width="1"/>
-      <ellipse cx="720" cy="920" rx="1210" ry="762" fill="none" stroke="rgba(0,0,0,.013)" stroke-width="1"/>
+      <ellipse cx="720" cy="920" rx="160"  ry="100" fill="none" stroke="rgba(200,160,80,.10)" stroke-width="1"/>
+      <ellipse cx="720" cy="920" rx="300"  ry="188" fill="none" stroke="rgba(200,160,80,.09)" stroke-width="1"/>
+      <ellipse cx="720" cy="920" rx="448"  ry="282" fill="none" stroke="rgba(200,160,80,.08)" stroke-width="1"/>
+      <ellipse cx="720" cy="920" rx="610"  ry="384" fill="none" stroke="rgba(200,160,80,.07)" stroke-width="1"/>
+      <ellipse cx="720" cy="920" rx="788"  ry="496" fill="none" stroke="rgba(200,160,80,.05)" stroke-width="1"/>
+      <ellipse cx="720" cy="920" rx="985"  ry="620" fill="none" stroke="rgba(200,160,80,.04)" stroke-width="1"/>
+      <ellipse cx="720" cy="920" rx="1210" ry="762" fill="none" stroke="rgba(200,160,80,.03)" stroke-width="1"/>
     </svg>
     <svg id="sec-stories-silhouette" viewBox="0 0 220 280" fill="none">
-      <ellipse cx="110" cy="60"  rx="36" ry="42" fill="#1a1a1a"/>
-      <rect    x="97"   y="97"   width="26" height="22" rx="4" fill="#1a1a1a"/>
-      <path    d="M58 118 Q36 140 32 260 L32 280 L188 280 L188 260 Q184 140 162 118 Q140 100 110 100 Q80 100 58 118Z" fill="#1a1a1a"/>
+      <ellipse cx="110" cy="60"  rx="36" ry="42" fill="rgba(200,160,80,.07)"/>
+      <rect    x="97"   y="97"   width="26" height="22" rx="4" fill="rgba(200,160,80,.07)"/>
+      <path    d="M58 118 Q36 140 32 260 L32 280 L188 280 L188 260 Q184 140 162 118 Q140 100 110 100 Q80 100 58 118Z" fill="rgba(200,160,80,.07)"/>
     </svg>
   </div>
 
@@ -72,8 +80,8 @@
     <div id="sec-stories-dock-hint">
       Try click
       <svg width="20" height="20" viewBox="0 0 22 22" fill="none">
-        <path d="M4 17 Q10 3 18 5" stroke="rgba(0,0,0,.42)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
-        <path d="M16 3 L19 6 L16 7" stroke="rgba(0,0,0,.42)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M4 17 Q10 3 18 5" stroke="rgba(200,160,80,.55)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+        <path d="M16 3 L19 6 L16 7" stroke="rgba(200,160,80,.55)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </div>
   </div>
@@ -120,6 +128,13 @@
           <h2  class="s-panel-h"   id="spb-h"></h2>
           <p   class="s-panel-p"   id="spb-p"></p>
         </div>
+      </div>
+
+      <!-- Stories intro — fades out as Z-travel begins -->
+      <div id="stories-intro">
+        <div class="stories-intro-eyebrow">02 — Passenger Stories</div>
+        <h2 class="stories-intro-head">Real rides.<br><em>Real people.</em></h2>
+        <p class="stories-intro-sub">One tap, and hear the city through the people who move it.</p>
       </div>
     </div>
   </div>
@@ -331,6 +346,7 @@
 <script src="js/vehicles.js"></script>
 <script src="js/cities.js"></script>
 <script src="js/transitions.js"></script>
+<script src="js/global-nav.js"></script>
 
 </body>
 </html>

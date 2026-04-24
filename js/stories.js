@@ -655,6 +655,20 @@ let centerId  = 2;          // Clinic starts centered
 let animating = false;
 let dockAtTop = false;
 
+/* ── Destination SVG icons (gold line, no fill) ── */
+const DEST_ICONS = [
+  /* 0 University — graduation cap */
+  `<svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="#c8a060" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><polygon points="13,4 25,10 13,16 1,10"/><path d="M7 13v5c0 1.6 2.7 3.5 6 3.5s6-1.9 6-3.5v-5"/><line x1="25" y1="10" x2="25" y2="18"/></svg>`,
+  /* 1 Office — briefcase */
+  `<svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="#c8a060" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="10" width="22" height="13" rx="2"/><path d="M9 10V7.5A1.5 1.5 0 0 1 10.5 6h5A1.5 1.5 0 0 1 17 7.5V10"/><line x1="2" y1="17" x2="24" y2="17"/></svg>`,
+  /* 2 Clinic — medical cross in circle */
+  `<svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="#c8a060" stroke-width="1.3" stroke-linecap="round"><circle cx="13" cy="13" r="10"/><line x1="13" y1="8" x2="13" y2="18"/><line x1="8" y1="13" x2="18" y2="13"/></svg>`,
+  /* 3 Old Town — map pin */
+  `<svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="#c8a060" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2C9 2 6 5.1 6 9c0 6 7 14 7 14s7-8 7-14c0-3.9-3-7-7-7z"/><circle cx="13" cy="9" r="2.2"/></svg>`,
+  /* 4 School — building with roof */
+  `<svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="#c8a060" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="18" height="12" rx="1"/><path d="M2 11 L13 3 L24 11"/><rect x="10" y="16" width="6" height="7"/></svg>`,
+];
+
 /* ── Build pill elements ── */
 const dockWrap = document.getElementById('sec-stories-dock-wrap');
 const dockRow  = document.getElementById('sec-stories-dock-row');
@@ -666,8 +680,8 @@ DESTINATIONS.forEach(dest => {
   pill.style.cssText = `position:absolute;top:0;left:0;height:${ICON}px;border-radius:${ICON/2}px;display:flex;align-items:center;overflow:hidden;cursor:pointer;opacity:0;`;
 
   const ico = document.createElement('div');
-  ico.style.cssText = `width:${ICON}px;height:${ICON}px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:28px;`;
-  ico.textContent = dest.emoji;
+  ico.style.cssText = `width:${ICON}px;height:${ICON}px;flex-shrink:0;display:flex;align-items:center;justify-content:center;`;
+  ico.innerHTML = DEST_ICONS[dest.id] || '';
 
   const lbl = document.createElement('div');
   lbl.style.cssText = `padding-left:4px;padding-right:20px;color:#fff;font-size:15px;font-weight:400;white-space:nowrap;font-family:'DM Sans',sans-serif;user-select:none;pointer-events:none;opacity:0;transition:opacity 0.15s ease;`;
@@ -707,12 +721,11 @@ function applyPillStyles(withTrans) {
       /* Dual glow: ambient halo + contact shadow */
       pill.style.boxShadow     = `0 4px 24px ${dest.color}55, 0 1px 4px ${dest.color}33`;
     } else {
-      pill.style.background    = 'rgba(255,255,255,0.58)';
-      pill.style.backdropFilter = 'blur(12px) saturate(1.4)';
-      pill.style.WebkitBackdropFilter = 'blur(12px) saturate(1.4)';
-      pill.style.border        = '1px solid rgba(255,255,255,0.78)';
-      /* 2-layer shadow: ambient + inset glass-edge highlight */
-      pill.style.boxShadow     = '0 2px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.9)';
+      pill.style.background    = 'rgba(200,160,80,0.10)';
+      pill.style.backdropFilter = 'blur(12px) saturate(1.2)';
+      pill.style.WebkitBackdropFilter = 'blur(12px) saturate(1.2)';
+      pill.style.border        = '1px solid rgba(200,160,80,0.32)';
+      pill.style.boxShadow     = '0 2px 12px rgba(0,0,0,0.18), inset 0 1px 0 rgba(200,160,80,0.12)';
     }
     lbl.style.opacity    = isC ? '1' : '0';
     if (isC && withTrans) {
@@ -779,8 +792,8 @@ function handleDockClick(itemId) {
   dockAtTop = true;
   setDockPos(true, false);
 
-  // Restart scene for the new destination
-  initScrollScene(itemId);
+  // Restart scene for the new destination (with scroll reset)
+  initScrollScene(itemId, true);
 
   // Phase 2: normalize slots silently (off-screen, no visual change)
   setTimeout(() => {
@@ -803,6 +816,7 @@ const DOM = {
   backdrop   : document.getElementById('sec-stories-backdrop'),
   spA        : document.getElementById('sp-a'),
   spB        : document.getElementById('sp-b'),
+  intro      : document.getElementById('stories-intro'),
 };
 
 /* ── quickSetters — bypass full GSAP tween on per-frame mutations ── */
@@ -870,17 +884,21 @@ function buildCards(destId) {
   cardOpSetters = cardEls.map(el => gsap.quickSetter(el, 'opacity'));
 }
 
+/* Dark warm tints per destination — replaces original sand bg values */
+const DEST_PANEL_BG = ['#201408','#28180a','#041828','#082010','#0a0a28'];
+
 function buildPanels(destId) {
-  const dest = DESTINATIONS[destId];
-  document.getElementById('sec-stories-backdrop').style.background = dest.bg;
+  const dest   = DESTINATIONS[destId];
+  const panelBg = DEST_PANEL_BG[destId] || '#0a0806';
+  document.getElementById('sec-stories-backdrop').style.background = panelBg;
 
   const applyPanel = (prefix, pan) => {
     document.getElementById(`${prefix}art`).style.background  = pan.artBg;
-    document.getElementById(`${prefix}icon`).textContent      = pan.icon;
+    document.getElementById(`${prefix}icon`).innerHTML        = '';
     document.getElementById(`${prefix}tag`).textContent       = pan.tag;
     document.getElementById(`${prefix}h`).innerHTML           = pan.h;
     document.getElementById(`${prefix}p`).textContent         = pan.p;
-    document.getElementById(`${prefix.replace('-','')}-card`).style.background = dest.bg;
+    document.getElementById(`${prefix.replace('-','')}-card`).style.background = panelBg;
   };
 
   applyPanel('spa-', dest.panels[0]);
@@ -894,14 +912,16 @@ function buildPanels(destId) {
  * initScrollScene — orchestrates a full scene restart for destId.
  * Calls buildCards → buildPanels → mountScrollEngine in sequence.
  * Uses gsap.context() for atomic cleanup of all tweens on next call.
+ * @param {number} destId
+ * @param {boolean} [resetScroll=false] — only true when called from handleDockClick
  */
-function initScrollScene(destId) {
+function initScrollScene(destId, resetScroll) {
   /* ── Atomic GSAP cleanup: kills ALL tweens, ScrollTriggers, and
         rAF loops spawned inside the previous context in one call. ── */
   if (gsapCtx)  { gsapCtx.revert(); gsapCtx = null; }
   if (lerpRaf)  { cancelAnimationFrame(lerpRaf); lerpRaf = null; }
 
-  scrollToStoriesTop();
+  if (resetScroll) scrollToStoriesTop();
   targetCamZ = 0; currentCamZ = 0; prevTime = 0;
   p1shown = false; p2shown = false;
 
@@ -981,6 +1001,9 @@ function initScrollScene(destId) {
       /* ─ Progress bar width (compositor-safe, no layout) ─ */
       QS.progWrapOp(pr > 0.03 ? 1 : 0);
       DOM.progFill.style.width = (clamp01(pr / Z_END) * 100) + '%';
+
+      /* ─ Stories intro: fade out as scroll begins ─ */
+      if (DOM.intro) DOM.intro.style.opacity = String(clamp01(1 - pr / 0.05));
 
       /* ─ Dock: center → top (never back) ─ */
       if (pr > 0.01 && !dockAtTop) setDockPos(true, true);

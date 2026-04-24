@@ -27,6 +27,19 @@
     });
   }
 
+  /* ── Seam 1 gold thread: grows downward as user scrolls through the seam ── */
+  const seam1Thread = document.querySelector('.seam-hero-stories .seam-thread');
+  if (seam1Thread) {
+    gsap.set(seam1Thread, { scaleY: 0, transformOrigin: 'top center' });
+    ScrollTrigger.create({
+      trigger: '.seam-hero-stories',
+      start: 'top 95%',
+      end:   'bottom 10%',
+      scrub: true,
+      animation: gsap.to(seam1Thread, { scaleY: 1, ease: 'none' }),
+    });
+  }
+
   /* ── Seam 2: Stories → Vehicles ──
      One-shot gold hairline sweep across the seam when it enters the
      viewport from below. Leaves behind once active — a signature mark. */
