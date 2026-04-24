@@ -1,0 +1,36 @@
+/* ═══════════════════════════════════════════
+   TARIQ — GLOBAL TOKENS (shared across all sections)
+═══════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, * { user-select: none; -webkit-user-select: none; }
+
+html { scroll-behavior: auto; }
+body {
+  font-family: 'Outfit', sans-serif;
+  background: #050403;
+  cursor: none;
+  overflow-x: hidden;
+}
+@media (pointer: coarse) { body { cursor: auto; } }
+
+/* ═══════════════════════════════════════════
+   GLOBAL GOLD CURSOR
+═══════════════════════════════════════════ */
+#cursor {
+  position: fixed; z-index: 99999;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #c8a060;
+  box-shadow: 0 0 10px 4px rgba(200,160,50,0.7);
+  transform: translate(-50%,-50%);
+  pointer-events: none;
+  top: 0; left: 0;
+  transition: width .22s, height .22s, background .3s, box-shadow .3s;
+  display: none;
+}
+body.cursor-light #cursor {
+  background: #fff8d0;
+  box-shadow: 0 0 10px 4px rgba(255,210,50,0.9);
+}
+body.cursor-expanded #cursor { width: 44px; height: 44px; opacity: .4; }

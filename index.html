@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tariq — One tap. Every line. Every city.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@200;300;400;500&family=Outfit:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/hero.css">
+<link rel="stylesheet" href="css/stories.css">
+<link rel="stylesheet" href="css/vehicles.css">
+<link rel="stylesheet" href="css/cities.css">
+<link rel="stylesheet" href="css/transitions.css">
+</head>
+<body>
+
+<!-- Global gold cursor dot -->
+<div id="cursor"></div>
+
+<!-- ════════════════════════════════════════
+     SECTION 1 — HERO
+════════════════════════════════════════ -->
+<section id="s-hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-logo-wrap">
+    <img id="hero-logo" src="assets/logo.png" alt="Tariq"/>
+  </div>
+  <div class="hero-text">
+    <h1 class="hero-name">Tariq</h1>
+    <div class="hero-divider"></div>
+    <p class="hero-sub">One tap. Every line. Every city.</p>
+  </div>
+  <a id="hero-cta" href="#s-stories">Explore Tariq</a>
+  <div class="hero-fade"></div>
+</section>
+
+<!-- Seam: hero → stories (flare fades up, rings fade in) -->
+<div class="seam seam-hero-stories" aria-hidden="true">
+  <div class="seam-overlay"></div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SECTION 2 — PASSENGER STORIES (v2)
+════════════════════════════════════════ -->
+<section id="s-stories">
+
+  <!-- Fixed backdrop -->
+  <div id="sec-stories-backdrop">
+    <svg id="sec-stories-rings" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+      <ellipse cx="720" cy="920" rx="160"  ry="100" fill="none" stroke="rgba(0,0,0,.042)" stroke-width="1"/>
+      <ellipse cx="720" cy="920" rx="300"  ry="188" fill="none" stroke="rgba(0,0,0,.040)" stroke-width="1"/>
+      <ellipse cx="720" cy="920" rx="448"  ry="282" fill="none" stroke="rgba(0,0,0,.036)" stroke-width="1"/>
+      <ellipse cx="720" cy="920" rx="610"  ry="384" fill="none" stroke="rgba(0,0,0,.031)" stroke-width="1"/>
+      <ellipse cx="720" cy="920" rx="788"  ry="496" fill="none" stroke="rgba(0,0,0,.025)" stroke-width="1"/>
+      <ellipse cx="720" cy="920" rx="985"  ry="620" fill="none" stroke="rgba(0,0,0,.019)" stroke-width="1"/>
+      <ellipse cx="720" cy="920" rx="1210" ry="762" fill="none" stroke="rgba(0,0,0,.013)" stroke-width="1"/>
+    </svg>
+    <svg id="sec-stories-silhouette" viewBox="0 0 220 280" fill="none">
+      <ellipse cx="110" cy="60"  rx="36" ry="42" fill="#1a1a1a"/>
+      <rect    x="97"   y="97"   width="26" height="22" rx="4" fill="#1a1a1a"/>
+      <path    d="M58 118 Q36 140 32 260 L32 280 L188 280 L188 260 Q184 140 162 118 Q140 100 110 100 Q80 100 58 118Z" fill="#1a1a1a"/>
+    </svg>
+  </div>
+
+  <!-- Fixed dock -->
+  <div id="sec-stories-dock-wrap">
+    <div id="sec-stories-dock-row"></div>
+    <div id="sec-stories-dock-hint">
+      Try click
+      <svg width="20" height="20" viewBox="0 0 22 22" fill="none">
+        <path d="M4 17 Q10 3 18 5" stroke="rgba(0,0,0,.42)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+        <path d="M16 3 L19 6 L16 7" stroke="rgba(0,0,0,.42)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Scroll hint -->
+  <div id="sec-stories-scroll-hint">
+    <span>Scroll</span>
+    <div class="hint-line"></div>
+  </div>
+
+  <!-- Progress bar -->
+  <div id="sec-stories-prog-wrap"><div id="sec-stories-prog-fill"></div></div>
+
+  <!-- 3-D scroll scene -->
+  <div id="sec-stories-wrapper">
+    <div id="sec-stories-sticky">
+      <div id="sec-stories-scene">
+        <div id="sec-stories-camera">
+          <!-- Cards injected by JS per active destination -->
+        </div>
+      </div>
+
+      <!-- Section panel A: post-Z beat 4 -->
+      <div class="s-panel" id="sp-a">
+        <div class="s-panel-card" id="spa-card">
+          <div id="spa-art" style="position:absolute;inset:0"></div>
+          <div class="s-panel-icon" id="spa-icon"></div>
+        </div>
+        <div class="s-panel-text">
+          <span class="s-panel-tag" id="spa-tag"></span>
+          <h2  class="s-panel-h"   id="spa-h"></h2>
+          <p   class="s-panel-p"   id="spa-p"></p>
+        </div>
+      </div>
+
+      <!-- Section panel B: post-Z beat 5 -->
+      <div class="s-panel flip" id="sp-b">
+        <div class="s-panel-card" id="spb-card">
+          <div id="spb-art" style="position:absolute;inset:0"></div>
+          <div class="s-panel-icon" id="spb-icon"></div>
+        </div>
+        <div class="s-panel-text">
+          <span class="s-panel-tag" id="spb-tag"></span>
+          <h2  class="s-panel-h"   id="spb-h"></h2>
+          <p   class="s-panel-p"   id="spb-p"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Seam: stories → vehicles (sand fades to black + gold hairline) -->
+<div class="seam seam-stories-vehicles" aria-hidden="true">
+  <div class="seam-overlay"></div>
+  <div class="seam-hairline"></div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SECTION 3 — VEHICLES
+════════════════════════════════════════ -->
+<section id="s-vehicles">
+  <div id="v-word-top">Modes</div>
+  <div id="v-word-bottom">Transit</div>
+  <div id="v-stage"></div>
+  <div id="v-center-text">
+    <div id="v-ct-eye">03 — Modes of transit</div>
+    <h2 id="v-ct-head">Your city,<br><em>every line.</em></h2>
+    <p id="v-ct-sub">Tap once. Ride everywhere.</p>
+  </div>
+  <div id="v-strip">
+    <div id="v-strip-name"></div>
+    <div id="v-strip-count"></div>
+  </div>
+  <div id="v-prog"><div id="v-prog-fill"></div></div>
+</section>
+
+<!-- Seam: vehicles → cities (black lifts into sand gradient) -->
+<div class="seam seam-vehicles-cities" aria-hidden="true">
+  <div class="seam-overlay"></div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SECTION 4 — CITIES
+════════════════════════════════════════ -->
+<section id="s-cities">
+  <div class="cities-header">
+    <div class="cities-eyebrow">04 — Cities</div>
+    <h2 class="cities-h2">We're in your city.<br>Are you <em>on board?</em></h2>
+    <p class="cities-sub">Tap once · Ride everywhere</p>
+  </div>
+  <div class="marquee-wrapper" id="marquee-wrapper">
+    <div class="marquee-track" id="cities-track">
+
+      <div class="city-card">
+        <div class="tc-wrap"><div class="tc tc-algiers">
+          <div class="tc-grain"></div><div class="tc-leak"></div><div class="tc-line"></div><div class="tc-chip"></div>
+          <div class="tc-nfc"><div class="tc-arc" style="width:5px;height:7px;"></div><div class="tc-arc" style="width:5px;height:11px;"></div><div class="tc-arc" style="width:5px;height:15px;"></div></div>
+          <div class="tc-initial">A</div><div class="tc-number">•••• •••• •••• ••••</div>
+          <div class="tc-footer"><span class="tc-city-name">Algiers</span><span class="tc-brand">Tariq</span></div>
+        </div></div>
+        <div class="city-card-image">
+          <div class="city-card-image-bg" style="background:linear-gradient(160deg,#2a1a04,#160e00,#201400);"></div>
+          <span class="city-badge badge-live">Live</span>
+          <div class="city-label">
+            <div class="city">Algiers</div>
+            <div class="modes">Metro · Tram · Bus · Taxi</div>
+            <div class="city-desc">The city of a million moves — all on one tap.</div>
+          </div>
+          <div class="city-hover-btn">Explore</div>
+        </div>
+      </div>
+
+      <div class="city-card">
+        <div class="tc-wrap"><div class="tc tc-oran">
+          <div class="tc-grain"></div><div class="tc-leak"></div><div class="tc-line"></div><div class="tc-chip"></div>
+          <div class="tc-nfc"><div class="tc-arc" style="width:5px;height:7px;"></div><div class="tc-arc" style="width:5px;height:11px;"></div><div class="tc-arc" style="width:5px;height:15px;"></div></div>
+          <div class="tc-initial">O</div><div class="tc-number">•••• •••• •••• ••••</div>
+          <div class="tc-footer"><span class="tc-city-name">Oran</span><span class="tc-brand">Tariq</span></div>
+        </div></div>
+        <div class="city-card-image">
+          <div class="city-card-image-bg" style="background:linear-gradient(160deg,#060e1a,#020810,#040c14);"></div>
+          <span class="city-badge badge-live">Live</span>
+          <div class="city-label">
+            <div class="city">Oran</div>
+            <div class="modes">Tram · Bus · Taxi</div>
+            <div class="city-desc">The Bride of the Sea — tram lines weaving through the coast.</div>
+          </div>
+          <div class="city-hover-btn">Explore</div>
+        </div>
+      </div>
+
+      <div class="city-card">
+        <div class="tc-wrap"><div class="tc tc-constantine">
+          <div class="tc-grain"></div><div class="tc-leak"></div><div class="tc-line"></div><div class="tc-chip"></div>
+          <div class="tc-nfc"><div class="tc-arc" style="width:5px;height:7px;"></div><div class="tc-arc" style="width:5px;height:11px;"></div><div class="tc-arc" style="width:5px;height:15px;"></div></div>
+          <div class="tc-initial">C</div><div class="tc-number">•••• •••• •••• ••••</div>
+          <div class="tc-footer"><span class="tc-city-name">Constantine</span><span class="tc-brand">Tariq</span></div>
+        </div></div>
+        <div class="city-card-image">
+          <div class="city-card-image-bg" style="background:linear-gradient(160deg,#201030,#100820,#180c28);"></div>
+          <span class="city-badge badge-soon">Coming soon</span>
+          <div class="city-label">
+            <div class="city">Constantine</div>
+            <div class="modes">Bus · Cable car</div>
+            <div class="city-desc">Bus and cable car across the Rhumel gorge — city of bridges.</div>
+          </div>
+          <div class="city-hover-btn">Notify me</div>
+        </div>
+      </div>
+
+      <div class="city-card">
+        <div class="tc-wrap"><div class="tc tc-cairo">
+          <div class="tc-grain"></div><div class="tc-leak"></div><div class="tc-line"></div><div class="tc-chip"></div>
+          <div class="tc-nfc"><div class="tc-arc" style="width:5px;height:7px;"></div><div class="tc-arc" style="width:5px;height:11px;"></div><div class="tc-arc" style="width:5px;height:15px;"></div></div>
+          <div class="tc-initial">C</div><div class="tc-number">•••• •••• •••• ••••</div>
+          <div class="tc-footer"><span class="tc-city-name">Cairo</span><span class="tc-brand">Tariq</span></div>
+        </div></div>
+        <div class="city-card-image">
+          <div class="city-card-image-bg" style="background:linear-gradient(160deg,#2a1e04,#1a1000,#221800);"></div>
+          <span class="city-badge badge-planned">Planned</span>
+          <div class="city-label">
+            <div class="city">Cairo</div>
+            <div class="modes">Metro · Bus · Microbus</div>
+            <div class="city-desc">The city that never sleeps — Cairo's vast network, all in one card.</div>
+          </div>
+          <div class="city-hover-btn">Stay tuned</div>
+        </div>
+      </div>
+
+      <div class="city-card">
+        <div class="tc-wrap"><div class="tc tc-lagos">
+          <div class="tc-grain"></div><div class="tc-leak"></div><div class="tc-line"></div><div class="tc-chip"></div>
+          <div class="tc-nfc"><div class="tc-arc" style="width:5px;height:7px;"></div><div class="tc-arc" style="width:5px;height:11px;"></div><div class="tc-arc" style="width:5px;height:15px;"></div></div>
+          <div class="tc-initial">L</div><div class="tc-number">•••• •••• •••• ••••</div>
+          <div class="tc-footer"><span class="tc-city-name">Lagos</span><span class="tc-brand">Tariq</span></div>
+        </div></div>
+        <div class="city-card-image">
+          <div class="city-card-image-bg" style="background:linear-gradient(160deg,#002818,#001a10,#002010);"></div>
+          <span class="city-badge badge-planned">Planned</span>
+          <div class="city-label">
+            <div class="city">Lagos</div>
+            <div class="modes">BRT · Ferry · Rail</div>
+            <div class="city-desc">Africa's largest city — bus rapid transit, ferries and rail on one card.</div>
+          </div>
+          <div class="city-hover-btn">Stay tuned</div>
+        </div>
+      </div>
+
+      <div class="city-card">
+        <div class="tc-wrap"><div class="tc tc-kinshasa">
+          <div class="tc-grain"></div><div class="tc-leak"></div><div class="tc-line"></div><div class="tc-chip"></div>
+          <div class="tc-nfc"><div class="tc-arc" style="width:5px;height:7px;"></div><div class="tc-arc" style="width:5px;height:11px;"></div><div class="tc-arc" style="width:5px;height:15px;"></div></div>
+          <div class="tc-initial">K</div><div class="tc-number">•••• •••• •••• ••••</div>
+          <div class="tc-footer"><span class="tc-city-name">Kinshasa</span><span class="tc-brand">Tariq</span></div>
+        </div></div>
+        <div class="city-card-image">
+          <div class="city-card-image-bg" style="background:linear-gradient(160deg,#2a1000,#1a0800,#200c00);"></div>
+          <span class="city-badge badge-planned">Planned</span>
+          <div class="city-label">
+            <div class="city">Kinshasa</div>
+            <div class="modes">Bus · Minibus · Rail</div>
+            <div class="city-desc">The Congo's beating heart — connecting Kinshasa's sprawling network.</div>
+          </div>
+          <div class="city-hover-btn">Stay tuned</div>
+        </div>
+      </div>
+
+      <div class="city-card">
+        <div class="tc-wrap"><div class="tc tc-luanda">
+          <div class="tc-grain"></div><div class="tc-leak"></div><div class="tc-line"></div><div class="tc-chip"></div>
+          <div class="tc-nfc"><div class="tc-arc" style="width:5px;height:7px;"></div><div class="tc-arc" style="width:5px;height:11px;"></div><div class="tc-arc" style="width:5px;height:15px;"></div></div>
+          <div class="tc-initial">L</div><div class="tc-number">•••• •••• •••• ••••</div>
+          <div class="tc-footer"><span class="tc-city-name">Luanda</span><span class="tc-brand">Tariq</span></div>
+        </div></div>
+        <div class="city-card-image">
+          <div class="city-card-image-bg" style="background:linear-gradient(160deg,#001828,#000e1a,#001420);"></div>
+          <span class="city-badge badge-planned">Planned</span>
+          <div class="city-label">
+            <div class="city">Luanda</div>
+            <div class="modes">Bus · BRT · Ferry</div>
+            <div class="city-desc">Angola's coastal capital — buses, rapid transit and bay ferries.</div>
+          </div>
+          <div class="city-hover-btn">Stay tuned</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Seam: cities → footer (parallax down into dark outro) -->
+<div class="seam seam-cities-footer" aria-hidden="true">
+  <div class="seam-overlay"></div>
+</div>
+
+<!-- ════════════════════════════════════════
+     FOOTER / CTA OUTRO (~60vh)
+════════════════════════════════════════ -->
+<footer id="s-footer">
+  <div class="footer-inner">
+    <div class="footer-eyebrow">Coming to your city</div>
+    <h2 class="footer-head">One tap.<br><em>Every line. Every city.</em></h2>
+    <a class="footer-cta" href="#s-hero">Back to top <span class="arrow">↑</span></a>
+    <div class="footer-meta">
+      <span>© Tariq Transit</span>
+      <span>Smart transit for African &amp; MENA cities</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Scripts: cursor first (global), then each section IIFE, then seam transitions last -->
+<script src="js/cursor.js"></script>
+<script src="js/hero.js"></script>
+<script src="js/stories.js"></script>
+<script src="js/vehicles.js"></script>
+<script src="js/cities.js"></script>
+<script src="js/transitions.js"></script>
+
+</body>
+</html>

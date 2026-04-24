@@ -1,0 +1,160 @@
+/* ═══════════════════════════════════════════
+   SECTION 3 — VEHICLES
+═══════════════════════════════════════════ */
+#s-vehicles {
+  position: relative;
+  width: 100%; height: 100vh;
+  overflow: hidden;
+  background: #050403;
+  touch-action: none;
+  z-index: 5;
+}
+#s-vehicles::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 50% 50%,
+      rgba(255,255,255,.025) 0%,
+      rgba(255,255,255,.01)  35%,
+      rgba(0,0,0,.0)         55%,
+      rgba(0,0,0,.55)        80%,
+      rgba(0,0,0,.92)        100%);
+  pointer-events: none; z-index: 0;
+}
+#v-word-top {
+  position: absolute; top: clamp(54px,8vw,76px); right: clamp(12px,2vw,24px);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(40px,9vw,144px); font-weight: 300; font-style: italic;
+  letter-spacing: -.02em; line-height: 1;
+  color: rgba(240,232,216,.035); pointer-events: none; z-index: 2;
+}
+#v-word-bottom {
+  position: absolute; bottom: clamp(20px,4vw,36px); left: clamp(12px,3vw,24px);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(40px,9vw,144px); font-weight: 700;
+  letter-spacing: -.03em; line-height: 1;
+  color: rgba(240,232,216,.035); pointer-events: none; z-index: 2;
+}
+#v-stage {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  perspective: 1200px; z-index: 3;
+}
+
+.vcard {
+  position: absolute; top: 0; left: 0;
+  border-radius: 16px; overflow: hidden;
+  pointer-events: none;
+  transform-origin: center center;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: #0c0a08;
+  border: 1px solid rgba(255,255,255,.06);
+  box-shadow: 0 8px 40px rgba(0,0,0,.5);
+}
+.vcard.focused {
+  border-color: rgba(200,160,80,.35);
+  box-shadow: 0 28px 90px rgba(0,0,0,.8), 0 0 0 1px rgba(200,160,80,.12), 0 0 40px rgba(200,160,80,.08);
+}
+.vc-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(12,10,8,.98) 0%, rgba(12,10,8,.7) 38%, rgba(12,10,8,.15) 62%, transparent 80%);
+  z-index: 2;
+}
+.vc-initial {
+  position: absolute; bottom: 4px; right: 12px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(64px,10vw,120px); font-style: italic; font-weight: 600;
+  color: rgba(255,255,255,.10); line-height: 1; z-index: 3;
+  pointer-events: none;
+}
+.vc-topline {
+  position: absolute; top: 0; left: 15%; right: 15%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,80,.6), transparent);
+  z-index: 4; opacity: 0; transition: opacity .4s ease;
+}
+.vcard.focused .vc-topline { opacity: 1; }
+.vc-body {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 0 clamp(12px,1.8vw,18px) clamp(12px,1.8vw,16px); z-index: 5;
+}
+.vc-badge-wrap {
+  padding-bottom: clamp(6px,1vw,8px);
+  opacity: 0; transform: translateY(5px);
+  transition: opacity .35s ease .05s, transform .35s ease .05s;
+}
+.vcard.focused .vc-badge-wrap { opacity: 1; transform: translateY(0); }
+.vc-badge {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(7px,.75vw,8px); font-weight: 500;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: #c8a060;
+  background: rgba(200,160,80,.1); border: 1px solid rgba(200,160,80,.22);
+  border-radius: 999px; padding: 3px 10px; display: inline-block;
+}
+.vc-rule { width: 100%; height: 1px; background: linear-gradient(90deg, rgba(200,160,80,.35), transparent); margin-bottom: clamp(6px,1vw,10px); }
+.vc-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(20px,2.8vw,36px); font-weight: 600;
+  color: rgba(255,255,255,.9); letter-spacing: -.01em; line-height: 1;
+}
+.vc-name em { font-style: italic; font-weight: 400; color: rgba(200,160,80,.88); }
+.vc-tag {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(7px,.8vw,9px); font-weight: 300;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: rgba(255,255,255,.28); margin-top: 4px;
+}
+.vc-placeholder {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: clamp(48px,8vw,80px); opacity: .18; z-index: 1;
+}
+
+#v-center-text {
+  position: absolute;
+  top: clamp(48px, 5.5vh, 80px); left: 50%;
+  transform: translateX(-50%);
+  text-align: center; z-index: 20;
+  pointer-events: none;
+  display: flex; flex-direction: column; align-items: center;
+  white-space: nowrap;
+}
+#v-ct-eye {
+  font-family: 'Outfit', sans-serif; font-size: 10px; font-weight: 600;
+  letter-spacing: 0.28em; text-transform: uppercase; color: #8a6840;
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 14px;
+}
+#v-ct-eye::before, #v-ct-eye::after { content: ''; width: 28px; height: 1px; background: #8a6840; opacity: 0.6; }
+#v-ct-head {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px,5.5vw,68px); font-weight: 600;
+  color: rgba(255,255,255,.88); line-height: 1.12;
+  letter-spacing: -0.02em; margin-bottom: 12px;
+}
+#v-ct-head em { font-style: italic; font-weight: 400; color: rgba(200,160,80,.9); }
+#v-ct-sub {
+  font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 300;
+  color: rgba(255,255,255,.3); letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.75;
+}
+
+#v-strip {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
+  background: linear-gradient(to top, rgba(8,8,8,.97), transparent);
+  z-index: 20; pointer-events: none;
+  display: flex; align-items: flex-end; justify-content: space-between;
+  padding: 0 28px 14px;
+}
+#v-strip-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(15px,2vw,24px); font-weight: 400; font-style: italic;
+  color: rgba(240,232,216,.50); line-height: 1;
+}
+#v-strip-count { font-size: 10px; font-weight: 300; color: rgba(240,232,216,.38); letter-spacing: .12em; }
+#v-prog { position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: rgba(255,255,255,.06); z-index: 60; }
+#v-prog-fill { height: 100%; background: linear-gradient(90deg, rgba(200,160,80,.3), rgba(200,160,80,.7)); width: 0%; }
+
+@media (max-width: 768px) { #v-center-text { white-space: normal; text-align: center; left: 20px; right: 20px; transform: none; } }
+@media (max-width: 480px) { #v-ct-head { font-size: clamp(28px, 9vw, 44px); } }

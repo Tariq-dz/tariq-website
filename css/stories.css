@@ -1,0 +1,220 @@
+/* ═══════════════════════════════════════════
+   SECTION 2 — PASSENGER STORIES (from passenger-stories-v2.html)
+   All generic ids (wrapper / sticky / scene / camera / backdrop / rings /
+   silhouette / dock-* / scroll-hint / prog-*) are prefixed `sec-stories-`
+   to prevent collisions with other sections.
+   ScrollTrigger is scoped to #sec-stories-wrapper (not window).
+═══════════════════════════════════════════ */
+
+@keyframes sec-stories-hintFade { from { opacity: 0 } to { opacity: 1 } }
+@keyframes sec-stories-hintPulse {
+  0%, 100% { opacity: .5; transform: translateX(-50%) translateY(0); }
+  50%      { opacity: 1;  transform: translateX(-50%) translateY(5px); }
+}
+
+/* Stories section anchors absolute children; fixed descendants remain
+   viewport-positioned. Visibility is gated by body.stories-active. */
+#s-stories {
+  position: relative;
+  z-index: 1;
+  font-family: 'DM Sans', 'Outfit', sans-serif;
+  color: #111;
+}
+
+/* ─── BACKDROP ───────────────────────────────────── */
+#sec-stories-backdrop {
+  position: fixed; inset: 0; z-index: 0;
+  overflow: hidden;
+  background: #e4e6e9;
+  transition: background 0.6s ease, opacity 0.6s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+body.stories-active #sec-stories-backdrop { opacity: 1; }
+#sec-stories-rings  { position: absolute; inset: 0; width: 100%; height: 100%; }
+#sec-stories-silhouette {
+  position: absolute; bottom: 0; left: 50%;
+  transform: translate3d(-50%, var(--sil-y, 0px), 0);
+  width: 210px; height: 54%; z-index: 2;
+  transition: opacity 0.4s ease;
+}
+
+/* ─── DOCK ────────────────────────────────────────
+   translate3d(-50%,0,0) is load-bearing — creates a GPU compositing layer
+   that always paints above preserve-3d children. `transition` is on `top`
+   ONLY — rewriting transform destroys the layer. */
+#sec-stories-dock-wrap {
+  position: fixed;
+  left: 50%;
+  transform: translate3d(-50%, 0, 0);
+  z-index: 9999;
+  will-change: transform;
+  isolation: isolate;
+  transition: top 0.55s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+body.stories-active #sec-stories-dock-wrap { opacity: 1; pointer-events: auto; }
+#sec-stories-dock-row  { position: relative; overflow: hidden; }
+#sec-stories-dock-hint {
+  position: absolute;
+  top: calc(100% + 10px); left: 0; right: 0;
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+  font-size: 13px; color: rgba(0, 0, 0, .42); font-weight: 300;
+  font-family: 'DM Sans', 'Outfit', sans-serif;
+  user-select: none; pointer-events: none; white-space: nowrap;
+  animation: sec-stories-hintFade 0.5s ease 1.2s both;
+}
+
+/* ─── SCROLL HINT ────────────────────────────────── */
+#sec-stories-scroll-hint {
+  position: fixed; bottom: 36px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 500; pointer-events: none;
+  display: flex; flex-direction: column; align-items: center; gap: 9px;
+  animation: sec-stories-hintPulse 2s ease-in-out infinite;
+  transition: opacity .5s ease;
+  opacity: 0;
+}
+body.stories-active #sec-stories-scroll-hint { opacity: 1; }
+#sec-stories-scroll-hint span {
+  font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+  color: rgba(0, 0, 0, .35);
+}
+#sec-stories-scroll-hint .hint-line {
+  width: 1px; height: 34px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, .28), transparent);
+}
+
+/* ─── PROGRESS BAR ───────────────────────────────── */
+#sec-stories-prog-wrap {
+  position: fixed; bottom: 18px; left: 50%;
+  transform: translateX(-50%);
+  width: 120px; height: 2px;
+  background: rgba(0, 0, 0, .1); border-radius: 1px;
+  z-index: 500; pointer-events: none; overflow: hidden;
+  opacity: 0; transition: opacity .4s ease;
+}
+#sec-stories-prog-fill {
+  height: 100%; width: 0%;
+  border-radius: 1px;
+  transition: background .5s ease;
+}
+
+/* ─── 3-D SCROLL SCENE ───────────────────────────
+   CRITICAL: No overflow:hidden on wrapper / sticky / scene / camera —
+   silently flattens preserve-3d in Firefox & Safari. */
+#sec-stories-wrapper { position: relative; height: 1200vh; z-index: 1; }
+#sec-stories-sticky  { position: sticky; top: 0; height: 100vh; }
+#sec-stories-scene   {
+  position: absolute; inset: 0;
+  perspective: 900px;
+  perspective-origin: 50% 46%;
+}
+#sec-stories-camera  {
+  position: absolute; inset: 0;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* ─── 3-D CARDS ──────────────────────────────────── */
+#s-stories .zcard {
+  position: absolute;
+  border-radius: 18px;
+  overflow: hidden;
+  will-change: transform, opacity;
+  box-shadow:
+    0 4px 6px   rgba(0, 0, 0, .14),
+    0 14px 32px rgba(0, 0, 0, .20),
+    0 36px 72px rgba(0, 0, 0, .24);
+  opacity: 0;
+}
+#s-stories .zcard-face { position: absolute; inset: 0; }
+#s-stories .zcard-face::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 70% at 50% 110%, rgba(0, 0, 0, .58), transparent);
+  pointer-events: none; z-index: 1;
+}
+#s-stories .zcard-face::before {
+  content: '';
+  position: absolute; inset: 0;
+  opacity: .045;
+  mix-blend-mode: overlay;
+  pointer-events: none; z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/feTurbulence%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+#s-stories .zcard-beat {
+  position: absolute; top: 18px; left: 20px;
+  font-size: 10px; font-weight: 500; letter-spacing: .18em;
+  text-transform: uppercase; color: rgba(255, 255, 255, .38); z-index: 2;
+}
+#s-stories .zcard-num {
+  position: absolute; top: 18px; right: 20px;
+  font-size: 12px; font-weight: 700;
+  color: rgba(255, 255, 255, .16); z-index: 2;
+}
+#s-stories .zcard-dest {
+  position: absolute; bottom: 52px; left: 20px;
+  font-size: clamp(9px, 1vw, 11px); font-weight: 500; letter-spacing: .14em;
+  text-transform: uppercase; color: rgba(255, 255, 255, .5); z-index: 2;
+}
+#s-stories .zcard-title {
+  position: absolute; bottom: 28px; left: 20px; right: 20px;
+  font-family: 'Playfair Display', 'Cormorant Garamond', serif;
+  font-size: clamp(14px, 1.8vw, 22px); font-weight: 400; font-style: italic;
+  color: rgba(255, 255, 255, .92); line-height: 1.18; z-index: 2;
+  font-feature-settings: "kern" 1, "liga" 1;
+}
+#s-stories .zcard-body {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 0 20px 18px;
+  font-size: 11px; font-weight: 300; line-height: 1.6;
+  color: rgba(255, 255, 255, .45); z-index: 2;
+}
+#s-stories .zcard-stripe {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 3px; z-index: 3; opacity: .6;
+}
+
+/* ─── SECTION PANELS (post-Z-travel) ─────────────── */
+#s-stories .s-panel {
+  position: absolute; inset: 0; z-index: 20;
+  opacity: 0; pointer-events: none;
+  display: flex; align-items: center;
+  justify-content: center; gap: 6vw;
+  padding: 0 8vw;
+}
+#s-stories .s-panel.flip { flex-direction: row-reverse; }
+#s-stories .s-panel-card {
+  flex: 0 0 auto;
+  width: clamp(220px, 26vw, 340px);
+  height: clamp(300px, 48vh, 520px);
+  border-radius: 20px; overflow: hidden;
+  position: relative;
+  box-shadow:
+    0 4px 8px   rgba(0, 0, 0, .10),
+    0 16px 36px rgba(0, 0, 0, .16),
+    0 40px 80px rgba(0, 0, 0, .20);
+}
+#s-stories .s-panel-icon {
+  position: absolute; bottom: 22px; right: 22px;
+  font-size: 52px; opacity: .72; z-index: 2;
+}
+#s-stories .s-panel-text { flex: 1; max-width: 400px; }
+#s-stories .s-panel-tag {
+  font-size: 11px; font-weight: 500; letter-spacing: .14em;
+  text-transform: uppercase; color: rgba(0, 0, 0, .4);
+  display: block; margin-bottom: 18px;
+}
+#s-stories .s-panel-h {
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 400; line-height: 1.08; margin-bottom: 18px;
+  color: #111; font-feature-settings: "kern" 1, "liga" 1;
+}
+#s-stories .s-panel-h em { font-family: 'Playfair Display', 'Cormorant Garamond', serif; font-style: italic; }
+#s-stories .s-panel-p {
+  font-size: clamp(14px, 1.4vw, 17px); font-weight: 300; line-height: 1.75;
+  color: rgba(0, 0, 0, .52);
+}
