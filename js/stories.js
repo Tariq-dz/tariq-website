@@ -779,7 +779,10 @@ function setDockPos(top, anim) {
     ? '28px'
     : `calc(42% - ${ICON / 2}px)`;
 }
-setDockPos(false, false);
+/* Dock lives at the top from the start — the section intro owns the
+   center of the stage now (centered dock collided with it on short
+   viewports) */
+setDockPos(true, false);
 
 /**
  * handleDockClick — two-phase carousel shift from dream-machine.
@@ -798,6 +801,10 @@ function handleDockClick(itemId) {
   centerId = itemId;
 
   applyPillStyles(true);
+
+  /* A destination switch jumps straight into the story — the section
+     intro must never fight the first card for the stage again */
+  DOM.intro.classList.add('suppressed');
 
   // Instant scroll reset — prevents the bounce-back bug that smooth scrolling causes
   scrollToStoriesTop();
@@ -971,6 +978,36 @@ function buildCards(destId) {
     el._hasAnimated = false; // guard for one-shot scale pulse
     el._capShown    = false; // guard for one-shot caption reveal
   });
+  /* ── Depth field — the space BETWEEN beats must feel travelled.
+        Concentric gates you fly through + glowing motes that whoosh past
+        give the camera constant motion cues, killing the dead stretches. ── */
+  const tint = dest.color;
+
+  /* 4 elliptical gates at the midpoints between cards */
+  [-1200, -3200, -5300, -7700].forEach((z, i) => {
+    const ring = document.createElement('div');
+    ring.className = 'zfield-ring';
+    ring.style.borderColor = hexToRgba(tint, i % 2 ? 0.16 : 0.26);
+    ring.style.transform = `translate(-50%,-50%) translateZ(${z}px)`;
+    camera.appendChild(ring);
+  });
+
+  /* 18 motes scattered through the whole tunnel */
+  for (let i = 0; i < 18; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'zfield-dot';
+    const s = (Math.random() * 4 + 3).toFixed(1);
+    const z = -(300 + Math.random() * 9300).toFixed(0);
+    dot.style.cssText =
+      `left:${(8 + Math.random() * 84).toFixed(1)}%;` +
+      `top:${(12 + Math.random() * 76).toFixed(1)}%;` +
+      `width:${s}px;height:${s}px;` +
+      `background:${hexToRgba(tint, 0.65)};` +
+      `box-shadow:0 0 ${s * 4}px ${hexToRgba(tint, 0.45)};` +
+      `transform:translateZ(${z}px);`;
+    camera.appendChild(dot);
+  }
+
   /* Rebuild quickSetters for the new card set */
   cardOpSetters = cardEls.map(el => gsap.quickSetter(el, 'opacity'));
 }
@@ -1078,6 +1115,10 @@ function initScrollScene(destId, resetScroll) {
          than el.style.opacity = value per frame.           */
       const zDepths = [500, 2000, 4000, 6500, 9000];
       const easeIn  = gsap.parseEase('power2.inOut');
+      /* Cards hold back until the intro has left the stage (unless a dock
+         click suppressed the intro) — fixes intro/caption text collision */
+      const introGate = DOM.intro.classList.contains('suppressed')
+        ? 1 : clamp01((pr - 0.035) / 0.035);
       cardEls.forEach((el, i) => {
         const dist = zDepths[i] - targetCamZ;
         let raw;
@@ -1085,7 +1126,7 @@ function initScrollScene(destId, resetScroll) {
         else if (dist >  0)           raw = easeIn(1 - dist / APPROACH_PX);
         else if (dist > -EXIT_PX)     raw = 1 + dist / EXIT_PX;
         else                          raw = 0;
-        const op = clamp01(raw);
+        const op = clamp01(raw) * introGate;
         if (cardOpSetters[i]) cardOpSetters[i](op);
 
         /* One-shot scale pulse on full entry */
