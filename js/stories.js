@@ -847,6 +847,29 @@ for (let i = 0; i < 5; i++) {
 }
 let activeBeat = -1;
 
+/* ── Mouse-driven camera sway — the whole 3D scene leans with the cursor ── */
+let swayXT = 0, swayYT = 0, swayX = 0, swayY = 0;
+window.addEventListener('mousemove', e => {
+  swayXT = (e.clientX / window.innerWidth  - 0.5) * 2;
+  swayYT = (e.clientY / window.innerHeight - 0.5) * 2;
+}, { passive: true });
+
+/* ── Atmospheric dust — slow gold motes rising through the scene ── */
+(function buildDust() {
+  for (let i = 0; i < 24; i++) {
+    const d = document.createElement('span');
+    d.className = 'stories-dust';
+    const s = (Math.random() * 1.8 + 1.2).toFixed(1);
+    d.style.cssText =
+      `left:${(Math.random() * 100).toFixed(1)}%;` +
+      `top:${(55 + Math.random() * 45).toFixed(1)}%;` +
+      `width:${s}px;height:${s}px;` +
+      `animation-duration:${(16 + Math.random() * 20).toFixed(1)}s;` +
+      `animation-delay:${(-Math.random() * 36).toFixed(1)}s;`;
+    DOM.backdrop.appendChild(d);
+  }
+})();
+
 /* ── quickSetters — bypass full GSAP tween on per-frame mutations ── */
 const QS = {
   silOpacity   : gsap.quickSetter(DOM.silhouette,  'opacity'),
@@ -902,45 +925,51 @@ function buildCards(destId) {
 
   const dest = DESTINATIONS[destId];
   dest.cards.forEach((card, i) => {
-    /* A "moment" = real app screen in a phone card + editorial caption
-       BESIDE it (text never sits on the artwork). Cards whose data pos
-       anchors right get the caption on their left so it stays on-screen. */
+    /* A "moment" = cinematic scene card (gradient + line-art vignette that
+       evokes the app without showing it) + editorial caption BESIDE it.
+       Scene, caption and a ghost numeral sit at different z offsets inside
+       the moment, so the camera fly-through produces real parallax. */
     const el = document.createElement('div');
     el.className = 'zmoment' + (/right\s*:/.test(card.pos) ? ' flip' : '');
 
     const zDepths = [-500, -2000, -4000, -6500, -9000];
     el.style.cssText = `${card.pos};transform:translateZ(${zDepths[i]}px);`;
-    el.style.setProperty('--dest-glow', hexToRgba(dest.color, 0.22));
+    el.style.setProperty('--dest-glow', hexToRgba(dest.color, 0.20));
     el.style.setProperty('--dest-accent', dest.color);
 
-    const phone = document.createElement('div');
-    phone.className = 'zphone';
-    phone.style.width = PHONE_W[i];
+    /* Ghost numeral — floats BEHIND the scene card */
+    const ghost = document.createElement('div');
+    ghost.className = 'zghost-num';
+    ghost.textContent = card.num;
 
-    const img = document.createElement('img');
-    img.src = screenUrl(destId, i);
-    img.alt = `Tariq app — ${card.beat}`;
-    img.loading = 'lazy';
-    img.draggable = false;
-    phone.appendChild(img);
+    /* Scene card — the original art-directed gradient + SVG vignette */
+    const scene = document.createElement('div');
+    scene.className = 'zscene';
+    scene.style.width  = card.w;
+    scene.style.height = card.h;
+    scene.style.background = card.grad;
+    scene.innerHTML = card.svg;
 
-    const num = document.createElement('div');
-    num.className = 'zphone-num';
-    num.textContent = card.num;
-    phone.appendChild(num);
-
+    /* Caption — slightly toward the viewer; revealed line by line.
+       The title's closing sentence drops to a gold italic fragment. */
+    const sentences = card.title.match(/[^.!?]+[.!?]*\s*/g) || [card.title];
+    const titleHtml = sentences.length > 1
+      ? sentences.slice(0, -1).join('') + `<em>${sentences[sentences.length - 1].trim()}</em>`
+      : card.title;
     const cap = document.createElement('div');
     cap.className = 'zcaption';
     cap.innerHTML = `
-      <div class="zcap-eyebrow"><span class="zcap-rule"></span>${dest.label} · ${card.beat.split('/')[0].trim()}</div>
-      <div class="zcap-title">${card.title}</div>
-      <div class="zcap-body">${card.body}</div>`;
+      <div class="zcap-line zcap-eyebrow"><span class="zcap-rule"></span>${dest.label} · ${card.beat.split('/')[0].trim()}</div>
+      <div class="zcap-line zcap-title">${titleHtml}</div>
+      <div class="zcap-line zcap-body">${card.body}</div>`;
 
-    el.appendChild(phone);
+    el.appendChild(ghost);
+    el.appendChild(scene);
     el.appendChild(cap);
     camera.appendChild(el);
     cardEls.push(el);
     el._hasAnimated = false; // guard for one-shot scale pulse
+    el._capShown    = false; // guard for one-shot caption reveal
   });
   /* Rebuild quickSetters for the new card set */
   cardOpSetters = cardEls.map(el => gsap.quickSetter(el, 'opacity'));
@@ -948,28 +977,6 @@ function buildCards(destId) {
 
 /* Dark warm tints per destination — replaces original sand bg values */
 const DEST_PANEL_BG = ['#201408','#28180a','#041828','#082010','#0a0a28'];
-
-/* ── Real app screens shown in the floating phone cards ──
-   One screen per story beat, matched to the narrative:
-   context → planning → journey → pivot → arrival */
-const APP_DIR = 'assets/app/';
-const SCREENS = [
-  /* University */ ['01_home','09_search','02_map','06_notifications','03_trips'],
-  /* Office     */ ['01_home','04_wallet','09_search','08_topup','03_trips'],
-  /* Clinic     */ ['09_search','02_map','06_notifications','05_profile','03_trips'],
-  /* Old Town   */ ['01_onboarding','09_search','02_map','04_wallet','03_trips'],
-  /* School     */ ['01_home','04_wallet','09_search','02_map','03_trips'],
-];
-const screenUrl = (destId, i) => `${APP_DIR}${SCREENS[destId][i]}.jpg`;
-
-/* Phone card widths per beat — slight variety reinforces depth */
-const PHONE_W = [
-  'clamp(190px,17vw,250px)',
-  'clamp(175px,15vw,225px)',
-  'clamp(195px,18vw,260px)',
-  'clamp(180px,16vw,235px)',
-  'clamp(190px,17vw,250px)',
-];
 
 /** '#c94444' + 0.2 → 'rgba(201,68,68,0.2)' */
 function hexToRgba(hex, a) {
@@ -984,12 +991,8 @@ function buildPanels(destId) {
      it must blend with hero black above and vehicles black below.
      Destination tint applies to the panel cards only. */
 
-  const applyPanel = (prefix, pan, screenIdx) => {
-    /* Real app screen behind a destination-tinted vignette */
-    const art = document.getElementById(`${prefix}art`);
-    art.style.background = `
-      linear-gradient(180deg, ${hexToRgba(dest.color, 0.18)}, rgba(0,0,0,0.45)),
-      url('${screenUrl(destId, screenIdx)}') center top / cover no-repeat`;
+  const applyPanel = (prefix, pan) => {
+    document.getElementById(`${prefix}art`).style.background  = pan.artBg;
     document.getElementById(`${prefix}icon`).innerHTML        = '';
     document.getElementById(`${prefix}tag`).textContent       = pan.tag;
     const hEl = document.getElementById(`${prefix}h`);
@@ -999,8 +1002,8 @@ function buildPanels(destId) {
     document.getElementById(`${prefix.replace('-','')}-card`).style.background = panelBg;
   };
 
-  applyPanel('spa-', dest.panels[0], 3); /* pivot   → beat-4 screen */
-  applyPanel('spb-', dest.panels[1], 4); /* arrival → beat-5 screen */
+  applyPanel('spa-', dest.panels[0]);
+  applyPanel('spb-', dest.panels[1]);
 
   gsap.set('#sp-a', { opacity:0, pointerEvents:'none' });
   gsap.set('#sp-b', { opacity:0, pointerEvents:'none' });
@@ -1092,6 +1095,19 @@ function initScrollScene(destId, resetScroll) {
             scale: 1, duration: 0.7, ease: 'expo.out', overwrite: 'auto',
           });
         }
+
+        /* Caption reveal — film-credit blur-in, line by line, as the
+           moment takes the stage; re-arms when the moment fully exits */
+        if (op > 0.28 && !el._capShown) {
+          el._capShown = true;
+          gsap.to(el.querySelectorAll('.zcap-line'), {
+            opacity: 1, y: 0, filter: 'blur(0px)',
+            duration: 1.0, stagger: 0.14, ease: 'expo.out', overwrite: 'auto',
+          });
+        } else if (op < 0.04 && el._capShown) {
+          el._capShown = false;
+          gsap.set(el.querySelectorAll('.zcap-line'), { opacity: 0, y: 26, filter: 'blur(8px)' });
+        }
       });
 
       /* ─ Silhouette: parallax + opacity ─ */
@@ -1181,9 +1197,16 @@ function initScrollScene(destId, resetScroll) {
       const delta = Math.min((ts - prevTime) / 1000, 0.1); // cap at 100ms
       const factor = 1 - Math.pow(CONFIG.LERP_FACTOR, delta);
       currentCamZ += (targetCamZ - currentCamZ) * factor;
+      swayX += (swayXT - swayX) * factor;
+      swayY += (swayYT - swayY) * factor;
     }
     prevTime = ts;
-    gsap.set('#sec-stories-camera', { z: currentCamZ });
+    /* Single transform writer: Z travel + subtle cursor-led sway */
+    gsap.set('#sec-stories-camera', {
+      z: currentCamZ,
+      rotationY: swayX * 1.6,
+      rotationX: -swayY * 1.2,
+    });
     lerpRaf = requestAnimationFrame(lerp);
   })(performance.now());
 

@@ -159,94 +159,141 @@ body.stories-active #sec-stories-scroll-hint { opacity: 1; }
   will-change: transform;
 }
 
-/* ─── 3-D MOMENTS — real app screen + caption beside it ───
-   .zmoment is the unit the camera fades in/out. The phone card carries
-   only the screen and a ghost number; ALL copy lives in .zcaption. */
+/* ─── 3-D MOMENTS — cinematic scene card + caption in depth ───
+   .zmoment is the unit the camera fades in/out. Scene art, caption and a
+   ghost numeral sit at DIFFERENT z offsets inside the moment, so flying
+   through produces parallax between the layers themselves. */
 #s-stories .zmoment {
   position: absolute;
   display: flex; align-items: center;
-  gap: clamp(26px, 3.2vw, 52px);
+  gap: clamp(30px, 3.6vw, 60px);
   will-change: transform, opacity;
   opacity: 0;
+  transform-style: preserve-3d;
 }
 #s-stories .zmoment.flip { flex-direction: row-reverse; }
 
-#s-stories .zphone {
+/* Ghost numeral — huge, rising from behind the scene card */
+#s-stories .zghost-num {
+  position: absolute;
+  top: 46%; left: 3%;
+  transform: translateY(-50%) translateZ(-150px);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(150px, 16vw, 250px);
+  font-weight: 300; font-style: italic; line-height: 1;
+  color: rgba(255, 255, 255, .055);
+  pointer-events: none;
+  z-index: 0;
+}
+#s-stories .zmoment.flip .zghost-num { left: auto; right: 3%; }
+
+/* Scene card — art-directed gradient + line-art vignette */
+#s-stories .zscene {
   position: relative;
   flex: 0 0 auto;
-  border-radius: 26px;
+  border-radius: 18px;
   overflow: hidden;
-  aspect-ratio: 44 / 87;
-  border: 1px solid rgba(255, 255, 255, .12);
-  background: #0c0a08;
+  z-index: 1;
+  scale: 1.12; /* extra stage presence without retuning every data size */
+  border: 1px solid rgba(255, 255, 255, .07);
   box-shadow:
-    0 4px 6px   rgba(0, 0, 0, .20),
-    0 18px 40px rgba(0, 0, 0, .35),
-    0 48px 90px rgba(0, 0, 0, .40),
-    0 0 70px    var(--dest-glow, rgba(200, 160, 80, .18));
+    0 4px 6px   rgba(0, 0, 0, .18),
+    0 16px 36px rgba(0, 0, 0, .26),
+    0 42px 80px rgba(0, 0, 0, .32),
+    0 0 64px    var(--dest-glow, rgba(200, 160, 80, .16));
 }
-#s-stories .zphone img {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  display: block;
-}
-/* Grain + bottom anchor vignette over the screen */
-#s-stories .zphone::after {
+#s-stories .zscene::after {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(5, 4, 3, .35), transparent 30%);
-  pointer-events: none;
+  background: radial-gradient(ellipse 85% 70% at 50% 112%, rgba(0, 0, 0, .5), transparent);
+  pointer-events: none; z-index: 1;
 }
-#s-stories .zphone-num {
-  position: absolute; top: 12px; right: 14px;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 15px; font-weight: 600; font-style: italic;
-  color: rgba(255, 255, 255, .55);
-  text-shadow: 0 1px 6px rgba(0, 0, 0, .8);
-  z-index: 2;
+#s-stories .zscene::before {
+  content: '';
+  position: absolute; inset: 0;
+  opacity: .05;
+  mix-blend-mode: overlay;
+  pointer-events: none; z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/feTurbulence%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
 }
 
+/* Caption — pulled 120px toward the viewer; lines start hidden and are
+   blur-revealed by GSAP when the moment takes the stage */
 #s-stories .zcaption {
   flex: 0 1 auto;
-  width: clamp(220px, 23vw, 320px);
-  display: flex; flex-direction: column; gap: 14px;
+  width: clamp(240px, 26vw, 360px);
+  display: flex; flex-direction: column; gap: 16px;
+  transform: translateZ(120px);
+  z-index: 2;
+}
+#s-stories .zcap-line {
+  opacity: 0;
+  transform: translateY(26px);
+  filter: blur(8px);
+  will-change: transform, opacity, filter;
 }
 #s-stories .zmoment.flip .zcaption { text-align: right; }
 #s-stories .zmoment.flip .zcap-eyebrow { flex-direction: row-reverse; }
 #s-stories .zcap-eyebrow {
-  display: flex; align-items: center; gap: 10px;
+  display: flex; align-items: center; gap: 12px;
   font-family: 'Outfit', sans-serif;
   font-size: 10px; font-weight: 600;
-  letter-spacing: .24em; text-transform: uppercase;
+  letter-spacing: .26em; text-transform: uppercase;
   color: var(--dest-accent, #c8a060);
-  opacity: .92;
+  opacity: 0; /* .zcap-line owns visibility */
 }
 #s-stories .zcap-rule {
-  width: 26px; height: 1px;
+  width: 30px; height: 1px;
   background: var(--dest-accent, #c8a060);
   opacity: .65;
 }
 #s-stories .zcap-title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(24px, 2.6vw, 38px);
-  font-weight: 600; font-style: italic; line-height: 1.12;
-  letter-spacing: -0.01em;
+  font-size: clamp(30px, 3.3vw, 50px);
+  font-weight: 600; line-height: 1.12;
+  letter-spacing: -0.015em;
   color: rgba(255, 255, 255, .94);
+  text-shadow: 0 2px 24px rgba(0, 0, 0, .45);
+}
+/* The closing sentence drops to a gold poetic fragment — house pattern */
+#s-stories .zcap-title em {
+  display: block;
+  font-family: 'Playfair Display', 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 400;
+  font-size: 0.82em;
+  color: rgba(200, 160, 80, .92);
 }
 #s-stories .zcap-body {
   font-family: 'Outfit', sans-serif;
-  font-size: clamp(12px, 1.05vw, 14px); font-weight: 300; line-height: 1.7;
-  color: rgba(255, 255, 255, .52);
-  max-width: 300px;
+  font-size: clamp(13px, 1.1vw, 15px); font-weight: 300; line-height: 1.75;
+  color: rgba(255, 255, 255, .55);
+  max-width: 320px;
 }
 #s-stories .zmoment.flip .zcap-body { margin-left: auto; }
 
 @media (max-width: 900px) {
   #s-stories .zmoment,
-  #s-stories .zmoment.flip { flex-direction: column; align-items: flex-start; gap: 18px; }
+  #s-stories .zmoment.flip { flex-direction: column; align-items: flex-start; gap: 20px; }
   #s-stories .zmoment.flip .zcaption { text-align: left; }
   #s-stories .zmoment.flip .zcap-eyebrow { flex-direction: row; }
+  #s-stories .zghost-num { display: none; }
+}
+
+/* ─── ATMOSPHERIC DUST — slow gold motes rising ── */
+@keyframes stories-dust-rise {
+  0%   { transform: translateY(0);      opacity: 0; }
+  12%  { opacity: .22; }
+  85%  { opacity: .10; }
+  100% { transform: translateY(-72vh);  opacity: 0; }
+}
+.stories-dust {
+  position: absolute;
+  border-radius: 50%;
+  background: #c8a060;
+  pointer-events: none;
+  animation: stories-dust-rise linear infinite;
+  will-change: transform, opacity;
 }
 
 /* ─── SECTION PANELS (post-Z-travel) ─────────────── */
