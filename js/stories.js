@@ -886,6 +886,7 @@ const QS = {
 /* Card quickSetters rebuilt per scene in buildCards() */
 let cardOpSetters = [];
 
+let ringEls    = [];   /* depth-field gates — spun per-frame */
 let gsapCtx    = null; /* gsap.context() — atomic cleanup for all tweens */
 let stInst     = null;
 let lerpRaf    = null;
@@ -983,19 +984,25 @@ function buildCards(destId) {
        vertical bias per beat. Drives the per-frame glide in onUpdate. */
     el._dirX = /right\s*:/.test(card.pos) ? -1 : 1;
     el._dirY = i % 2 ? 1 : -1;
+    el._cap  = cap;                          // caption lags the card
+    el._art  = scene.querySelector('svg');   // art floats in its frame
   });
   /* ── Depth field — the space BETWEEN beats must feel travelled.
         Concentric gates you fly through + glowing motes that whoosh past
         give the camera constant motion cues, killing the dead stretches. ── */
   const tint = dest.color;
 
-  /* 4 elliptical gates at the midpoints between cards */
+  /* 4 elliptical gates at the midpoints between cards — they spin
+     slowly as the camera travels (per-frame, see onUpdate) */
+  ringEls = [];
   [-1200, -3200, -5300, -7700].forEach((z, i) => {
     const ring = document.createElement('div');
     ring.className = 'zfield-ring';
     ring.style.borderColor = hexToRgba(tint, i % 2 ? 0.16 : 0.26);
     ring.style.transform = `translate(-50%,-50%) translateZ(${z}px)`;
+    ring._spin = (i % 2 ? 1 : -1) * (10 + i * 4);
     camera.appendChild(ring);
+    ringEls.push(ring);
   });
 
   /* 18 motes scattered through the whole tunnel */
@@ -1146,6 +1153,15 @@ function initScrollScene(destId, resetScroll) {
           rotationY: (0.5 - j) * 9 * el._dirX,
           rotationX: (j - 0.5) * 4 * el._dirY,
         });
+        /* Layered inertia: the caption trails its card; the line-art
+           floats against its own gradient frame. On exit the caption
+           releases faster than the card so it never overlaps the
+           incoming beat's text. */
+        if (el._cap) gsap.set(el._cap, {
+          x: (0.5 - j) * 46 * el._dirX,
+          opacity: dist < 0 ? clamp01(1 + dist / (EXIT_PX * 0.55)) : 1,
+        });
+        if (el._art) gsap.set(el._art, { x: (0.5 - j) * 22 * el._dirX, y: (0.5 - j) * 12 * el._dirY });
 
         /* One-shot scale pulse on full entry */
         if (op > 0.85 && !el._hasAnimated) {
@@ -1168,6 +1184,10 @@ function initScrollScene(destId, resetScroll) {
           gsap.set(el.querySelectorAll('.zcap-line'), { opacity: 0, y: 26, filter: 'blur(8px)' });
         }
       });
+
+      /* ─ Gates spin slowly with the travel ─ */
+      const zFrac = clamp01(targetCamZ / CAM_MAX_Z);
+      ringEls.forEach(ring => gsap.set(ring, { rotationZ: zFrac * ring._spin }));
 
       /* ─ Silhouette: parallax + opacity ─ */
       const silOp = pr < 0.02 ? 1 : clamp01(1 - (pr - 0.02) / 0.06);
@@ -1205,8 +1225,8 @@ function initScrollScene(destId, resetScroll) {
         gsap.set('#sp-a', { opacity: t, pointerEvents: t > 0.5 ? 'auto' : 'none' });
         if (!p1shown && t > 0.1) {
           p1shown = true;
-          /* Panel card: scale from 0.88 + drift */
-          gsap.fromTo('#spa-card', { scale:0.88, y:30 }, { scale:1, y:0, duration:0.9, ease:'expo.out' });
+          /* Panel card: turns into place like a physical object */
+          gsap.fromTo('#spa-card', { scale:0.88, y:30, rotationY:12, transformPerspective:800 }, { scale:1, y:0, rotationY:0, duration:1.1, ease:'expo.out' });
           /* Heading: word-split stagger (keeps <br> + <em>) */
           splitHeadline(document.getElementById('spa-h'));
           gsap.from('#spa-h .wrd', { y:40, opacity:0, stagger:0.06, ease:'power4.out', duration:0.9 });
@@ -1223,7 +1243,7 @@ function initScrollScene(destId, resetScroll) {
         gsap.set('#sp-b', { opacity: t, y: 0, scale: 1, pointerEvents: t > 0.5 ? 'auto' : 'none' });
         if (!p2shown && t > 0.1) {
           p2shown = true;
-          gsap.fromTo('#spb-card', { scale:0.88, y:30 }, { scale:1, y:0, duration:0.9, ease:'expo.out' });
+          gsap.fromTo('#spb-card', { scale:0.88, y:30, rotationY:-12, transformPerspective:800 }, { scale:1, y:0, rotationY:0, duration:1.1, ease:'expo.out' });
           splitHeadline(document.getElementById('spb-h'));
           gsap.from('#spb-h .wrd', { y:40, opacity:0, stagger:0.06, ease:'power4.out', duration:0.9 });
           gsap.from('#spb-p', { filter:'blur(6px)', opacity:0, duration:0.8, delay:0.3, ease:'power3.out' });
@@ -1260,11 +1280,14 @@ function initScrollScene(destId, resetScroll) {
       swayY += (swayYT - swayY) * factor;
     }
     prevTime = ts;
-    /* Single transform writer: Z travel + subtle cursor-led sway */
+    /* Velocity surge: the camera lag (target − current) is a natural
+       speed signal — fast scrolling dips the nose, easing out on stop */
+    const surge = Math.max(-2.2, Math.min(2.2, (targetCamZ - currentCamZ) * 0.0011));
+    /* Single transform writer: Z travel + cursor sway + speed surge */
     gsap.set('#sec-stories-camera', {
       z: currentCamZ,
       rotationY: swayX * 1.6,
-      rotationX: -swayY * 1.2,
+      rotationX: -swayY * 1.2 - surge,
     });
     lerpRaf = requestAnimationFrame(lerp);
   })(performance.now());
