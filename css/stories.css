@@ -146,7 +146,8 @@ body.stories-active #sec-stories-scroll-hint { opacity: 1; }
 /* ─── 3-D SCROLL SCENE ───────────────────────────
    CRITICAL: No overflow:hidden on wrapper / sticky / scene / camera —
    silently flattens preserve-3d in Firefox & Safari. */
-#sec-stories-wrapper { position: relative; height: 1200vh; z-index: 1; }
+/* 1000vh (was 1200) — tighter pacing, the camera never dawdles */
+#sec-stories-wrapper { position: relative; height: 1000vh; z-index: 1; }
 #sec-stories-sticky  { position: sticky; top: 0; height: 100vh; }
 #sec-stories-scene   {
   position: absolute; inset: 0;

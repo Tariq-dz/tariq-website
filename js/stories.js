@@ -977,6 +977,12 @@ function buildCards(destId) {
     cardEls.push(el);
     el._hasAnimated = false; // guard for one-shot scale pulse
     el._capShown    = false; // guard for one-shot caption reveal
+
+    /* Trajectory direction — edge-anchored moments drift toward the
+       center of the frame as the camera approaches, alternating a
+       vertical bias per beat. Drives the per-frame glide in onUpdate. */
+    el._dirX = /right\s*:/.test(card.pos) ? -1 : 1;
+    el._dirY = i % 2 ? 1 : -1;
   });
   /* ── Depth field — the space BETWEEN beats must feel travelled.
         Concentric gates you fly through + glowing motes that whoosh past
@@ -1128,6 +1134,18 @@ function initScrollScene(destId, resetScroll) {
         else                          raw = 0;
         const op = clamp01(raw) * introGate;
         if (cardOpSetters[i]) cardOpSetters[i](op);
+
+        /* ─ Trajectory: the moment GLIDES through the frame while the
+           camera flies — sideways toward center, a vertical drift, and
+           a physical turn, all driven by its journey j ∈ [0,1] from
+           first appearance to passing the lens ─ */
+        const j = clamp01((APPROACH_PX - dist) / (APPROACH_PX + EXIT_PX));
+        gsap.set(el, {
+          x:  (j - 0.5) * 240 * el._dirX,
+          y:  (j - 0.5) *  90 * el._dirY,
+          rotationY: (0.5 - j) * 9 * el._dirX,
+          rotationX: (j - 0.5) * 4 * el._dirY,
+        });
 
         /* One-shot scale pulse on full entry */
         if (op > 0.85 && !el._hasAnimated) {
