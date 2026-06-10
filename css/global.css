@@ -33,4 +33,8 @@ body.cursor-light #cursor {
   background: #fff8d0;
   box-shadow: 0 0 10px 4px rgba(255,210,50,0.9);
 }
+body.cursor-dark #cursor {
+  background: #7a5020;
+  box-shadow: 0 0 8px 3px rgba(122,80,32,0.5);
+}
 body.cursor-expanded #cursor { width: 44px; height: 44px; opacity: .4; }

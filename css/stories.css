@@ -155,23 +155,27 @@ body.stories-active #sec-stories-scroll-hint { opacity: 1; }
   font-size: 12px; font-weight: 700;
   color: rgba(255, 255, 255, .16); z-index: 2;
 }
+/* Bottom label block — flex column so a wrapping title pushes the body
+   down instead of overlapping it (they were absolute siblings before) */
+#s-stories .zcard-label {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 0 20px 16px;
+  z-index: 2;
+}
 #s-stories .zcard-dest {
-  position: absolute; bottom: 52px; left: 20px;
   font-size: clamp(9px, 1vw, 11px); font-weight: 500; letter-spacing: .14em;
-  text-transform: uppercase; color: rgba(255, 255, 255, .5); z-index: 2;
+  text-transform: uppercase; color: rgba(255, 255, 255, .5);
 }
 #s-stories .zcard-title {
-  position: absolute; bottom: 28px; left: 20px; right: 20px;
   font-family: 'Playfair Display', 'Cormorant Garamond', serif;
   font-size: clamp(14px, 1.8vw, 22px); font-weight: 400; font-style: italic;
-  color: rgba(255, 255, 255, .92); line-height: 1.18; z-index: 2;
+  color: rgba(255, 255, 255, .92); line-height: 1.18;
   font-feature-settings: "kern" 1, "liga" 1;
 }
 #s-stories .zcard-body {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  padding: 0 20px 18px;
   font-size: 11px; font-weight: 300; line-height: 1.6;
-  color: rgba(255, 255, 255, .45); z-index: 2;
+  color: rgba(255, 255, 255, .45);
 }
 #s-stories .zcard-stripe {
   position: absolute; bottom: 0; left: 0; right: 0;
@@ -208,12 +212,17 @@ body.stories-active #sec-stories-scroll-hint { opacity: 1; }
   display: block; margin-bottom: 18px;
 }
 #s-stories .s-panel-h {
-  font-size: clamp(28px, 4vw, 52px);
-  font-weight: 400; line-height: 1.08; margin-bottom: 18px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(30px, 4.2vw, 56px);
+  font-weight: 600; line-height: 1.08; margin-bottom: 18px;
+  letter-spacing: -0.01em;
   color: rgba(255, 255, 255, .92);
   font-feature-settings: "kern" 1, "liga" 1;
 }
-#s-stories .s-panel-h em { font-family: 'Playfair Display', 'Cormorant Garamond', serif; font-style: italic; }
+#s-stories .s-panel-h em {
+  font-style: italic; font-weight: 400;
+  color: rgba(200, 160, 80, .92);
+}
 #s-stories .s-panel-p {
   font-size: clamp(14px, 1.4vw, 17px); font-weight: 300; line-height: 1.75;
   color: rgba(255, 255, 255, .55);
@@ -259,4 +268,14 @@ body.stories-active #sec-stories-scroll-hint { opacity: 1; }
   letter-spacing: 0.1em; text-transform: uppercase;
   color: rgba(255, 255, 255, .38);
   max-width: 420px;
+}
+
+/* ─── EXIT (stories → vehicles seam) ─────────────
+   Fixed chrome fades before the seam so nothing ghosts over vehicles.
+   Must come after the .stories-active rules to win the cascade. */
+body.stories-exiting #sec-stories-dock-wrap,
+body.stories-exiting #sec-stories-scroll-hint,
+body.stories-exiting #sec-stories-prog-wrap {
+  opacity: 0;
+  pointer-events: none;
 }

@@ -38,13 +38,15 @@ const CONFIG = {
   Z_END       : 0.78,    // scroll % where Z-travel ends
   LERP_FACTOR : 0.04,    // base for frame-rate-independent lerp: 1-pow(factor,delta)
 
-  /* Card opacity windows */
-  APPROACH_PX : 1800,    // px before card where it starts fading in
+  /* Card opacity windows — APPROACH wide enough that adjacent card
+     windows overlap; eliminates empty-viewport dead zones mid-travel */
+  APPROACH_PX : 2600,    // px before card where it starts fading in
   EXIT_PX     : 600,     // px after camera passes card before it's invisible
 
-  /* Section panels */
-  P1_IN  : 0.80, P1_OUT : 0.89,
-  P2_IN  : 0.90, P2_OUT : 0.97,
+  /* Section panels — timed to pick up right as the last card exits
+     (eased camera passes card 5 around pr≈0.59), not at 0.80 */
+  P1_IN  : 0.62, P1_OUT : 0.76,
+  P2_IN  : 0.79, P2_OUT : 0.92,
 
   /* Dock */
   ICON    : 68,
@@ -227,7 +229,7 @@ const DESTINATIONS = [
               linear-gradient(168deg,#0e0802,#04030a)`,
         accent:'#F5A53A',
         svg:`<svg viewBox="0 0 310 192" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;display:block">
-          <rect x="30" y="58" width="252" height="90" rx="14" fill="rgba(74,130,216,.18)" stroke="rgba(220,140,30,.32)" stroke-width="1.4"/>
+          <rect x="30" y="58" width="252" height="90" rx="14" fill="rgba(220,130,20,.18)" stroke="rgba(220,140,30,.32)" stroke-width="1.4"/>
           <rect x="46" y="72" width="42" height="36" rx="5" fill="rgba(255,180,80,.14)"/>
           <rect x="96" y="72" width="42" height="36" rx="5" fill="rgba(255,180,80,.18)"/>
           <rect x="146" y="72" width="42" height="36" rx="5" fill="rgba(255,180,80,.14)"/>
@@ -714,12 +716,14 @@ function applyPillStyles(withTrans) {
     pill.style.zIndex     = isC ? '5' : '2';
     pill.style.cursor     = isC ? 'default' : 'pointer';
     if (isC) {
-      pill.style.background    = dest.color;
-      pill.style.backdropFilter = 'none';
-      pill.style.WebkitBackdropFilter = 'none';
-      pill.style.border        = 'none';
-      /* Dual glow: ambient halo + contact shadow */
-      pill.style.boxShadow     = `0 4px 24px ${dest.color}55, 0 1px 4px ${dest.color}33`;
+      /* Gold glass — brand chrome stays gold; destination color lives
+         only inside the story cards, never on UI controls */
+      pill.style.background    = 'linear-gradient(135deg, rgba(200,160,80,0.30), rgba(200,160,80,0.14))';
+      pill.style.backdropFilter = 'blur(14px) saturate(1.2)';
+      pill.style.WebkitBackdropFilter = 'blur(14px) saturate(1.2)';
+      pill.style.border        = '1px solid rgba(200,160,80,0.55)';
+      /* Dual glow: ambient gold halo + contact shadow */
+      pill.style.boxShadow     = '0 4px 24px rgba(200,160,80,0.30), 0 1px 4px rgba(0,0,0,0.30), inset 0 1px 0 rgba(245,225,153,0.25)';
     } else {
       pill.style.background    = 'rgba(200,160,80,0.10)';
       pill.style.backdropFilter = 'blur(12px) saturate(1.2)';
@@ -841,6 +845,32 @@ let p2shown    = false;
 /** Clamps value to [0,1]. Used in every opacity calculation. */
 function clamp01(v) { return Math.max(0, Math.min(1, v)); }
 
+/**
+ * Word-splits a panel headline for the stagger entrance while
+ * PRESERVING <br> line breaks and <em> italic styling.
+ * (The old textContent-based split dropped both, rendering
+ * "On time.Every time." with no space and no italics.)
+ */
+function splitHeadline(el) {
+  /* Always split from the pristine source (set by applyPanel) — re-splitting
+     already-wrapped markup would lose the <em> information. */
+  const src = el.dataset.src || el.innerHTML;
+  const lines = src.split(/<br\s*\/?>/i).map(line => {
+    const tmp = document.createElement('div');
+    tmp.innerHTML = line;
+    const words = [];
+    tmp.childNodes.forEach(node => {
+      const isEm = node.nodeType === 1 && node.tagName === 'EM';
+      (node.textContent || '').trim().split(/\s+/).filter(Boolean)
+        .forEach(w => words.push({ w, isEm }));
+    });
+    return words.map(({ w, isEm }) =>
+      `<span style="display:inline-block;overflow:hidden"><span class="wrd">${isEm ? `<em>${w}</em>` : w}</span></span>`
+    ).join(' ');
+  });
+  el.innerHTML = lines.join('<br>');
+}
+
 function buildCards(destId) {
   const camera = document.getElementById('sec-stories-camera');
   camera.innerHTML = '';
@@ -869,11 +899,17 @@ function buildCards(destId) {
     const body  = document.createElement('div'); body.className  = 'zcard-body';  body.textContent  = card.body;
     const stripe = document.createElement('div'); stripe.className = 'zcard-stripe'; stripe.style.background = card.accent;
 
+    /* Bottom text stacks in a flex column so multi-line titles can never
+       overlap the body copy (they collided as absolute siblings) */
+    const label = document.createElement('div');
+    label.className = 'zcard-label';
+    label.appendChild(dname);
+    label.appendChild(title);
+    label.appendChild(body);
+
     face.appendChild(beat);
     face.appendChild(num);
-    face.appendChild(dname);
-    face.appendChild(title);
-    face.appendChild(body);
+    face.appendChild(label);
     face.appendChild(stripe);
     el.appendChild(face);
     camera.appendChild(el);
@@ -890,13 +926,17 @@ const DEST_PANEL_BG = ['#201408','#28180a','#041828','#082010','#0a0a28'];
 function buildPanels(destId) {
   const dest   = DESTINATIONS[destId];
   const panelBg = DEST_PANEL_BG[destId] || '#0a0806';
-  document.getElementById('sec-stories-backdrop').style.background = panelBg;
+  /* Backdrop stays warm night (#0a0806 from CSS) for every destination —
+     it must blend with hero black above and vehicles black below.
+     Destination tint applies to the panel cards only. */
 
   const applyPanel = (prefix, pan) => {
     document.getElementById(`${prefix}art`).style.background  = pan.artBg;
     document.getElementById(`${prefix}icon`).innerHTML        = '';
     document.getElementById(`${prefix}tag`).textContent       = pan.tag;
-    document.getElementById(`${prefix}h`).innerHTML           = pan.h;
+    const hEl = document.getElementById(`${prefix}h`);
+    hEl.innerHTML   = pan.h;
+    hEl.dataset.src = pan.h;
     document.getElementById(`${prefix}p`).textContent         = pan.p;
     document.getElementById(`${prefix.replace('-','')}-card`).style.background = panelBg;
   };
@@ -932,8 +972,8 @@ function initScrollScene(destId, resetScroll) {
   buildCards(destId);
   buildPanels(destId);
 
-  /* Progress bar color — set once, not per-frame */
-  DOM.progFill.style.background = DESTINATIONS[destId].color;
+  /* Progress bar — always gold; brand chrome never takes destination color */
+  DOM.progFill.style.background = '#c8a060';
 
   /* Ring atmosphere — slow breathing pulse (Pillar 3) */
   gsap.utils.toArray('#sec-stories-rings ellipse').forEach((el, i) => {
@@ -1016,10 +1056,8 @@ function initScrollScene(destId, resetScroll) {
           p1shown = true;
           /* Panel card: scale from 0.88 + drift */
           gsap.fromTo('#spa-card', { scale:0.88, y:30 }, { scale:1, y:0, duration:0.9, ease:'expo.out' });
-          /* Heading: word-split stagger */
-          const h1 = document.getElementById('spa-h');
-          const words = h1.textContent.replace(/<[^>]*>/g,'').split(' ');
-          h1.innerHTML = words.map(w => `<span style="display:inline-block;overflow:hidden"><span class="wrd">${w}</span></span>`).join(' ');
+          /* Heading: word-split stagger (keeps <br> + <em>) */
+          splitHeadline(document.getElementById('spa-h'));
           gsap.from('#spa-h .wrd', { y:40, opacity:0, stagger:0.06, ease:'power4.out', duration:0.9 });
           /* Body: blur-to-sharp */
           gsap.from('#spa-p', { filter:'blur(6px)', opacity:0, duration:0.8, delay:0.3, ease:'power3.out' });
@@ -1031,21 +1069,30 @@ function initScrollScene(destId, resetScroll) {
       }
       if (pr >= P2_IN && pr < P2_OUT) {
         const t = clamp01((pr - P2_IN) / 0.04);
-        gsap.set('#sp-b', { opacity: t, pointerEvents: t > 0.5 ? 'auto' : 'none' });
+        gsap.set('#sp-b', { opacity: t, y: 0, scale: 1, pointerEvents: t > 0.5 ? 'auto' : 'none' });
         if (!p2shown && t > 0.1) {
           p2shown = true;
           gsap.fromTo('#spb-card', { scale:0.88, y:30 }, { scale:1, y:0, duration:0.9, ease:'expo.out' });
-          const h2 = document.getElementById('spb-h');
-          const words2 = h2.textContent.replace(/<[^>]*>/g,'').split(' ');
-          h2.innerHTML = words2.map(w => `<span style="display:inline-block;overflow:hidden"><span class="wrd">${w}</span></span>`).join(' ');
+          splitHeadline(document.getElementById('spb-h'));
           gsap.from('#spb-h .wrd', { y:40, opacity:0, stagger:0.06, ease:'power4.out', duration:0.9 });
           gsap.from('#spb-p', { filter:'blur(6px)', opacity:0, duration:0.8, delay:0.3, ease:'power3.out' });
         }
       } else {
-        const out = pr >= P2_OUT ? clamp01(1 - (pr - P2_OUT) / 0.02) : 0;
-        gsap.set('#sp-b', { opacity: pr >= P2_IN ? out : 0, pointerEvents:'none' });
+        /* Seam gesture (stories → vehicles): the last panel recedes upward
+           and shrinks as it dissolves into the coming blackness */
+        const out = pr >= P2_OUT ? clamp01(1 - (pr - P2_OUT) / 0.05) : 0;
+        gsap.set('#sp-b', {
+          opacity: pr >= P2_IN ? out : 0,
+          y: pr >= P2_OUT ? (1 - out) * -90 : 0,
+          scale: pr >= P2_OUT ? 1 - (1 - out) * 0.06 : 1,
+          pointerEvents: 'none',
+        });
         if (pr < P2_IN) p2shown = false;
       }
+
+      /* ─ Exit: fade the fixed chrome (dock / hint / progress) before the
+         vehicles seam so nothing from stories ghosts over the next section ─ */
+      document.body.classList.toggle('stories-exiting', pr > 0.965);
     }
   });
 

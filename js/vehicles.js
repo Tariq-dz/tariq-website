@@ -12,6 +12,70 @@
     { key:null,      tag:'Gondola',          name:'Télé',    em:'cabine',     badge:'Gondola',    w:416, h:312, bg:'linear-gradient(145deg,#071414 0%,#0a1c18 45%,#050e10 100%)', accent:'rgba(40,180,160,.26)' },
   ];
 
+  /* Gold line glyphs (1.5px stroke register, no fill) — replaces the emoji
+     placeholders per the design system's iconography rules */
+  const G = `fill="none" stroke="#c8a060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"`;
+  const VEHICLE_GLYPHS = {
+    'Underground': `<svg viewBox="0 0 96 96" ${G}>
+      <rect x="26" y="14" width="44" height="56" rx="10"/>
+      <path d="M32 38 H64"/>
+      <rect x="34" y="22" width="28" height="12" rx="3"/>
+      <circle cx="36" cy="56" r="3"/><circle cx="60" cy="56" r="3"/>
+      <path d="M34 78 L28 88 M62 78 L68 88 M22 88 H74"/>
+    </svg>`,
+    'Street Level': `<svg viewBox="0 0 96 96" ${G}>
+      <path d="M30 10 H66 M48 10 V20"/>
+      <rect x="28" y="20" width="40" height="52" rx="8"/>
+      <rect x="35" y="28" width="26" height="14" rx="3"/>
+      <path d="M35 52 H61"/>
+      <circle cx="38" cy="80" r="4"/><circle cx="58" cy="80" r="4"/>
+    </svg>`,
+    'City Bus': `<svg viewBox="0 0 96 96" ${G}>
+      <rect x="18" y="22" width="60" height="48" rx="8"/>
+      <path d="M18 50 H78"/>
+      <rect x="26" y="30" width="44" height="12" rx="3"/>
+      <circle cx="32" cy="78" r="5"/><circle cx="64" cy="78" r="5"/>
+      <path d="M26 60 H30 M66 60 H70"/>
+    </svg>`,
+    'Private Operator': `<svg viewBox="0 0 96 96" ${G}>
+      <path d="M20 64 V40 Q20 30 30 30 H60 Q70 30 74 40 L78 52 V64 Z"/>
+      <path d="M28 38 H46 V50 H24 M54 38 H64 L70 50 H54 Z"/>
+      <circle cx="32" cy="68" r="5"/><circle cx="64" cy="68" r="5"/>
+    </svg>`,
+    'Aerial': `<svg viewBox="0 0 96 96" ${G}>
+      <path d="M6 22 L90 12"/>
+      <path d="M48 17 V34"/>
+      <rect x="30" y="34" width="36" height="34" rx="8"/>
+      <path d="M30 50 H66"/>
+      <rect x="40" y="40" width="16" height="10" rx="2"/>
+    </svg>`,
+    'Commuter Rail': `<svg viewBox="0 0 96 96" ${G}>
+      <path d="M30 14 H58 Q72 14 72 32 V70 H30 Q24 70 24 60 V20 Q24 14 30 14 Z"/>
+      <path d="M32 24 H58 Q64 24 64 32 V38 H32 Z"/>
+      <circle cx="38" cy="56" r="3"/><circle cx="56" cy="56" r="3"/>
+      <path d="M10 82 H86 M16 76 H40"/>
+    </svg>`,
+    'On Demand': `<svg viewBox="0 0 96 96" ${G}>
+      <rect x="40" y="22" width="16" height="8" rx="2"/>
+      <path d="M18 62 V52 Q18 46 26 46 L34 34 H62 L70 46 Q78 46 78 52 V62 Z"/>
+      <path d="M38 36 L32 46 H64 L58 36"/>
+      <circle cx="30" cy="66" r="5"/><circle cx="66" cy="66" r="5"/>
+    </svg>`,
+    'Maritime': `<svg viewBox="0 0 96 96" ${G}>
+      <path d="M14 56 H82 L72 72 H24 Z"/>
+      <rect x="30" y="40" width="36" height="16" rx="3"/>
+      <path d="M44 40 V30 H58 V40"/>
+      <circle cx="38" cy="48" r="2"/><circle cx="48" cy="48" r="2"/><circle cx="58" cy="48" r="2"/>
+      <path d="M14 82 Q22 76 30 82 Q38 88 46 82 Q54 76 62 82 Q70 88 78 82"/>
+    </svg>`,
+    'Gondola': `<svg viewBox="0 0 96 96" ${G}>
+      <path d="M6 18 H90"/>
+      <path d="M48 18 V32"/>
+      <path d="M34 32 H62 L58 64 H38 Z"/>
+      <path d="M36 46 H60"/>
+    </svg>`,
+  };
+
   const stage = document.getElementById('v-stage');
   const stripName  = document.getElementById('v-strip-name');
   const stripCount = document.getElementById('v-strip-count');
@@ -30,7 +94,7 @@
 
     const ph = document.createElement('div');
     ph.className = 'vc-placeholder';
-    ph.textContent = d.tag === 'Maritime' ? '⛴' : d.tag === 'Gondola' ? '🚠' : d.tag === 'Underground' ? '🚇' : d.tag === 'Street Level' ? '🚊' : d.tag === 'Aerial' ? '🚡' : d.tag === 'Commuter Rail' ? '🚆' : d.tag === 'On Demand' ? '🚕' : '🚌';
+    ph.innerHTML = VEHICLE_GLYPHS[d.tag] || VEHICLE_GLYPHS['City Bus'];
     el.appendChild(ph);
 
     const ov = document.createElement('div'); ov.className = 'vc-overlay'; el.appendChild(ov);
