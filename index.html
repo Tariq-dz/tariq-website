@@ -59,6 +59,8 @@
 
   <!-- Fixed backdrop -->
   <div id="sec-stories-backdrop">
+    <!-- Per-destination color wash — crossfades on destination switch -->
+    <div id="sec-stories-tint"></div>
     <svg id="sec-stories-rings" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
       <ellipse cx="720" cy="920" rx="160"  ry="100" fill="none" stroke="rgba(200,160,80,.10)" stroke-width="1"/>
       <ellipse cx="720" cy="920" rx="300"  ry="188" fill="none" stroke="rgba(200,160,80,.09)" stroke-width="1"/>
@@ -93,8 +95,11 @@
     <div class="hint-line"></div>
   </div>
 
-  <!-- Progress bar -->
-  <div id="sec-stories-prog-wrap"><div id="sec-stories-prog-fill"></div></div>
+  <!-- Beat progress — 5 segments, one per story moment -->
+  <div id="sec-stories-prog-wrap">
+    <div id="sec-stories-beat-label"></div>
+    <div id="sec-stories-prog-segs"></div>
+  </div>
 
   <!-- 3-D scroll scene -->
   <div id="sec-stories-wrapper">

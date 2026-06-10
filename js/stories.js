@@ -676,6 +676,11 @@ const dockWrap = document.getElementById('sec-stories-dock-wrap');
 const dockRow  = document.getElementById('sec-stories-dock-row');
 dockRow.style.cssText = `position:relative;width:${ROW_W}px;height:${ICON}px;overflow:hidden;`;
 
+/* Hover tooltip — names the destination under a non-center pill */
+const dockTip = document.createElement('div');
+dockTip.id = 'sec-stories-dock-tip';
+dockWrap.appendChild(dockTip);
+
 const pillEls = [];
 DESTINATIONS.forEach(dest => {
   const pill = document.createElement('div');
@@ -699,8 +704,12 @@ DESTINATIONS.forEach(dest => {
   pill.addEventListener('mouseenter', () => {
     if (dest.id === centerId) return;
     gsap.to(pill, { scale:1.06, duration:0.35, ease:'elastic.out(1, 0.5)', overwrite:'auto' });
+    dockTip.textContent = dest.label;
+    dockTip.style.left  = `${slotX(slots[dest.id]) + CONFIG.ICON / 2}px`;
+    dockTip.classList.add('show');
   });
   pill.addEventListener('mouseleave', () => {
+    dockTip.classList.remove('show');
     if (dest.id === centerId) return;
     gsap.to(pill, { scale:1,    duration:0.4,  ease:'power3.out',          overwrite:'auto' });
   });
@@ -816,12 +825,27 @@ const DOM = {
   silhouette : document.getElementById('sec-stories-silhouette'),
   scrollHint : document.getElementById('sec-stories-scroll-hint'),
   progWrap   : document.getElementById('sec-stories-prog-wrap'),
-  progFill   : document.getElementById('sec-stories-prog-fill'),
+  progSegs   : document.getElementById('sec-stories-prog-segs'),
+  beatLabel  : document.getElementById('sec-stories-beat-label'),
+  tint       : document.getElementById('sec-stories-tint'),
   backdrop   : document.getElementById('sec-stories-backdrop'),
   spA        : document.getElementById('sp-a'),
   spB        : document.getElementById('sp-b'),
   intro      : document.getElementById('stories-intro'),
 };
+
+/* Build the 5 beat segments once; per-frame code scales their fills */
+const segFills = [];
+for (let i = 0; i < 5; i++) {
+  const seg  = document.createElement('div');
+  seg.className = 'beat-seg';
+  const fill = document.createElement('div');
+  fill.className = 'beat-seg-fill';
+  seg.appendChild(fill);
+  DOM.progSegs.appendChild(seg);
+  segFills.push(fill);
+}
+let activeBeat = -1;
 
 /* ── quickSetters — bypass full GSAP tween on per-frame mutations ── */
 const QS = {
@@ -878,40 +902,42 @@ function buildCards(destId) {
 
   const dest = DESTINATIONS[destId];
   dest.cards.forEach((card, i) => {
+    /* A "moment" = real app screen in a phone card + editorial caption
+       BESIDE it (text never sits on the artwork). Cards whose data pos
+       anchors right get the caption on their left so it stays on-screen. */
     const el = document.createElement('div');
-    el.className = 'zcard';
+    el.className = 'zmoment' + (/right\s*:/.test(card.pos) ? ' flip' : '');
 
-    // Position
     const zDepths = [-500, -2000, -4000, -6500, -9000];
-    el.style.cssText = `${card.pos};width:${card.w};height:${card.h};transform:translateZ(${zDepths[i]}px);`;
+    el.style.cssText = `${card.pos};transform:translateZ(${zDepths[i]}px);`;
+    el.style.setProperty('--dest-glow', hexToRgba(dest.color, 0.22));
+    el.style.setProperty('--dest-accent', dest.color);
 
-    // Face
-    const face = document.createElement('div');
-    face.className = 'zcard-face';
-    face.style.background = card.grad;
-    face.innerHTML = card.svg;
+    const phone = document.createElement('div');
+    phone.className = 'zphone';
+    phone.style.width = PHONE_W[i];
 
-    // Labels
-    const beat  = document.createElement('div'); beat.className  = 'zcard-beat';  beat.textContent  = card.beat;
-    const num   = document.createElement('div'); num.className   = 'zcard-num';   num.textContent   = card.num;
-    const dname = document.createElement('div'); dname.className = 'zcard-dest';  dname.textContent = dest.label.toUpperCase();
-    const title = document.createElement('div'); title.className = 'zcard-title'; title.textContent = card.title;
-    const body  = document.createElement('div'); body.className  = 'zcard-body';  body.textContent  = card.body;
-    const stripe = document.createElement('div'); stripe.className = 'zcard-stripe'; stripe.style.background = card.accent;
+    const img = document.createElement('img');
+    img.src = screenUrl(destId, i);
+    img.alt = `Tariq app — ${card.beat}`;
+    img.loading = 'lazy';
+    img.draggable = false;
+    phone.appendChild(img);
 
-    /* Bottom text stacks in a flex column so multi-line titles can never
-       overlap the body copy (they collided as absolute siblings) */
-    const label = document.createElement('div');
-    label.className = 'zcard-label';
-    label.appendChild(dname);
-    label.appendChild(title);
-    label.appendChild(body);
+    const num = document.createElement('div');
+    num.className = 'zphone-num';
+    num.textContent = card.num;
+    phone.appendChild(num);
 
-    face.appendChild(beat);
-    face.appendChild(num);
-    face.appendChild(label);
-    face.appendChild(stripe);
-    el.appendChild(face);
+    const cap = document.createElement('div');
+    cap.className = 'zcaption';
+    cap.innerHTML = `
+      <div class="zcap-eyebrow"><span class="zcap-rule"></span>${dest.label} · ${card.beat.split('/')[0].trim()}</div>
+      <div class="zcap-title">${card.title}</div>
+      <div class="zcap-body">${card.body}</div>`;
+
+    el.appendChild(phone);
+    el.appendChild(cap);
     camera.appendChild(el);
     cardEls.push(el);
     el._hasAnimated = false; // guard for one-shot scale pulse
@@ -923,6 +949,34 @@ function buildCards(destId) {
 /* Dark warm tints per destination — replaces original sand bg values */
 const DEST_PANEL_BG = ['#201408','#28180a','#041828','#082010','#0a0a28'];
 
+/* ── Real app screens shown in the floating phone cards ──
+   One screen per story beat, matched to the narrative:
+   context → planning → journey → pivot → arrival */
+const APP_DIR = 'assets/app/';
+const SCREENS = [
+  /* University */ ['01_home','09_search','02_map','06_notifications','03_trips'],
+  /* Office     */ ['01_home','04_wallet','09_search','08_topup','03_trips'],
+  /* Clinic     */ ['09_search','02_map','06_notifications','05_profile','03_trips'],
+  /* Old Town   */ ['01_onboarding','09_search','02_map','04_wallet','03_trips'],
+  /* School     */ ['01_home','04_wallet','09_search','02_map','03_trips'],
+];
+const screenUrl = (destId, i) => `${APP_DIR}${SCREENS[destId][i]}.jpg`;
+
+/* Phone card widths per beat — slight variety reinforces depth */
+const PHONE_W = [
+  'clamp(190px,17vw,250px)',
+  'clamp(175px,15vw,225px)',
+  'clamp(195px,18vw,260px)',
+  'clamp(180px,16vw,235px)',
+  'clamp(190px,17vw,250px)',
+];
+
+/** '#c94444' + 0.2 → 'rgba(201,68,68,0.2)' */
+function hexToRgba(hex, a) {
+  const n = parseInt(hex.slice(1), 16);
+  return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
+}
+
 function buildPanels(destId) {
   const dest   = DESTINATIONS[destId];
   const panelBg = DEST_PANEL_BG[destId] || '#0a0806';
@@ -930,8 +984,12 @@ function buildPanels(destId) {
      it must blend with hero black above and vehicles black below.
      Destination tint applies to the panel cards only. */
 
-  const applyPanel = (prefix, pan) => {
-    document.getElementById(`${prefix}art`).style.background  = pan.artBg;
+  const applyPanel = (prefix, pan, screenIdx) => {
+    /* Real app screen behind a destination-tinted vignette */
+    const art = document.getElementById(`${prefix}art`);
+    art.style.background = `
+      linear-gradient(180deg, ${hexToRgba(dest.color, 0.18)}, rgba(0,0,0,0.45)),
+      url('${screenUrl(destId, screenIdx)}') center top / cover no-repeat`;
     document.getElementById(`${prefix}icon`).innerHTML        = '';
     document.getElementById(`${prefix}tag`).textContent       = pan.tag;
     const hEl = document.getElementById(`${prefix}h`);
@@ -941,8 +999,8 @@ function buildPanels(destId) {
     document.getElementById(`${prefix.replace('-','')}-card`).style.background = panelBg;
   };
 
-  applyPanel('spa-', dest.panels[0]);
-  applyPanel('spb-', dest.panels[1]);
+  applyPanel('spa-', dest.panels[0], 3); /* pivot   → beat-4 screen */
+  applyPanel('spb-', dest.panels[1], 4); /* arrival → beat-5 screen */
 
   gsap.set('#sp-a', { opacity:0, pointerEvents:'none' });
   gsap.set('#sp-b', { opacity:0, pointerEvents:'none' });
@@ -964,6 +1022,7 @@ function initScrollScene(destId, resetScroll) {
   if (resetScroll) scrollToStoriesTop();
   targetCamZ = 0; currentCamZ = 0; prevTime = 0;
   p1shown = false; p2shown = false;
+  activeBeat = -1; /* forces the beat label to repopulate for the new destination */
 
   gsap.set('#sec-stories-camera', { z:0 });
   QS.silOpacity(1);
@@ -972,8 +1031,14 @@ function initScrollScene(destId, resetScroll) {
   buildCards(destId);
   buildPanels(destId);
 
-  /* Progress bar — always gold; brand chrome never takes destination color */
-  DOM.progFill.style.background = '#c8a060';
+  /* ── Color sweep: the destination's hue washes over the night backdrop,
+        blooming from the horizon when a new destination takes the stage ── */
+  const c = DESTINATIONS[destId].color;
+  DOM.tint.style.background = `
+    radial-gradient(ellipse 95% 75% at 50% 30%, ${hexToRgba(c, 0.20)}, ${hexToRgba(c, 0.06)} 48%, transparent 74%)`;
+  gsap.fromTo(DOM.tint,
+    { opacity: 0, scale: 1.25, transformOrigin: '50% 100%' },
+    { opacity: 1, scale: 1, duration: 1.6, ease: 'expo.out', overwrite: 'auto' });
 
   /* Ring atmosphere — slow breathing pulse (Pillar 3) */
   gsap.utils.toArray('#sec-stories-rings ellipse').forEach((el, i) => {
@@ -1038,9 +1103,20 @@ function initScrollScene(destId, resetScroll) {
       /* ─ Scroll hint opacity ─ */
       QS.hintOpacity(pr < 0.03 ? 1 : clamp01(1 - (pr - 0.03) / 0.04));
 
-      /* ─ Progress bar width (compositor-safe, no layout) ─ */
+      /* ─ Beat progress: 5 segments fill one per story moment ─ */
       QS.progWrapOp(pr > 0.03 ? 1 : 0);
-      DOM.progFill.style.width = (clamp01(pr / Z_END) * 100) + '%';
+      const beatF = clamp01(pr / Z_END) * 5;
+      for (let i = 0; i < 5; i++) {
+        segFills[i].style.transform = `scaleX(${clamp01(beatF - i)})`;
+      }
+      /* Beat label follows whichever card the camera is closest to */
+      const beatIdx = Math.min(4, Math.floor(beatF));
+      if (beatIdx !== activeBeat) {
+        activeBeat = beatIdx;
+        const card = DESTINATIONS[centerId].cards[beatIdx];
+        DOM.beatLabel.textContent = `${card.num} — ${card.beat.split('/')[0].trim()}`;
+        gsap.fromTo(DOM.beatLabel, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' });
+      }
 
       /* ─ Stories intro: fade out as scroll begins ─ */
       if (DOM.intro) DOM.intro.style.opacity = String(clamp01(1 - pr / 0.05));
