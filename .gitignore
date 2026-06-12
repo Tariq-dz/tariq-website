@@ -1,0 +1,10 @@
+# Ignore Markdown Documentation
+*.md
+docs/
+preview/
+ui_kits/
+
+# Ignore Sensitive / Temporary Files
+ssh_key_to_add.txt
+uploads/
+.DS_Store
