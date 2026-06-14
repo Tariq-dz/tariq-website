@@ -97,6 +97,18 @@
     ph.innerHTML = VEHICLE_GLYPHS[d.tag] || VEHICLE_GLYPHS['City Bus'];
     el.appendChild(ph);
 
+    if (d.key) {
+      const imgWrap = document.createElement('div');
+      imgWrap.className = 'vc-img';
+      const img = document.createElement('img');
+      img.src = `assets/vehicles/${d.key}.webp`;
+      img.alt = d.name;
+      img.loading = 'lazy';
+      img.addEventListener('load', () => { ph.style.display = 'none'; });
+      imgWrap.appendChild(img);
+      el.appendChild(imgWrap);
+    }
+
     const ov = document.createElement('div'); ov.className = 'vc-overlay'; el.appendChild(ov);
     const ini = document.createElement('div'); ini.className = 'vc-initial'; ini.textContent = d.name[0]; el.appendChild(ini);
     const tl = document.createElement('div'); tl.className = 'vc-topline'; el.appendChild(tl);

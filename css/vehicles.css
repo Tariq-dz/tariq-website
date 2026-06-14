@@ -115,6 +115,16 @@
   width: clamp(72px, 11vw, 120px);
   height: auto;
 }
+.vc-img {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1; overflow: hidden;
+}
+.vc-img img {
+  width: 92%; height: 84%;
+  object-fit: contain; object-position: center 42%;
+  pointer-events: none;
+}
 
 #v-center-text {
   position: absolute;
