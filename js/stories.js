@@ -1069,7 +1069,10 @@ function buildPanels(destId) {
     /* The panel reprises its beat's line-art scene — no more empty card */
     art.innerHTML        = card ? card.svg : '';
     document.getElementById(`${prefix}icon`).innerHTML        = '';
-    document.getElementById(`${prefix}tag`).textContent       = pan.tag;
+    /* Same eyebrow grammar as the z-beat captions: rule + DEST · BEAT */
+    const tagEl = document.getElementById(`${prefix}tag`);
+    tagEl.innerHTML = `<span class="s-panel-rule"></span>${dest.label} · ${pan.tag}`;
+    tagEl.style.setProperty('--dest-accent', dest.color);
     const hEl = document.getElementById(`${prefix}h`);
     hEl.innerHTML   = pan.h;
     hEl.dataset.src = pan.h;

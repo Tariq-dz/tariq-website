@@ -351,10 +351,19 @@ body.stories-active #sec-stories-dock-wrap { opacity: 1; pointer-events: auto; }
   display: none;
 }
 #s-stories .s-panel-text { flex: 1; max-width: 400px; }
+/* Panel tag speaks the same eyebrow language as the z-beat captions:
+   rule + "DEST · BEAT" in the destination accent. */
 #s-stories .s-panel-tag {
-  font-size: var(--fs-label); font-weight: 500; letter-spacing: var(--ls-label);
-  text-transform: uppercase; color: rgba(var(--gold-rgb), .7);
-  display: block; margin-bottom: 18px;
+  display: flex; align-items: center; gap: 12px;
+  font-size: var(--fs-micro); font-weight: 600;
+  letter-spacing: var(--ls-eyebrow); text-transform: uppercase;
+  color: var(--dest-accent, rgba(var(--gold-rgb), .7));
+  margin-bottom: 18px;
+}
+#s-stories .s-panel-rule {
+  width: 30px; height: 1px;
+  background: var(--dest-accent, var(--gold));
+  opacity: .65;
 }
 #s-stories .s-panel-h {
   font-family: var(--font-display);
@@ -447,6 +456,7 @@ body.stories-exiting #sec-stories-prog-wrap {
     height: min(46vh, 340px);
   }
   #s-stories .s-panel-text { flex: 0 0 auto; max-width: 420px; }
+  #s-stories .s-panel-tag { justify-content: center; }
 }
 @media (max-width: 720px) {
   body.stories-active #tariq-mark { opacity: 0 !important; }

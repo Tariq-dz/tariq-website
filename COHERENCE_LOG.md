@@ -34,3 +34,24 @@ an `.on-light` ink swap (rgba 26,18,6,.8) via a thin-strip IntersectionObserver 
 #s-cities, transitioning at .45s. Verified: boundary max adjacent-row delta dropped from
 145 to background-noise levels on both viewports; mark swaps to ink over sand and back to
 gold above; zero console errors.
+
+## Iteration 3 — 2026-07-06
+**Grades** — type/eyebrow: B+ · spacing rhythm: B+ · gold usage: A · card language: A- ·
+seams/transitions: A- (post-loop-2 repairs hold) · motion timing: B+ · composition: B+ ·
+mobile parity: A-
+
+**Top offenses found:**
+1. MEDIUM — Stories eyebrow grammar breaks mid-story: z-beat captions say
+   "—— DEST · BEAT" in the destination accent (fs-micro, ls-eyebrow), while panels
+   A/B said a bare gold "BEAT" at a different type scale (fs-label). Two eyebrow
+   languages inside one continuous narrative.
+2. MEDIUM — Waitlist exit: ~170px of silent black between "We'll email you once…"
+   and the app→cities seam — the longest dead stretch on the page, felt like a stall
+   before the sand reveal.
+3. LOW (carried) — Mobile vehicles mid-scrub composition still dim; needs a live pass.
+
+**Fixes applied:** `.s-panel-tag` now speaks the z-caption grammar — rule +
+"DEST · BEAT" in the destination accent (stories.js composes it, stories.css matches
+the zcap-eyebrow spec; centered on mobile). Waitlist bottom padding trimmed to
+clamp(56px, 9vh, 100px) — the 18vh seam supplies the exhale. Verified on both
+viewports; zero console errors.
