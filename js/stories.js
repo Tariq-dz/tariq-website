@@ -92,7 +92,7 @@ const { CAM_MAX_Z, Z_END, APPROACH_PX, EXIT_PX, P1_IN, P1_OUT, P2_IN, P2_OUT } =
 const DESTINATIONS = [
   {
     /* 0 — UNIVERSITY */
-    id:0, emoji:'🎓', label:'University', color:'#c9921a', bg:'#e8d4d4',
+    id:0, emoji:'🎓', label:'University', color:'#c94444', bg:'#e8d4d4',
     cards:[
       { beat:'The Context / The Rush', num:'01',
         title:'8:47 AM. Gates close at 9:05.',
@@ -313,7 +313,7 @@ const DESTINATIONS = [
 
   {
     /* 2 — CLINIC */
-    id:2, emoji:'🏥', label:'Clinic', color:'#e8c96a', bg:'#d6dcea',
+    id:2, emoji:'🏥', label:'Clinic', color:'#4A82D8', bg:'#d6dcea',
     cards:[
       { beat:'The Context / The Rush', num:'01',
         title:'Stairs are hard. Stops matter.',
@@ -423,7 +423,7 @@ const DESTINATIONS = [
 
   {
     /* 3 — OLD TOWN */
-    id:3, emoji:'🗺️', label:'Old Town', color:'#c8a060', bg:'#d4ead8',
+    id:3, emoji:'🗺️', label:'Old Town', color:'#3BAA60', bg:'#d4ead8',
     cards:[
       { beat:'The Context / The Rush', num:'01',
         title:'No language. No data.',
@@ -539,7 +539,7 @@ const DESTINATIONS = [
 
   {
     /* 4 — SCHOOL */
-    id:4, emoji:'🏫', label:'School', color:'#b08048', bg:'#dcdce6',
+    id:4, emoji:'🏫', label:'School', color:'#8B5CF6', bg:'#dcdce6',
     cards:[
       { beat:'The Context / The Rush', num:'01',
         title:'Two kids. A stroller. 8 AM.',
@@ -1048,7 +1048,7 @@ function buildCards(destId) {
 }
 
 /* Dark warm tints per destination — replaces original sand bg values */
-const DEST_PANEL_BG = ['#201408','#28180a','#241a08','#1c1206','#180f04'];
+const DEST_PANEL_BG = ['#201408','#28180a','#041828','#082010','#0a0a28'];
 
 /** '#c94444' + 0.2 → 'rgba(201,68,68,0.2)' */
 function hexToRgba(hex, a) {

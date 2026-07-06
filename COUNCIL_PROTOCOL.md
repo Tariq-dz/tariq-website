@@ -38,6 +38,17 @@ The implementing agent MUST NOT:
 - Flatten or minimalize richness and call it professional — restraint without
   ambition is failure.
 - Leave the console with errors, or break mobile (390px) parity.
+- **De-color the site (FOUNDER DIRECTIVE, 2026-07-06, overrides any council
+  ruling):** the multi-color accent system is brand-intentional. Each story,
+  transit mode, and city carries its own color because Tariq is about the
+  diversity of people, emotions, and cities it serves; the colors are part of
+  the premium feel. Night + gold is the frame, NOT the only voice. Do not
+  collapse accents into gold monochrome, do not desaturate/grade away hue
+  variety. Continuity must be won through structure, light temperature, type,
+  and motion — never by removing color. Critics must not file "too many
+  colors" / "not gold enough" findings; a finding that reduces color
+  diversity is an invalid finding. (Council 1's gold-binding was reverted
+  under this directive.)
 
 ## One council cycle (= one /goal turn)
 

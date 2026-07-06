@@ -65,3 +65,24 @@ transit HUD one-off, numbering collision, double waitlist, mid-scroll scrub stat
 and the post-fix state has not yet faced a fresh council.
 
 VERDICT: ITERATE
+
+---
+
+## Cycle 1 — FOUNDER OVERRIDE (2026-07-06)
+
+The founder reviewed the council-1 build and rejected the color ruling: the
+multi-color accent system (per-story, per-mode, per-city hues) is intentional
+brand language — it expresses the diversity of people, emotions, and cities
+Tariq serves, and it read as premium. Collapsing everything into black+gold
+was a WRONG council decision.
+
+Reverted: stories destination accents (red/amber/blue/green/purple restored),
+stories gold grade filters removed, vehicle card hues restored, city card /
+NFC mini-card / badge colors restored.
+Kept (not objected to): Cities on the night backdrop instead of the cream
+inversion, night-holding seams, app screen night grade, transit pin cut +
+co-presence + gold rail.
+
+Protocol amended: new MUST NOT in the freedom charter — no future council may
+de-color the site; color-reduction findings are invalid. Critic charters will
+carry this directive from cycle 2 on.
