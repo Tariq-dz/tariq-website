@@ -116,3 +116,22 @@ the card with max opacity when any is >.35, else panel A ⇒ beat 4, panel B ⇒
 focal card at every step, including both panel reprises. Zero console errors.
 
 Stop rule: MEDIUM found — clean streak resets to 0.
+
+## Iteration 7 — 2026-07-06 — CLEAN PASS (1 of 2)
+**Grades** — type/eyebrow: A · spacing rhythm: A- · gold usage: A · card language: A ·
+seams/transitions: A- · motion timing: B+ · composition: A- · mobile parity: A-
+
+**Findings: no high- or medium-severity offense.** Loop-6 chrome fix verified in the
+wild on both viewports: desktop beat 4 now reads "04 — THE PIVOT" against the matching
+caption; mobile beats 01/02/04 and panel A all agree with their chrome. Fresh frames
+never inspected before (mobile panel A, mobile SNTF focal, desktop ETUSA focal, desktop
+app chapter 5) are all composed: bright focal card + low-alpha depth neighbors, chrome
+synced, eyebrow grammar consistent.
+
+**LOW (accepted):** the 5-segment story bar fills on continuous scroll progress while
+the label follows the focal moment, so mid-beat they can disagree — the bar signals
+scroll depth, the label signals the chapter; leaving the continuous fill.
+**LOW (accepted):** app chapter text sits dim for a moment while its phone is already
+lit during the crossfade — motion state, reads fine live.
+
+Stop rule: clean iteration 1 of 2 consecutive required.
