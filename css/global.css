@@ -7,8 +7,8 @@
 
 html { scroll-behavior: auto; }
 body {
-  font-family: 'Outfit', sans-serif;
-  background: #050403;
+  font-family: var(--font-sans);
+  background: var(--night);
   cursor: none;
   overflow-x: hidden;
 }
@@ -21,12 +21,12 @@ body {
   position: fixed; z-index: 99999;
   width: 7px; height: 7px;
   border-radius: 50%;
-  background: #c8a060;
-  box-shadow: 0 0 10px 4px rgba(200,160,50,0.7);
+  background: var(--gold);
+  box-shadow: 0 0 10px 4px rgba(var(--gold-rgb),0.7);
   transform: translate(-50%,-50%);
   pointer-events: none;
   top: 0; left: 0;
-  transition: width .22s, height .22s, background .3s, box-shadow .3s;
+  transition: width var(--dur-fast), height var(--dur-fast), background var(--dur-med), box-shadow var(--dur-med);
   display: none;
 }
 body.cursor-light #cursor {
@@ -34,7 +34,7 @@ body.cursor-light #cursor {
   box-shadow: 0 0 10px 4px rgba(255,210,50,0.9);
 }
 body.cursor-dark #cursor {
-  background: #7a5020;
+  background: var(--bronze);
   box-shadow: 0 0 8px 3px rgba(122,80,32,0.5);
 }
 body.cursor-expanded #cursor { width: 44px; height: 44px; opacity: .4; }

@@ -7,13 +7,13 @@
 #tariq-mark {
   position: fixed; top: 20px; left: 24px;
   z-index: 1000;
-  font-family: 'Cormorant Garamond', serif;
+  font-family: var(--font-display);
   font-style: italic; font-size: 18px; font-weight: 300;
   letter-spacing: 0.06em;
-  color: rgba(200, 160, 80, .82);
+  color: rgba(var(--gold-rgb), .82);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 1s ease;
+  transition: opacity var(--dur-xslow) ease;
   text-decoration: none;
   cursor: none;
 }
@@ -29,9 +29,9 @@
   height: 1px; width: 0%;
   background: linear-gradient(
     90deg,
-    rgba(200, 160, 80, .9) 0%,
-    rgba(245, 225, 153, .65) 60%,
-    rgba(200, 160, 80, .4) 100%
+    rgba(var(--gold-rgb), .9) 0%,
+    rgba(var(--gold-bright-rgb), .65) 60%,
+    rgba(var(--gold-rgb), .4) 100%
   );
   pointer-events: none;
   will-change: width;

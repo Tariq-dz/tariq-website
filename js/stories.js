@@ -691,7 +691,7 @@ DESTINATIONS.forEach(dest => {
   ico.innerHTML = DEST_ICONS[dest.id] || '';
 
   const lbl = document.createElement('div');
-  lbl.style.cssText = `padding-left:4px;padding-right:20px;color:#fff;font-size:15px;font-weight:400;white-space:nowrap;font-family:'DM Sans',sans-serif;user-select:none;pointer-events:none;opacity:0;transition:opacity 0.15s ease;`;
+  lbl.style.cssText = `padding-left:4px;padding-right:20px;color:#fff;font-size:15px;font-weight:400;white-space:nowrap;font-family:var(--font-sans);user-select:none;pointer-events:none;opacity:0;transition:opacity 0.15s ease;`;
   lbl.textContent = dest.label;
 
   pill.appendChild(ico);
@@ -727,18 +727,18 @@ function applyPillStyles(withTrans) {
     if (isC) {
       /* Gold glass — brand chrome stays gold; destination color lives
          only inside the story cards, never on UI controls */
-      pill.style.background    = 'linear-gradient(135deg, rgba(200,160,80,0.30), rgba(200,160,80,0.14))';
+      pill.style.background    = 'linear-gradient(135deg, rgba(var(--gold-rgb),0.30), rgba(var(--gold-rgb),0.14))';
       pill.style.backdropFilter = 'blur(14px) saturate(1.2)';
       pill.style.WebkitBackdropFilter = 'blur(14px) saturate(1.2)';
-      pill.style.border        = '1px solid rgba(200,160,80,0.55)';
+      pill.style.border        = '1px solid rgba(var(--gold-rgb),0.55)';
       /* Dual glow: ambient gold halo + contact shadow */
-      pill.style.boxShadow     = '0 4px 24px rgba(200,160,80,0.30), 0 1px 4px rgba(0,0,0,0.30), inset 0 1px 0 rgba(245,225,153,0.25)';
+      pill.style.boxShadow     = '0 4px 24px rgba(var(--gold-rgb),0.30), 0 1px 4px rgba(0,0,0,0.30), inset 0 1px 0 rgba(var(--gold-bright-rgb),0.25)';
     } else {
-      pill.style.background    = 'rgba(200,160,80,0.10)';
+      pill.style.background    = 'rgba(var(--gold-rgb),0.10)';
       pill.style.backdropFilter = 'blur(12px) saturate(1.2)';
       pill.style.WebkitBackdropFilter = 'blur(12px) saturate(1.2)';
-      pill.style.border        = '1px solid rgba(200,160,80,0.32)';
-      pill.style.boxShadow     = '0 2px 12px rgba(0,0,0,0.18), inset 0 1px 0 rgba(200,160,80,0.12)';
+      pill.style.border        = '1px solid rgba(var(--gold-rgb),0.32)';
+      pill.style.boxShadow     = '0 2px 12px rgba(0,0,0,0.18), inset 0 1px 0 rgba(var(--gold-rgb),0.12)';
     }
     lbl.style.opacity    = isC ? '1' : '0';
     if (isC && withTrans) {

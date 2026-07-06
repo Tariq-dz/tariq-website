@@ -5,7 +5,7 @@
   position: relative;
   width: 100%; height: 100vh;
   overflow: hidden;
-  background: #050403;
+  background: var(--night);
   touch-action: none;
   z-index: 5;
 }
@@ -23,17 +23,17 @@
 }
 #v-word-top {
   position: absolute; top: clamp(54px,8vw,76px); right: clamp(12px,2vw,24px);
-  font-family: 'Cormorant Garamond', serif;
+  font-family: var(--font-display);
   font-size: clamp(40px,9vw,144px); font-weight: 300; font-style: italic;
   letter-spacing: -.02em; line-height: 1;
-  color: rgba(240,232,216,.035); pointer-events: none; z-index: 2;
+  color: rgba(var(--sand-rgb),.035); pointer-events: none; z-index: 2;
 }
 #v-word-bottom {
   position: absolute; bottom: clamp(20px,4vw,36px); left: clamp(12px,3vw,24px);
-  font-family: 'Cormorant Garamond', serif;
+  font-family: var(--font-display);
   font-size: clamp(40px,9vw,144px); font-weight: 700;
   letter-spacing: -.03em; line-height: 1;
-  color: rgba(240,232,216,.035); pointer-events: none; z-index: 2;
+  color: rgba(var(--sand-rgb),.035); pointer-events: none; z-index: 2;
 }
 #v-stage {
   position: absolute; inset: 0;
@@ -43,19 +43,19 @@
 
 .vcard {
   position: absolute; top: 0; left: 0;
-  border-radius: 16px; overflow: hidden;
+  border-radius: var(--r-card); overflow: hidden;
   pointer-events: none;
   transform-origin: center center;
   will-change: transform, opacity;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  background: #0c0a08;
+  background: var(--ink-card);
   border: 1px solid rgba(255,255,255,.06);
-  box-shadow: 0 8px 40px rgba(0,0,0,.5);
+  box-shadow: var(--shadow-card);
 }
 .vcard.focused {
-  border-color: rgba(200,160,80,.35);
-  box-shadow: 0 28px 90px rgba(0,0,0,.8), 0 0 0 1px rgba(200,160,80,.12), 0 0 40px rgba(200,160,80,.08);
+  border-color: rgba(var(--gold-rgb),.35);
+  box-shadow: 0 28px 90px rgba(0,0,0,.8), 0 0 0 1px rgba(var(--gold-rgb),.12), 0 0 40px rgba(var(--gold-rgb),.08);
 }
 .vc-overlay {
   position: absolute; inset: 0;
@@ -64,15 +64,15 @@
 }
 .vc-initial {
   position: absolute; bottom: 4px; right: 12px;
-  font-family: 'Cormorant Garamond', serif;
+  font-family: var(--font-display);
   font-size: clamp(64px,10vw,120px); font-style: italic; font-weight: 600;
   color: rgba(255,255,255,.10); line-height: 1; z-index: 3;
   pointer-events: none;
 }
 .vc-topline {
   position: absolute; top: 0; left: 15%; right: 15%; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(200,160,80,.6), transparent);
-  z-index: 4; opacity: 0; transition: opacity .4s ease;
+  background: linear-gradient(90deg, transparent, rgba(var(--gold-rgb),.6), transparent);
+  z-index: 4; opacity: 0; transition: opacity var(--dur-med) ease;
 }
 .vcard.focused .vc-topline { opacity: 1; }
 .vc-body {
@@ -82,29 +82,29 @@
 .vc-badge-wrap {
   padding-bottom: clamp(6px,1vw,8px);
   opacity: 0; transform: translateY(5px);
-  transition: opacity .35s ease .05s, transform .35s ease .05s;
+  transition: opacity var(--dur-med) ease .05s, transform var(--dur-med) ease .05s;
 }
 .vcard.focused .vc-badge-wrap { opacity: 1; transform: translateY(0); }
 .vc-badge {
-  font-family: 'Outfit', sans-serif;
-  font-size: clamp(7px,.75vw,8px); font-weight: 500;
-  letter-spacing: .14em; text-transform: uppercase;
-  color: #c8a060;
-  background: rgba(200,160,80,.1); border: 1px solid rgba(200,160,80,.22);
+  font-family: var(--font-sans);
+  font-size: var(--fs-micro); font-weight: 500;
+  letter-spacing: var(--ls-label); text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(var(--gold-rgb),.1); border: 1px solid rgba(var(--gold-rgb),.22);
   border-radius: 999px; padding: 3px 10px; display: inline-block;
 }
-.vc-rule { width: 100%; height: 1px; background: linear-gradient(90deg, rgba(200,160,80,.35), transparent); margin-bottom: clamp(6px,1vw,10px); }
+.vc-rule { width: 100%; height: 1px; background: linear-gradient(90deg, rgba(var(--gold-rgb),.35), transparent); margin-bottom: clamp(6px,1vw,10px); }
 .vc-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(20px,2.8vw,36px); font-weight: 600;
-  color: rgba(255,255,255,.9); letter-spacing: -.01em; line-height: 1;
+  font-family: var(--font-display);
+  font-size: var(--fs-h4); font-weight: 600;
+  color: var(--text-1); letter-spacing: -.01em; line-height: 1;
 }
-.vc-name em { font-style: italic; font-weight: 400; color: rgba(200,160,80,.88); }
+.vc-name em { font-style: italic; font-weight: 400; color: rgba(var(--gold-rgb),.88); }
 .vc-tag {
-  font-family: 'Outfit', sans-serif;
-  font-size: clamp(7px,.8vw,9px); font-weight: 300;
-  letter-spacing: .18em; text-transform: uppercase;
-  color: rgba(255,255,255,.28); margin-top: 4px;
+  font-family: var(--font-sans);
+  font-size: var(--fs-micro); font-weight: 300;
+  letter-spacing: var(--ls-label); text-transform: uppercase;
+  color: var(--text-4); margin-top: 4px;
 }
 .vc-placeholder {
   position: absolute; inset: 0;
@@ -136,22 +136,22 @@
   white-space: nowrap;
 }
 #v-ct-eye {
-  font-family: 'Outfit', sans-serif; font-size: 10px; font-weight: 600;
-  letter-spacing: 0.28em; text-transform: uppercase; color: #8a6840;
+  font-family: var(--font-sans); font-size: var(--fs-micro); font-weight: 600;
+  letter-spacing: var(--ls-eyebrow); text-transform: uppercase; color: var(--gold-dim);
   margin-bottom: 16px;
   display: flex; align-items: center; gap: 14px;
 }
-#v-ct-eye::before, #v-ct-eye::after { content: ''; width: 28px; height: 1px; background: #8a6840; opacity: 0.6; }
+#v-ct-eye::before, #v-ct-eye::after { content: ''; width: 28px; height: 1px; background: var(--gold-dim); opacity: 0.6; }
 #v-ct-head {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(36px,5.5vw,68px); font-weight: 600;
-  color: rgba(255,255,255,.88); line-height: 1.12;
+  font-family: var(--font-display);
+  font-size: var(--fs-h2); font-weight: 600;
+  color: var(--text-1); line-height: 1.12;
   letter-spacing: -0.02em; margin-bottom: 12px;
 }
-#v-ct-head em { font-style: italic; font-weight: 400; color: rgba(200,160,80,.9); }
+#v-ct-head em { font-style: italic; font-weight: 400; color: rgba(var(--gold-rgb),.9); }
 #v-ct-sub {
-  font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 300;
-  color: rgba(255,255,255,.3); letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.75;
+  font-family: var(--font-sans); font-size: var(--fs-sub); font-weight: 300;
+  color: var(--text-3); letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.75;
 }
 
 #v-strip {
@@ -162,13 +162,13 @@
   padding: 0 28px 14px;
 }
 #v-strip-name {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: var(--font-display);
   font-size: clamp(15px,2vw,24px); font-weight: 400; font-style: italic;
-  color: rgba(240,232,216,.50); line-height: 1;
+  color: rgba(var(--sand-rgb),.50); line-height: 1;
 }
-#v-strip-count { font-size: 10px; font-weight: 300; color: rgba(240,232,216,.38); letter-spacing: .12em; }
+#v-strip-count { font-size: var(--fs-micro); font-weight: 300; color: rgba(var(--sand-rgb),.38); letter-spacing: var(--ls-label); }
 #v-prog { position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: rgba(255,255,255,.06); z-index: 60; }
-#v-prog-fill { height: 100%; background: linear-gradient(90deg, rgba(200,160,80,.3), rgba(200,160,80,.7)); width: 0%; }
+#v-prog-fill { height: 100%; background: linear-gradient(90deg, rgba(var(--gold-rgb),.3), rgba(var(--gold-rgb),.7)); width: 0%; }
 
 @media (max-width: 768px) { #v-center-text { white-space: normal; text-align: center; left: 20px; right: 20px; transform: none; } }
 @media (max-width: 480px) { #v-ct-head { font-size: clamp(28px, 9vw, 44px); } }
