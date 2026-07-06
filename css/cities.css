@@ -35,7 +35,7 @@
   letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.75;
 }
 
-.marquee-wrapper { position: relative; width: 100%; overflow: hidden; touch-action: none; }
+.marquee-wrapper { position: relative; width: 100%; overflow: hidden; touch-action: pan-y; }
 .marquee-track {
   display: flex; gap: 20px; width: max-content;
   padding: 12px 64px; will-change: transform;
@@ -81,6 +81,7 @@
 .city-card:hover .city-label .city-desc { max-height: 80px; margin-top: 10px; opacity: 1; }
 .city-hover-btn {
   position: absolute; bottom: 18px; left: 18px; z-index: 3;
+  text-decoration: none;
   background: rgba(232,210,150,0.92); color: var(--sand-deep);
   font-size: var(--fs-label); font-weight: 600; letter-spacing: var(--ls-body);
   padding: 8px 18px; border-radius: var(--r-pill);
@@ -91,7 +92,8 @@
   display: flex; align-items: center; gap: 5px;
 }
 .city-hover-btn::after { content: '↗'; }
-.city-card:hover .city-hover-btn { opacity: 1; transform: translateY(0); }
+.city-card:hover .city-hover-btn,
+.city-hover-btn:focus-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
 
 /* Transit Card (NFC-style mini card on hover) */
 .tc-wrap {
@@ -135,4 +137,32 @@
 @media (max-width: 768px) {
   .cities-header { padding: 0 24px; }
   .marquee-track { padding: 12px 24px; }
+}
+
+/* ─── City art — designed non-photo treatment ───
+   City-color ring arcs rising from the card floor + ghost initial:
+   the cities' own version of the typographic vehicle cards. */
+.city-art { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.city-art::before, .city-art::after {
+  content: '';
+  position: absolute; left: 50%; top: 115%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  aspect-ratio: 1;
+}
+.city-art::before {
+  width: 72%;
+  border: 1px solid color-mix(in srgb, var(--ca) 42%, transparent);
+  box-shadow: 0 0 44px color-mix(in srgb, var(--ca) 22%, transparent);
+}
+.city-art::after {
+  width: 118%;
+  border: 1px solid color-mix(in srgb, var(--ca) 20%, transparent);
+}
+.city-art-initial {
+  position: absolute; top: -12px; right: 6px;
+  font-family: var(--font-display);
+  font-style: italic; font-weight: 600;
+  font-size: 110px; line-height: 1;
+  color: rgba(255, 255, 255, .05);
 }

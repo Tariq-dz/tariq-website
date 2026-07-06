@@ -36,13 +36,22 @@
       mTargetSpeed = mSpeed > 0 ? 1.2 : -1.2;
     });
 
-    let txLast = 0, txVel = 0, txTime = 0;
+    let txLast = 0, txVel = 0, txTime = 0, tx0 = 0, ty0 = 0, hDrag = false;
     wrapper.addEventListener('touchstart', e => {
-      txLast = e.touches[0].clientX; txVel = 0; txTime = Date.now(); mTargetSpeed = 0;
+      txLast = tx0 = e.touches[0].clientX; ty0 = e.touches[0].clientY;
+      txVel = 0; txTime = Date.now(); mTargetSpeed = 0; hDrag = false;
     }, { passive: true });
     wrapper.addEventListener('touchmove', e => {
+      const t = e.touches[0];
+      /* Decide intent once: horizontal drags drive the marquee,
+         vertical swipes keep scrolling the page (no scroll trap) */
+      if (!hDrag) {
+        if (Math.abs(t.clientY - ty0) > Math.abs(t.clientX - tx0)) return;
+        if (Math.abs(t.clientX - tx0) < 8) return;
+        hDrag = true;
+      }
       e.preventDefault();
-      const x = e.touches[0].clientX, now = Date.now(), dt = Math.max(now - txTime, 1);
+      const x = t.clientX, now = Date.now(), dt = Math.max(now - txTime, 1);
       txVel = (x - txLast) / dt * 16; txLast = x; txTime = now; mTargetSpeed = txVel;
     }, { passive: false });
     wrapper.addEventListener('touchend', () => {
