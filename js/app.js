@@ -1,6 +1,6 @@
 /* Section 4 — THE APP: sticky chapter stage + waitlist form */
 (function initApp() {
-  const CHAPTER_LABELS = ['Home', 'Plan', 'Ride', 'Pay', 'Top up'];
+  const CHAPTER_LABELS = ['Home', 'Plan', 'Ride', 'Pay'];
 
   /* ── Waitlist form (works regardless of GSAP/motion) ── */
   const form = document.getElementById('waitlist-form');
@@ -56,7 +56,7 @@
     return fill;
   });
 
-  const n = chapters.length;                   /* 5 */
+  const n = chapters.length;                   /* 4 */
   const INTRO_END = 0.12;                      /* intro owns the first 12% */
   const span = (1 - INTRO_END) / n;            /* scroll share per chapter */
   const FADE = 0.22;                           /* fraction of a span spent fading */

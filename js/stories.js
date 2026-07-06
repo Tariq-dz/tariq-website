@@ -44,7 +44,7 @@ const DEV_MODE = false; // set true to enable debug logging
 const CONFIG = {
   /* Camera */
   CAM_MAX_Z   : 11000,   // px — must clear deepest card (-9000)
-  Z_END       : 0.94,    // scroll % where Z-travel ends (panels retired)
+  Z_END       : 0.97,    // scroll % where Z-travel ends (void collapsed, C3)
   LERP_FACTOR : 0.04,    // base for frame-rate-independent lerp: 1-pow(factor,delta)
 
   /* Card opacity windows — APPROACH wide enough that adjacent card

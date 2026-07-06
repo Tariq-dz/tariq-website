@@ -153,3 +153,73 @@ cards, wireframe story art), watermark motif decision, dock chrome, Ride
 mobile vignette — and a fresh council on the post-fix state.
 
 VERDICT: ITERATE
+
+---
+
+## Cycle 3 — 2026-07-06
+
+### Council reports (sweep: screenshots/council-3; first convening aborted by API session limit, re-convened successfully)
+
+**Critic A — Brand Director (opus):**
+- [HIGH] The app is sold on empty-state screens ("No trips yet", "0 DA", no departures) — flagship proof reads as an unfinished demo.
+- [HIGH] Stories section mostly void — sparse small cards in an enormous dark canvas; restraint tipped into under-built.
+- [MED] Only Algiers looks real; other city cards are flat gradient placeholders (color variety is right — depth/texture is missing).
+- [MED] Flanking app phones dimmed into murky smudges.
+
+**Critic B — Continuity Director (sonnet):**
+- [HIGH] App screens ignite to raw daylight white at scroll focus — five times in a row — despite the at-rest night grade.
+- [MED] App step counter uses "NN · LABEL" while the whole page uses "NN — LABEL".
+- [MED] App section drops the page's orbit-ring/connector motif — reads as a separate module.
+
+**Critic C — Cold Eyes (opus):**
+- [HIGH] ~2 viewports of dead void between the last story and transit intro — exactly where a cold visitor leaves.
+- [HIGH] Pinned "Pick a story" selector reads as leftover/broken app UI; desktop story body copy nearly invisible.
+- [MED] App undersells the product (dim props + empty lead screen).
+- [MED] Three consecutive big gold closers (cities → waitlist → footer) after the hero already said the same line.
+- [MED] Mobile transit cards overlap into a cluttered pile.
+
+### Ruling — chosen moves
+1. **APP ALIVE** (A-HIGH + B-HIGH + C-MED + A-MED + B-MED×2): permanent night-tint layer over screen content independent of focus opacity; swap empty-state screenshots for populated ones; raise ghost-phone presence; make the ring motif visible in the app backdrop; unify step labels to "NN — LABEL".
+2. **STORIES STAGE** (A-HIGH + C-HIGH): collapse the post-travel void (shorter wrapper + later Z_END), larger scene presence, editorial framing + affordance for the story picker, desktop caption contrast to mobile's level.
+3. **QUIET OUTRO + MOBILE RAIL** (C-MED×2): footer demoted to a typographic whisper (waitlist is the one loud close); mobile transit spacing/falloff tuned so modes read cleanly.
+
+Deferred: city-card depth treatment (A-MED; needs dedicated art direction cycle).
+
+### Built
+1. **APP ALIVE** — chapters remapped to the strongest real screens: Plan now shows
+   the populated Algiers map (search bar + mode chips), Ride shows live trip
+   alerts, Pay keeps the dark-mode wallet; the fifth chapter (a duplicate of the
+   wallet screen) is cut — which also removes the "05 · TOP UP"/"05 — CITIES"
+   numbering collision. Ghost props are now the dark branded splash + profile
+   screens, lifted from smudge to deliberate staging (opacity .34→.52,
+   brightness .6→.78). Screen content carries a permanent night tint +
+   stronger vignette independent of focus opacity (no more daylight flash).
+   Backdrop ring motif raised to visible. Step labels unified to "NN — LABEL".
+   App pin: 420vh → 340vh.
+2. **STORIES STAGE** — wrapper 440vh → 360vh with Z_END .94 → .97: the
+   post-travel void is gone. Scene cards scaled 1.22 → 1.32; desktop caption
+   body raised to .74 white (mobile-level legibility); the picker hint became
+   an editorial serif line ("Five riders — tap one, follow their day").
+3. **QUIET OUTRO + MOBILE RAIL** — footer demoted to a whisper (~28px muted
+   head, 38vh, dimmed gold em) so the waitlist is the single loud close;
+   narrow viewports get their own rail tuning (steeper falloff + wider
+   spacing) so modes pass cleanly instead of piling.
+   Page: 13331px → 11693px (desktop).
+
+### Verify
+- Full re-sweep: screenshots/council-3-post (16 frames per viewport).
+- Console errors: 0 desktop, 0 mobile (scripted full-page scroll).
+- Checked: app chapter trio reads as staged cluster (dark splash/profile
+  props, graded focus screen, visible rings); mobile transit shows clean
+  card separation; stories captions legible; ~1 transient inter-beat frame
+  remains as travel grammar (was 2 static void screens).
+
+### Grades (chair, post-build)
+composition A- · continuity B+ · value B+ · mobile A-
+
+### Verdict
+All five HIGHs addressed. Remaining known MEDIUM: city-card depth treatment
+(needs an art-direction pass). SHIP requires a fresh council returning
+NO MACRO OFFENSE on this state.
+
+VERDICT: ITERATE

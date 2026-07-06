@@ -88,9 +88,10 @@ body.stories-active #sec-stories-dock-wrap { opacity: 1; pointer-events: auto; }
 #sec-stories-dock-hint {
   position: absolute;
   top: calc(100% + 10px); left: 0; right: 0;
-  display: flex; align-items: center; justify-content: center; gap: 5px;
-  font-size: var(--fs-sub); color: rgba(var(--gold-rgb), .55); font-weight: 300;
-  font-family: var(--font-sans);
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  font-size: clamp(14px, 1.3vw, 17px);
+  color: rgba(var(--gold-rgb), .8); font-weight: 400;
+  font-family: var(--font-display); font-style: italic;
   user-select: none; pointer-events: none; white-space: nowrap;
   animation: sec-stories-hintFade var(--dur-slow) ease 1.2s both;
 }
@@ -145,8 +146,8 @@ body.stories-active #sec-stories-dock-wrap { opacity: 1; pointer-events: auto; }
 /* ─── 3-D SCROLL SCENE ───────────────────────────
    CRITICAL: No overflow:hidden on wrapper / sticky / scene / camera —
    silently flattens preserve-3d in Firefox & Safari. */
-/* 440vh — five beats, one appearance each; panel reprises retired (council 2) */
-#sec-stories-wrapper { position: relative; height: 440vh; z-index: 1; }
+/* 360vh — five beats, one appearance each; post-travel void collapsed (C3) */
+#sec-stories-wrapper { position: relative; height: 360vh; z-index: 1; }
 #sec-stories-sticky  { position: sticky; top: 0; height: 100vh; }
 #sec-stories-scene   {
   position: absolute; inset: 0;
@@ -194,7 +195,7 @@ body.stories-active #sec-stories-dock-wrap { opacity: 1; pointer-events: auto; }
   border-radius: var(--r-card);
   overflow: hidden;
   z-index: 1;
-  scale: 1.22; /* extra stage presence without retuning every data size */
+  scale: 1.32; /* extra stage presence without retuning every data size */
   border: 1px solid rgba(255, 255, 255, .07);
   box-shadow: var(--shadow-card-lg),
     0 0 64px var(--dest-glow, rgba(var(--gold-rgb), .16));
@@ -264,7 +265,7 @@ body.stories-active #sec-stories-dock-wrap { opacity: 1; pointer-events: auto; }
 #s-stories .zcap-body {
   font-family: var(--font-sans);
   font-size: var(--fs-body); font-weight: 300; line-height: 1.75;
-  color: var(--text-2);
+  color: rgba(255, 255, 255, .74);
   max-width: 340px;
 }
 #s-stories .zmoment.flip .zcap-body { margin-left: auto; }

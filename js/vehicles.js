@@ -155,10 +155,16 @@
 
   function getDiag() { return ((vmx - 0.5) * 2 - (vmy - 0.5) * 2) / 2; }
   function getTilt() { return (vmx - 0.5) + (vmy - 0.5); }
-  function scaleFn(d) { return Math.exp(-d * d * 0.42); }
+  /* Narrow viewports: fewer co-present cards, spaced wider, so the rail
+     reads as a clean sequence instead of an overlapping pile (C3). */
+  const NARROW_RAIL = window.innerWidth <= 720;
+  const SCALE_K   = NARROW_RAIL ? 0.85 : 0.42;
+  const ALPHA_K   = NARROW_RAIL ? 0.55 : 0.34;
+  const SX_FACTOR = NARROW_RAIL ? 0.52 : 0.30;
+  function scaleFn(d) { return Math.exp(-d * d * SCALE_K); }
   /* Gentler falloff so the handoff moment (|d|=.5 on both cards) keeps a
      focal card at ~.63 alpha instead of a dead .45/.45 void. */
-  function alphaFn(d) { return Math.max(0, 1 - Math.abs(d) * 0.34); }
+  function alphaFn(d) { return Math.max(0, 1 - Math.abs(d) * ALPHA_K); }
   function lerp(a,b,t) { return a + (b-a)*t; }
   function vclamp(v) { return Math.min(1, Math.max(0, v)); }
 
@@ -251,7 +257,7 @@
     const scyTarget = progress > 0.06 ? scyActive : scyIdle;
     scySmooth = scySmooth ? lerp(scySmooth, scyTarget, 0.08) : scyTarget;
     const scy = scySmooth;
-    const sx = window.innerWidth * 0.30 * (0.4 + 0.6 * vScale);
+    const sx = window.innerWidth * SX_FACTOR * (0.4 + 0.6 * vScale);
     const sy = window.innerHeight * 0.16;
     const MAX_TILT = 42;
     const rotX =  tiltSmooth * MAX_TILT;

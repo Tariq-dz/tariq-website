@@ -11,7 +11,7 @@
 }
 
 /* ─── Sticky stage ─────────────────────────────── */
-#app-wrapper { position: relative; height: 420vh; }
+#app-wrapper { position: relative; height: 340vh; }
 #app-sticky  { position: sticky; top: 0; height: 100vh; overflow: hidden; }
 
 /* Backdrop: ring motif echoing stories + gold floor glow */
@@ -64,7 +64,7 @@
   object-fit: cover; display: block;
   /* Night grade: the captured light-mode UI reads as a warm glowing
      screen inside the dark scene, not a daylight panel punched into it */
-  filter: brightness(.72) contrast(1.04) sepia(.34) saturate(1.05);
+  filter: brightness(.62) contrast(1.05) sepia(.38) saturate(1.05);
 }
 /* punch-hole camera */
 .phone-screen::before {
@@ -84,8 +84,9 @@
   background:
     linear-gradient(118deg,
       rgba(255, 255, 255, .07) 0%, rgba(255, 255, 255, .02) 18%, transparent 32%),
+    linear-gradient(rgba(26, 18, 8, .16), rgba(26, 18, 8, .16)),
     radial-gradient(ellipse 120% 100% at 50% 45%,
-      transparent 55%, rgba(10, 7, 3, .30) 100%);
+      transparent 50%, rgba(10, 7, 3, .38) 100%);
   pointer-events: none;
   z-index: 1;
 }
@@ -95,8 +96,8 @@
   position: absolute;
   top: 50%;
   width: clamp(150px, 15vw, 220px);
-  opacity: .34;
-  filter: saturate(.7) brightness(.6);
+  opacity: .52;
+  filter: saturate(.85) brightness(.78);
   will-change: transform;
   pointer-events: none;
 }
