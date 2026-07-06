@@ -43,14 +43,14 @@ const DEV_MODE = false; // set true to enable debug logging
 
 const CONFIG = {
   /* Camera */
-  CAM_MAX_Z   : 11000,   // px — must clear deepest card (-9000)
+  CAM_MAX_Z   : 9000,    // px — travel ENDS ON the last beat and holds it (C4: no empty tail)
   Z_END       : 0.97,    // scroll % where Z-travel ends (void collapsed, C3)
   LERP_FACTOR : 0.04,    // base for frame-rate-independent lerp: 1-pow(factor,delta)
 
   /* Card opacity windows — APPROACH wide enough that adjacent card
      windows overlap; eliminates empty-viewport dead zones mid-travel */
-  APPROACH_PX : 3200,    // px before card where it starts fading in
-  EXIT_PX     : 900,     // px after camera passes card before it's invisible
+  APPROACH_PX : 4200,    // px before card where it starts fading in
+  EXIT_PX     : 1200,    // px after camera passes card before it's invisible
 
   /* Section panels — RETIRED (council 2): they reprised beats 4–5's art
      and message, reading as the same Pivot shown three times. Windows
@@ -73,7 +73,7 @@ const CONFIG = {
    – narrower card opacity windows so adjacent beats' captions
      never pile up in the same small frame */
 if (window.innerWidth <= 900) {
-  CONFIG.APPROACH_PX = 2000; CONFIG.EXIT_PX = 700;
+  CONFIG.APPROACH_PX = 3400; CONFIG.EXIT_PX = 1000;
 }
 if (window.innerWidth <= 720) {
   CONFIG.ICON = 44; CONFIG.GAP = 8; CONFIG.LABEL_W = 118;
@@ -1159,11 +1159,13 @@ function initScrollScene(destId, resetScroll) {
          cardOpSetters[i] = gsap.quickSetter — 2-4× faster
          than el.style.opacity = value per frame.           */
       const zDepths = [500, 2000, 4000, 6500, 9000];
-      const easeIn  = gsap.parseEase('power1.inOut');
+      const easeIn  = gsap.parseEase('sine.out'); /* early presence: a beat is always on stage */
       /* Cards hold back until the intro has left the stage (unless a dock
          click suppressed the intro) — fixes intro/caption text collision */
+      /* Floor at .35: the first beat glows behind the intro from the very
+         first pixel — the section is never an empty void (C4) */
       const introGate = DOM.intro.classList.contains('suppressed')
-        ? 1 : clamp01((pr - 0.035) / 0.035);
+        ? 1 : 0.35 + 0.65 * clamp01((pr - 0.035) / 0.035);
       let focalIdx = -1, focalOp = 0;
       cardEls.forEach((el, i) => {
         const dist = zDepths[i] - targetCamZ;
@@ -1182,7 +1184,7 @@ function initScrollScene(destId, resetScroll) {
            first appearance to passing the lens ─ */
         const j = clamp01((APPROACH_PX - dist) / (APPROACH_PX + EXIT_PX));
         gsap.set(el, {
-          x:  (j - 0.5) * 240 * el._dirX,
+          x:  (j - 0.5) * 180 * el._dirX,
           y:  (j - 0.5) *  90 * el._dirY,
           rotationY: (0.5 - j) * 9 * el._dirX,
           rotationX: (j - 0.5) * 4 * el._dirY,

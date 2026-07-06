@@ -223,3 +223,62 @@ All five HIGHs addressed. Remaining known MEDIUM: city-card depth treatment
 NO MACRO OFFENSE on this state.
 
 VERDICT: ITERATE
+
+---
+
+## Cycle 4 — 2026-07-07
+
+### Council reports (sweep: screenshots/council-4)
+
+**Critic A — Brand Director (opus):** hero/transit/app/cities/footer now read premium; the break is Stories.
+- [HIGH] Stories is the emptiest, most template-like moment — idle state is headline + chips + ghost silhouette in a void; delivers nothing until a visitor guesses to tap.
+- [MED] Story beats render dim/low-contrast with overlapping cross-fade panels.
+- [MED] Flanking prop phones read as static reused filler, not staging.
+
+**Critic B — Continuity Director (sonnet):** reel otherwise holds as one scene — single stitch:
+- [HIGH] Light-source phone captures (home, map, notifications) still read daylight-bright against the night frame while splash/wallet sit correctly; grade must be source-aware.
+
+**Critic C — Cold Eyes (opus):**
+- [HIGH] Stories has blank dead-scroll zones early on the critical path (frame lands on empty black + picker chrome) — highest bounce risk on the page.
+- [MED] "One tap. Every line. Every city." family repeats ~4×; mid-page repeats read as padding.
+- [MED] Desktop app opener lands flat — flanking phones dimmed to black rectangles.
+
+### Ruling — chosen moves
+1. **STORIES ALWAYS-ON** (A-HIGH + C-HIGH + A-MED): widen beat visibility windows and advance the presence curve so every scroll position holds a visible story beat, including under the intro.
+2. **SCREEN REGISTER** (B-HIGH + C-MED + A-MED): source-aware night grade — heavier tint on light captures (home/map/notifications); flanking phones brighter but softly blurred = deliberate depth-of-field staging, not filler.
+3. **SECTION-TRUE SUBLINES** (C-MED): keep the hero↔footer slogan bookend; replace the Modes and Cities repeats with section-specific factual lines.
+
+### Built
+1. **STORIES ALWAYS-ON** — beat visibility rebuilt so no scroll position is ever
+   empty: APPROACH 3200→4200px (mobile 2000→3400), EXIT 900→1200px (mobile
+   700→1000), presence curve power1.inOut→sine.out (early presence), intro gate
+   floored at .35 so beat 1 glows behind the intro from the first pixel, camera
+   travel now ENDS ON the final beat and holds it (CAM_MAX 11000→9000 — the
+   empty post-arrival tail is gone), glide drift 240→180px to soften caption
+   collisions.
+2. **SCREEN REGISTER** — source-aware night grade: light-mode captures
+   (home/map/notifications) get a heavier tint (brightness .48/sepia .44) so
+   every screen sits at splash/wallet's low-light level; flanking prop phones
+   raised (opacity .62, brightness .88) and softly blurred (2.5px) — deliberate
+   depth of field, not reused filler.
+3. **SECTION-TRUE SUBLINES** — mid-page slogan repeats replaced: Modes now says
+   "Nine modes. One network. One app.", Cities says "Algiers live today — more
+   cities on the way"; the hero↔footer bookend stands alone.
+
+### Verify
+- Full re-sweep: screenshots/council-4-post (16 frames per viewport).
+- Console errors: 0 desktop, 0 mobile (scripted full-page scroll, re-run after
+  the camera change).
+- Checked: former void frames now hold beats (intro shows beat 1; the tail
+  holds "The Arrival"); app home screen graded to cream (no daylight flash);
+  ghost phones read as staged DoF props.
+
+### Grades (chair, post-build)
+composition A- · continuity A- · value A- · mobile A-
+
+### Verdict
+All cycle-4 HIGHs and MEDIUMs addressed; every known macro offense from four
+councils is now fixed. SHIP requires a fresh council returning NO MACRO
+OFFENSE in the same cycle — convening cycle 5 on this state.
+
+VERDICT: ITERATE

@@ -66,6 +66,11 @@
      screen inside the dark scene, not a daylight panel punched into it */
   filter: brightness(.62) contrast(1.05) sepia(.38) saturate(1.05);
 }
+/* Source-aware register: captures with light-mode UI get a heavier grade
+   so every screen sits at the same low-light level as splash/wallet */
+.phone-screen img.light-src {
+  filter: brightness(.48) contrast(1.08) sepia(.44) saturate(1.02);
+}
 /* punch-hole camera */
 .phone-screen::before {
   content: '';
@@ -96,8 +101,9 @@
   position: absolute;
   top: 50%;
   width: clamp(150px, 15vw, 220px);
-  opacity: .52;
-  filter: saturate(.85) brightness(.78);
+  opacity: .62;
+  /* Soft blur = deliberate depth of field: staged props, not filler */
+  filter: saturate(.85) brightness(.88) blur(2.5px);
   will-change: transform;
   pointer-events: none;
 }
