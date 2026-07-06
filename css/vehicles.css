@@ -42,6 +42,7 @@
 
 .vcard {
   position: absolute; top: 0; left: 0;
+  visibility: hidden; /* the render loop reveals positioned cards only */
   border-radius: var(--r-card); overflow: hidden;
   pointer-events: none;
   transform-origin: center center;

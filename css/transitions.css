@@ -46,7 +46,7 @@
 /* ── Seam 2: Stories → Vehicles ─────────────────
    Dark stories into vehicles black; gold hairline sweeps on enter. */
 .seam-stories-vehicles {
-  height: 20vh;
+  height: 14vh;
   background: linear-gradient(
     to bottom,
     var(--night-warm) 0%,

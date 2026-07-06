@@ -1,6 +1,7 @@
 # Ignore Markdown Documentation
 *.md
 !AUDIT.md
+!COHERENCE_LOG.md
 docs/
 preview/
 ui_kits/

@@ -55,7 +55,7 @@ const CONFIG = {
   /* Section panels — timed to pick up right as the last card exits
      (eased camera passes card 5 around pr≈0.59), not at 0.80 */
   P1_IN  : 0.56, P1_OUT : 0.76,
-  P2_IN  : 0.79, P2_OUT : 0.94,
+  P2_IN  : 0.79, P2_OUT : 0.96,
 
   /* Dock */
   ICON    : 68,

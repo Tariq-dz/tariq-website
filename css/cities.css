@@ -4,7 +4,6 @@
 #s-cities {
   width: 100%;
   background: linear-gradient(170deg, var(--sand-light) 0%, #c8b898 25%, #6a5840 55%, var(--sand-deep) 100%);
-  background-attachment: fixed;
   padding: 56px 0 48px;
   overflow: hidden;
   position: relative;
