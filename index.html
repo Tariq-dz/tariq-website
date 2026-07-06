@@ -4,6 +4,11 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Tariq — One tap. Every line. Every city.</title>
+<meta name="description" content="Tariq — one app for all nine modes of transit in Algiers: plan across metro, tram, bus and more, follow the route live, and pay fares in DZD from an in-app wallet. Free app; join the waitlist."/>
+<meta property="og:title" content="Tariq — One tap. Every line. Every city."/>
+<meta property="og:description" content="Plan, ride and pay across all nine transit modes in Algiers. The app is free — you pay only your fares. Join the waitlist."/>
+<meta property="og:type" content="website"/>
+<meta name="twitter:card" content="summary"/>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23050403'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23c8a060'/%3E%3C/svg%3E"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,6 +24,30 @@
 <link rel="stylesheet" href="css/app.css">
 <link rel="stylesheet" href="css/cities.css">
 <link rel="stylesheet" href="css/transitions.css">
+<noscript>
+<style>
+  /* No-JS: every section's content stays reachable in static flow */
+  #hero-canvas { display: none; }
+  #s-hero { background:
+    radial-gradient(ellipse 62% 26% at 50% 69%, rgba(200,130,20,.38), transparent 65%),
+    linear-gradient(to bottom, #000 0%, #050403 58%, #140901 70%, #000 100%); }
+  #sec-stories-wrapper { height: 100vh !important; }
+  #v-stage, #v-strip, #v-prog { display: none !important; }
+  #s-vehicles { height: auto !important; min-height: 0 !important; padding: 120px 24px; }
+  #v-center-text { position: relative !important; top: auto !important; left: auto !important;
+    transform: none !important; margin: 0 auto; }
+  .nojs-modes { display: block !important; }
+  #app-wrapper { height: auto !important; }
+  #app-sticky { position: relative !important; height: auto !important; overflow: visible !important; }
+  #app-intro { position: relative !important; inset: auto !important; padding: 90px 24px 30px; }
+  .app-chapter, .app-chapter.flip { position: relative !important; inset: auto !important;
+    opacity: 1 !important; flex-direction: column !important; gap: 28px; padding: 48px 24px; }
+  .app-chapter .phone { height: min(64vh, 480px) !important; }
+  .app-chapter-text, .app-chapter.flip .app-chapter-text { text-align: center !important; align-items: center !important; }
+  .app-ghost, #app-prog, #cursor { display: none !important; }
+  .footer-inner { opacity: 1 !important; transform: none !important; }
+</style>
+</noscript>
 </head>
 <body>
 
@@ -171,6 +200,7 @@
     <div id="v-strip-count"></div>
   </div>
   <div id="v-prog"><div id="v-prog-fill"></div></div>
+  <p class="nojs-modes">Metro (Lines 1–3) · Tramway · ETUSA Bus · Private Bus · Téléphérique · Télécabine · SNTF Train · Navette Maritime · Taxi</p>
 </section>
 
 <!-- Seam: vehicles → app (night holds, breath between machine and product) -->

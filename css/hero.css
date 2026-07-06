@@ -102,3 +102,14 @@
     animation: none; opacity: 1;
   }
 }
+
+/* ─── WebGL fallback: gradient sunrise, never a white void ─── */
+#s-hero.hero-fallback #hero-canvas { display: none; }
+#s-hero.hero-fallback::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 62% 26% at 50% 69%, rgba(200, 130, 20, .38), transparent 65%),
+    radial-gradient(ellipse 30% 10% at 50% 68%, rgba(255, 200, 90, .30), transparent 70%),
+    linear-gradient(to bottom, #000 0%, #050403 58%, #140901 70%, #000 100%);
+}

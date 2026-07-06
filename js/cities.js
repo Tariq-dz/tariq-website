@@ -13,7 +13,9 @@
     });
   }
 
-  let setWidth = 0, mOffset = 0, mSpeed = 0, mTargetSpeed = -1.2;
+  const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const IDLE_SPEED = REDUCED ? 0 : 1.2;
+  let setWidth = 0, mOffset = 0, mSpeed = 0, mTargetSpeed = -IDLE_SPEED;
   let citiesActive = false;
 
   requestAnimationFrame(() => requestAnimationFrame(() => {
@@ -33,7 +35,7 @@
       mTargetSpeed = -(Math.abs(norm) < 0.08 ? 0 : norm) * 4;
     });
     wrapper.addEventListener('mouseleave', () => {
-      mTargetSpeed = mSpeed > 0 ? 1.2 : -1.2;
+      mTargetSpeed = mSpeed > 0 ? IDLE_SPEED : -IDLE_SPEED;
     });
 
     let txLast = 0, txVel = 0, txTime = 0, tx0 = 0, ty0 = 0, hDrag = false;
@@ -56,7 +58,7 @@
     }, { passive: false });
     wrapper.addEventListener('touchend', () => {
       const m = Math.sign(txVel) * Math.min(Math.abs(txVel), 4);
-      mTargetSpeed = Math.abs(m) > 0.4 ? m : (mSpeed > 0 ? 1.2 : -1.2);
+      mTargetSpeed = Math.abs(m) > 0.4 ? m : (mSpeed > 0 ? IDLE_SPEED : -IDLE_SPEED);
     });
 
     function tick() {

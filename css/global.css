@@ -3,7 +3,6 @@
 ═══════════════════════════════════════════ */
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-*, * { user-select: none; -webkit-user-select: none; }
 
 html { scroll-behavior: auto; }
 body {
@@ -38,3 +37,21 @@ body.cursor-dark #cursor {
   box-shadow: 0 0 8px 3px rgba(122,80,32,0.5);
 }
 body.cursor-expanded #cursor { width: 44px; height: 44px; opacity: .4; }
+
+/* ─── Keyboard focus — one gold ring everywhere ─── */
+a:focus-visible, button:focus-visible,
+[role="button"]:focus-visible, input:focus-visible {
+  outline: 2px solid rgba(var(--gold-rgb), .85);
+  outline-offset: 3px;
+}
+input, textarea { cursor: text; }
+
+/* ─── Reduced motion: finish every animation instantly ─── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  html { scroll-behavior: auto !important; }
+}

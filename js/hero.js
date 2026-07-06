@@ -1,9 +1,22 @@
 /* Section 1 — HERO: WebGL shader + logo glow */
 (function initHero() {
   const canvas = document.getElementById('hero-canvas');
-  const gl = canvas.getContext('webgl', { antialias: true, alpha: false });
   const logo = document.getElementById('hero-logo');
+  const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let lcx, lcy, lw, lh;
+  let heroDead = false;
+
+  /* Static fallback: if WebGL is unavailable or the context is lost,
+     a CSS gradient sunrise takes over — never a white void */
+  function heroFallback() {
+    heroDead = true;
+    document.getElementById('s-hero').classList.add('hero-fallback');
+  }
+
+  let gl = null;
+  try { gl = canvas.getContext('webgl', { antialias: true, alpha: false }); } catch (e) {}
+  if (!gl) { heroFallback(); return; }
+  canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); heroFallback(); });
 
   function resizeHero() {
     canvas.width  = canvas.offsetWidth;
@@ -113,7 +126,9 @@ void main(){
   const prog = gl.createProgram();
   gl.attachShader(prog, mkShader(gl.VERTEX_SHADER, VS));
   gl.attachShader(prog, mkShader(gl.FRAGMENT_SHADER, FS));
-  gl.linkProgram(prog); gl.useProgram(prog);
+  gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { heroFallback(); return; }
+  gl.useProgram(prog);
 
   const buf = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, buf);
@@ -155,8 +170,9 @@ void main(){
   heroObs.observe(document.getElementById('s-hero'));
 
   (function render() {
-    requestAnimationFrame(render);
-    if (!heroActive) return;
+    if (heroDead) return;
+    if (!REDUCED) requestAnimationFrame(render);
+    if (!heroActive && !REDUCED) return;
     const t = (performance.now() - t0) / 1000;
     smx += (hmx - smx) * 0.05; smy += (hmy - smy) * 0.05;
     const ls = { x: canvas.offsetWidth * 0.5, y: canvas.offsetHeight * (1 - 0.318) };

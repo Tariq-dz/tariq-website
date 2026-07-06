@@ -187,3 +187,14 @@
 }
 .vc-typo-rings::before { width: 58%;  aspect-ratio: 1; }
 .vc-typo-rings::after  { width: 88%;  aspect-ratio: 1; border-color: rgba(var(--gold-rgb), .07); }
+
+/* ─── No-JS fallback list (shown via <noscript> styles) ─── */
+.nojs-modes {
+  display: none;
+  margin: 28px auto 0;
+  max-width: 640px;
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: var(--fs-body); font-weight: 300; line-height: 1.8;
+  color: var(--text-2);
+}

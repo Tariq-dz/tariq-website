@@ -28,9 +28,11 @@
   const narrow  = window.matchMedia('(max-width: 900px)').matches;
   if (reduced || narrow) return;              /* CSS static flow handles these */
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-    /* No GSAP: leave chapter 1 visible as a static hero shot */
+    /* No GSAP: chapter 1 becomes a static hero shot, no dead scroll */
     const first = document.querySelector('.app-chapter');
     if (first) first.style.opacity = 1;
+    const w = document.getElementById('app-wrapper');
+    if (w) w.style.height = '100vh';
     return;
   }
   gsap.registerPlugin(ScrollTrigger);

@@ -8,6 +8,15 @@
 ═══════════════════════════════════════════════════════════ */
 (function initStories() {
   const storiesSection = document.getElementById('s-stories');
+  const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Without GSAP the 3-D scene cannot run: keep the intro, drop the
+     empty scroll run so the page still reads as a whole. */
+  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+    const w = document.getElementById('sec-stories-wrapper');
+    if (w) w.style.height = '100vh';
+    return;
+  }
 
   /* Scroll to the top of the stories wrapper (not the top of the page) —
      used when the dock carousel resets the scene on a destination click. */
@@ -875,13 +884,14 @@ let activeBeat = -1;
 
 /* ── Mouse-driven camera sway — the whole 3D scene leans with the cursor ── */
 let swayXT = 0, swayYT = 0, swayX = 0, swayY = 0;
-window.addEventListener('mousemove', e => {
+if (!REDUCED) window.addEventListener('mousemove', e => {
   swayXT = (e.clientX / window.innerWidth  - 0.5) * 2;
   swayYT = (e.clientY / window.innerHeight - 0.5) * 2;
 }, { passive: true });
 
 /* ── Atmospheric dust — slow gold motes rising through the scene ── */
 (function buildDust() {
+  if (REDUCED) return;
   for (let i = 0; i < 24; i++) {
     const d = document.createElement('span');
     d.className = 'stories-dust';
@@ -1112,7 +1122,7 @@ function initScrollScene(destId, resetScroll) {
     { opacity: 1, scale: 1, duration: 1.6, ease: 'expo.out', overwrite: 'auto' });
 
   /* Ring atmosphere — slow breathing pulse (Pillar 3) */
-  gsap.utils.toArray('#sec-stories-rings ellipse').forEach((el, i) => {
+  if (!REDUCED) gsap.utils.toArray('#sec-stories-rings ellipse').forEach((el, i) => {
     gsap.to(el, {
       opacity: 0.07,
       duration: 6,
