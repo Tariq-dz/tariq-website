@@ -40,13 +40,13 @@ const CONFIG = {
 
   /* Card opacity windows — APPROACH wide enough that adjacent card
      windows overlap; eliminates empty-viewport dead zones mid-travel */
-  APPROACH_PX : 2600,    // px before card where it starts fading in
-  EXIT_PX     : 600,     // px after camera passes card before it's invisible
+  APPROACH_PX : 3200,    // px before card where it starts fading in
+  EXIT_PX     : 900,     // px after camera passes card before it's invisible
 
   /* Section panels — timed to pick up right as the last card exits
      (eased camera passes card 5 around pr≈0.59), not at 0.80 */
-  P1_IN  : 0.62, P1_OUT : 0.76,
-  P2_IN  : 0.79, P2_OUT : 0.92,
+  P1_IN  : 0.56, P1_OUT : 0.76,
+  P2_IN  : 0.79, P2_OUT : 0.94,
 
   /* Dock */
   ICON    : 68,
@@ -56,6 +56,18 @@ const CONFIG = {
   CTR     : 2,
   ANIM_MS : 460,
 };
+
+/* Small-screen tuning (evaluated once at boot):
+   – compact dock so all five pills truly fit a 390px viewport
+     (right edge = slotX(NUM-1) + ICON = 370px at these values)
+   – narrower card opacity windows so adjacent beats' captions
+     never pile up in the same small frame */
+if (window.innerWidth <= 900) {
+  CONFIG.APPROACH_PX = 2000; CONFIG.EXIT_PX = 700;
+}
+if (window.innerWidth <= 720) {
+  CONFIG.ICON = 44; CONFIG.GAP = 8; CONFIG.LABEL_W = 118;
+}
 
 /* Derived dock geometry — computed once from CONFIG */
 const STEP   = CONFIG.ICON + CONFIG.GAP;
@@ -684,7 +696,13 @@ dockWrap.appendChild(dockTip);
 const pillEls = [];
 DESTINATIONS.forEach(dest => {
   const pill = document.createElement('div');
+  pill.setAttribute('role', 'button');
+  pill.setAttribute('tabindex', '0');
+  pill.setAttribute('aria-label', `Story: ${dest.label}`);
   pill.style.cssText = `position:absolute;top:0;left:0;height:${ICON}px;border-radius:${ICON/2}px;display:flex;align-items:center;overflow:hidden;cursor:pointer;opacity:0;`;
+  pill.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleDockClick(dest.id); }
+  });
 
   const ico = document.createElement('div');
   ico.style.cssText = `width:${ICON}px;height:${ICON}px;flex-shrink:0;display:flex;align-items:center;justify-content:center;`;
@@ -828,6 +846,7 @@ function handleDockClick(itemId) {
 
 
 /* ── DOM ref cache — queried once, reused every frame ── */
+const wrapperEl = document.getElementById('sec-stories-wrapper');
 const DOM = {
   silhouette : document.getElementById('sec-stories-silhouette'),
   scrollHint : document.getElementById('sec-stories-scroll-hint'),
@@ -1034,19 +1053,25 @@ function buildPanels(destId) {
      it must blend with hero black above and vehicles black below.
      Destination tint applies to the panel cards only. */
 
-  const applyPanel = (prefix, pan) => {
-    document.getElementById(`${prefix}art`).style.background  = pan.artBg;
+  const applyPanel = (prefix, pan, card) => {
+    const art = document.getElementById(`${prefix}art`);
+    art.style.background = pan.artBg;
+    /* The panel reprises its beat's line-art scene — no more empty card */
+    art.innerHTML        = card ? card.svg : '';
     document.getElementById(`${prefix}icon`).innerHTML        = '';
     document.getElementById(`${prefix}tag`).textContent       = pan.tag;
     const hEl = document.getElementById(`${prefix}h`);
     hEl.innerHTML   = pan.h;
     hEl.dataset.src = pan.h;
     document.getElementById(`${prefix}p`).textContent         = pan.p;
-    document.getElementById(`${prefix.replace('-','')}-card`).style.background = panelBg;
+    const cardEl = document.getElementById(`${prefix.replace('-','')}-card`);
+    cardEl.style.background = panelBg;
+    cardEl.style.setProperty('--dest-glow', hexToRgba(dest.color, 0.22));
   };
 
-  applyPanel('spa-', dest.panels[0]);
-  applyPanel('spb-', dest.panels[1]);
+  /* Panels A/B narrate beats 4 and 5 — reuse those beats' artwork */
+  applyPanel('spa-', dest.panels[0], dest.cards[3]);
+  applyPanel('spb-', dest.panels[1], dest.cards[4]);
 
   gsap.set('#sp-a', { opacity:0, pointerEvents:'none' });
   gsap.set('#sp-b', { opacity:0, pointerEvents:'none' });
@@ -1120,7 +1145,7 @@ function initScrollScene(destId, resetScroll) {
          cardOpSetters[i] = gsap.quickSetter — 2-4× faster
          than el.style.opacity = value per frame.           */
       const zDepths = [500, 2000, 4000, 6500, 9000];
-      const easeIn  = gsap.parseEase('power2.inOut');
+      const easeIn  = gsap.parseEase('power1.inOut');
       /* Cards hold back until the intro has left the stage (unless a dock
          click suppressed the intro) — fixes intro/caption text collision */
       const introGate = DOM.intro.classList.contains('suppressed')
@@ -1175,8 +1200,10 @@ function initScrollScene(destId, resetScroll) {
       /* Subtle upward parallax: silhouette drifts -18px as camera travels */
       DOM.silhouette.style.setProperty('--sil-y', `${pr * -18}px`);
 
-      /* ─ Scroll hint opacity ─ */
-      QS.hintOpacity(pr < 0.03 ? 1 : clamp01(1 - (pr - 0.03) / 0.04));
+      /* ─ Scroll hint opacity — only once the sticky stage is engaged,
+         so the hint never floats over the intro during section entry ─ */
+      const engaged = wrapperEl.getBoundingClientRect().top <= 4;
+      QS.hintOpacity(engaged ? (pr < 0.03 ? 1 : clamp01(1 - (pr - 0.03) / 0.04)) : 0);
 
       /* ─ Beat progress: 5 segments fill one per story moment ─ */
       QS.progWrapOp(pr > 0.03 ? 1 : 0);

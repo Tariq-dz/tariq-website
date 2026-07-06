@@ -8,8 +8,8 @@
 
 @keyframes sec-stories-hintFade { from { opacity: 0 } to { opacity: 1 } }
 @keyframes sec-stories-hintPulse {
-  0%, 100% { opacity: .5; transform: translateX(-50%) translateY(0); }
-  50%      { opacity: 1;  transform: translateX(-50%) translateY(5px); }
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%      { transform: translateX(-50%) translateY(5px); }
 }
 
 /* Stories section anchors absolute children; fixed descendants remain
@@ -105,7 +105,6 @@ body.stories-active #sec-stories-dock-wrap { opacity: 1; pointer-events: auto; }
   transition: opacity var(--dur-slow) ease;
   opacity: 0;
 }
-body.stories-active #sec-stories-scroll-hint { opacity: 1; }
 #sec-stories-scroll-hint span {
   font-size: var(--fs-label); letter-spacing: var(--ls-label); text-transform: uppercase;
   color: rgba(var(--gold-rgb), .6);
@@ -146,8 +145,8 @@ body.stories-active #sec-stories-scroll-hint { opacity: 1; }
 /* ─── 3-D SCROLL SCENE ───────────────────────────
    CRITICAL: No overflow:hidden on wrapper / sticky / scene / camera —
    silently flattens preserve-3d in Firefox & Safari. */
-/* 1000vh (was 1200) — tighter pacing, the camera never dawdles */
-#sec-stories-wrapper { position: relative; height: 1000vh; z-index: 1; }
+/* 640vh — same five beats, no dead scroll between them (C2) */
+#sec-stories-wrapper { position: relative; height: 640vh; z-index: 1; }
 #sec-stories-sticky  { position: sticky; top: 0; height: 100vh; }
 #sec-stories-scene   {
   position: absolute; inset: 0;
@@ -272,7 +271,7 @@ body.stories-active #sec-stories-scroll-hint { opacity: 1; }
 
 @media (max-width: 900px) {
   #s-stories .zmoment,
-  #s-stories .zmoment.flip { flex-direction: column; align-items: flex-start; gap: 20px; }
+  #s-stories .zmoment.flip { flex-direction: column; align-items: flex-start; gap: 30px; }
   #s-stories .zmoment.flip .zcaption { text-align: left; }
   #s-stories .zmoment.flip .zcap-eyebrow { flex-direction: row; }
   #s-stories .zghost-num { display: none; }
@@ -329,7 +328,24 @@ body.stories-active #sec-stories-scroll-hint { opacity: 1; }
   height: clamp(300px, 48vh, 520px);
   border-radius: var(--r-card); overflow: hidden;
   position: relative;
-  box-shadow: var(--shadow-card-lg);
+  border: 1px solid rgba(255, 255, 255, .07);
+  box-shadow: var(--shadow-card-lg),
+    0 0 64px var(--dest-glow, rgba(var(--gold-rgb), .16));
+}
+#s-stories .s-panel-card::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 85% 70% at 50% 112%, rgba(0, 0, 0, .5), transparent);
+  pointer-events: none; z-index: 1;
+}
+#s-stories .s-panel-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  opacity: .05;
+  mix-blend-mode: overlay;
+  pointer-events: none; z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/feTurbulence%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
 }
 #s-stories .s-panel-icon {
   display: none;
@@ -407,4 +423,31 @@ body.stories-exiting #sec-stories-scroll-hint,
 body.stories-exiting #sec-stories-prog-wrap {
   opacity: 0;
   pointer-events: none;
+}
+
+/* ─── Dock keyboard access ─────────────────────── */
+#sec-stories-dock-row [role="button"]:focus-visible {
+  outline: 2px solid rgba(var(--gold-rgb), .85);
+  outline-offset: 3px;
+}
+
+/* ─── Small screens: dock fits, wordmark yields, panels stack ── */
+@media (max-width: 900px) {
+  #s-stories .zcaption { transform: translateZ(40px); }
+  #s-stories .s-panel,
+  #s-stories .s-panel.flip {
+    flex-direction: column;
+    justify-content: center;
+    gap: 26px;
+    padding: 0 24px;
+    text-align: center;
+  }
+  #s-stories .s-panel-card {
+    width: min(56vw, 250px);
+    height: min(46vh, 340px);
+  }
+  #s-stories .s-panel-text { flex: 0 0 auto; max-width: 420px; }
+}
+@media (max-width: 720px) {
+  body.stories-active #tariq-mark { opacity: 0 !important; }
 }
