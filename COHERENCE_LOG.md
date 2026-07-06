@@ -77,3 +77,20 @@ fade to/from transparent so the fixed backdrop shows through gradually. Verified
 max adjacent-row delta 10–16 (noise) vs former 30+ hue step; handoff reads as two cards
 in motion; the only remaining hard edge at seam 2 is the intentional gold hairline cue.
 Zero console errors.
+
+## Iteration 5 — 2026-07-06 — CLEAN PASS (1 of 2)
+**Grades** — type/eyebrow: A- · spacing rhythm: A- · gold usage: A · card language: A- ·
+seams/transitions: A- · motion timing: B+ · composition: A- · mobile parity: A-
+
+**Findings: no high- or medium-severity offense.** Verified in natural flow: loop-4
+seam fades hold at hero→stories and stories→vehicles; cities edge plates hold at both
+boundaries; wordmark ink-swap correct over sand; vehicles rail keeps a focal card
+through handoffs with depth neighbors; footer outro composed and balanced on both
+viewports. Radius/badge audit: buttons 2px everywhere, cards on --r-card/--r-card-sm,
+badges pill on both cities and vehicles.
+
+**LOW (fixed):** .vc-badge hardcoded 999px → var(--r-pill) (token hygiene, zero visual delta).
+**LOW (accepted):** app-rail chapter text dims mid-transition — a scrub state that reads
+fine in motion; not worth risking the timing model.
+
+Stop rule: this is clean iteration 1 of 2 consecutive required.
