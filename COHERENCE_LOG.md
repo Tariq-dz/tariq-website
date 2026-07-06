@@ -94,3 +94,25 @@ badges pill on both cities and vehicles.
 fine in motion; not worth risking the timing model.
 
 Stop rule: this is clean iteration 1 of 2 consecutive required.
+
+## Iteration 6 — 2026-07-06
+**Grades** — type/eyebrow: A- · spacing rhythm: A- · gold usage: A · card language: A ·
+seams/transitions: A- · motion timing: B+ · composition: A- · mobile parity: A-
+
+**Top offenses found:**
+1. MEDIUM — Stories chapter chrome contradicted the stage: the beat label used
+   floor(beatF) over a uniform 5-way split, but the z-flight is nonuniform — at
+   y3060 the caption read "CLINIC · THE PIVOT" while the chrome said
+   "03 — THE JOURNEY BEGINS". Measured across the pin: the label mismatched the
+   focal card for roughly half of every beat, and read "05 — The Arrival" while
+   panel A was narrating the Pivot.
+2. CLEARED — Mobile app chapters: the wallet phone under "03 · Ride" text is
+   chapter 4's phone in the stacked [phone, text] rhythm, anchored by its own
+   "04 · Pay" tag directly beneath. Correct as designed.
+
+**Fixes applied:** beat label now follows the moment that actually holds the stage —
+the card with max opacity when any is >.35, else panel A ⇒ beat 4, panel B ⇒ beat 5
+(same signal the captions use). Verified at 13 scroll positions: label matches the
+focal card at every step, including both panel reprises. Zero console errors.
+
+Stop rule: MEDIUM found — clean streak resets to 0.

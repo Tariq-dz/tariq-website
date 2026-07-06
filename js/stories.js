@@ -1163,6 +1163,7 @@ function initScrollScene(destId, resetScroll) {
          click suppressed the intro) — fixes intro/caption text collision */
       const introGate = DOM.intro.classList.contains('suppressed')
         ? 1 : clamp01((pr - 0.035) / 0.035);
+      let focalIdx = -1, focalOp = 0;
       cardEls.forEach((el, i) => {
         const dist = zDepths[i] - targetCamZ;
         let raw;
@@ -1172,6 +1173,7 @@ function initScrollScene(destId, resetScroll) {
         else                          raw = 0;
         const op = clamp01(raw) * introGate;
         if (cardOpSetters[i]) cardOpSetters[i](op);
+        if (op > focalOp) { focalOp = op; focalIdx = i; }
 
         /* ─ Trajectory: the moment GLIDES through the frame while the
            camera flies — sideways toward center, a vertical drift, and
@@ -1224,8 +1226,13 @@ function initScrollScene(destId, resetScroll) {
       for (let i = 0; i < 5; i++) {
         segFills[i].style.transform = `scaleX(${clamp01(beatF - i)})`;
       }
-      /* Beat label follows whichever card the camera is closest to */
-      const beatIdx = Math.min(4, Math.floor(beatF));
+      /* Beat label follows whichever moment actually holds the stage —
+         the z-flight is nonuniform, so beatF alone lags or leads the
+         visible caption. Panels A/B reprise beats 4 and 5 after it. */
+      let beatIdx = activeBeat < 0 ? 0 : activeBeat;
+      if (focalOp > 0.35)   beatIdx = focalIdx;
+      else if (pr >= P2_IN) beatIdx = 4;
+      else if (pr >= P1_IN) beatIdx = 3;
       if (beatIdx !== activeBeat) {
         activeBeat = beatIdx;
         const card = DESTINATIONS[centerId].cards[beatIdx];
