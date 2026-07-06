@@ -1,15 +1,15 @@
 /* Section 3 — VEHICLES: diagonal card rail with pointer tracking */
 (function initVehicles() {
   const VEHICLES_CARDS = [
-    { key:'metro',   tag:'Underground',      name:'Metro',   em:null,         badge:'Fastest',    w:476, h:357, bg:'linear-gradient(145deg,#090e1a 0%,#0d1528 45%,#060a14 100%)', accent:'rgba(80,120,220,.30)' },
-    { key:'tram',    tag:'Street Level',     name:'Tram',    em:'way',        badge:'Electric',   w:520, h:390, bg:'linear-gradient(145deg,#0a1408 0%,#0f1e0a 45%,#070f06 100%)', accent:'rgba(80,180,80,.28)'  },
-    { key:'etusa',   tag:'City Bus',         name:'ETUSA',   em:' Bus',       badge:'Network',    w:480, h:360, bg:'linear-gradient(145deg,#181006 0%,#231808 45%,#120c04 100%)', accent:'rgba(220,160,40,.28)' },
-    { key:'privbus', tag:'Private Operator', name:'Private', em:' Bus',       badge:'Coverage',   w:446, h:335, bg:'linear-gradient(145deg,#0e1018 0%,#141620 45%,#0a0c14 100%)', accent:'rgba(160,160,200,.22)'},
-    { key:'teleph',  tag:'Aerial',           name:'Télé',    em:'phérique',   badge:'Aerial',     w:400, h:300, bg:'linear-gradient(145deg,#071020 0%,#0a1830 45%,#050c18 100%)', accent:'rgba(60,160,240,.30)' },
-    { key:'sntf',    tag:'Commuter Rail',    name:'SNTF',    em:' Train',     badge:'Long Range', w:520, h:390, bg:'linear-gradient(145deg,#1a0a08 0%,#281008 45%,#120606 100%)', accent:'rgba(200,60,40,.30)'  },
+    { key:'metro',   tag:'Underground',      name:'Metro',   em:null,         badge:'Fastest',    w:476, h:357, bg:'linear-gradient(145deg,#100c06 0%,#1a140a 45%,#0a0704 100%)', accent:'rgba(232,201,106,.30)' },
+    { key:'tram',    tag:'Street Level',     name:'Tram',    em:'way',        badge:'Electric',   w:520, h:390, bg:'linear-gradient(145deg,#0e0a05 0%,#181008 45%,#080503 100%)', accent:'rgba(200,160,80,.28)'  },
+    { key:'etusa',   tag:'City Bus',         name:'ETUSA',   em:' Bus',       badge:'Network',    w:480, h:360, bg:'linear-gradient(145deg,#181006 0%,#231808 45%,#120c04 100%)', accent:'rgba(220,160,40,.30)' },
+    { key:'privbus', tag:'Private Operator', name:'Private', em:' Bus',       badge:'Coverage',   w:446, h:335, bg:'linear-gradient(145deg,#0c0a07 0%,#151109 45%,#070604 100%)', accent:'rgba(180,150,110,.24)'},
+    { key:'teleph',  tag:'Aerial',           name:'Télé',    em:'phérique',   badge:'Aerial',     w:400, h:300, bg:'linear-gradient(145deg,#120d05 0%,#1d1508 45%,#0b0803 100%)', accent:'rgba(245,225,153,.26)' },
+    { key:'sntf',    tag:'Commuter Rail',    name:'SNTF',    em:' Train',     badge:'Long Range', w:520, h:390, bg:'linear-gradient(145deg,#170e04 0%,#241705 45%,#100a03 100%)', accent:'rgba(201,146,26,.32)'  },
     { key:'taxi',    tag:'On Demand',        name:'Taxi',    em:null,         badge:'On Demand',  w:446, h:335, bg:'linear-gradient(145deg,#1a1008 0%,#261604 45%,#140c04 100%)', accent:'rgba(220,180,30,.30)' },
-    { key:null,      tag:'Maritime',         name:'Navette', em:' Maritime',  badge:'Ferry',      w:476, h:357, bg:'linear-gradient(145deg,#040e1c 0%,#061422 45%,#030a16 100%)', accent:'rgba(40,120,220,.30)' },
-    { key:null,      tag:'Gondola',          name:'Télé',    em:'cabine',     badge:'Cable Line',    w:416, h:312, bg:'linear-gradient(145deg,#071414 0%,#0a1c18 45%,#050e10 100%)', accent:'rgba(40,180,160,.26)' },
+    { key:null,      tag:'Maritime',         name:'Navette', em:' Maritime',  badge:'Ferry',      w:476, h:357, bg:'linear-gradient(145deg,#0b0804 0%,#141006 45%,#060503 100%)', accent:'rgba(160,120,60,.30)' },
+    { key:null,      tag:'Gondola',          name:'Télé',    em:'cabine',     badge:'Cable Line',    w:416, h:312, bg:'linear-gradient(145deg,#0f0b05 0%,#191207 45%,#090603 100%)', accent:'rgba(216,184,120,.26)' },
   ];
 
   /* Gold line glyphs (1.5px stroke register, no fill) — replaces the emoji
@@ -155,10 +155,10 @@
 
   function getDiag() { return ((vmx - 0.5) * 2 - (vmy - 0.5) * 2) / 2; }
   function getTilt() { return (vmx - 0.5) + (vmy - 0.5); }
-  function scaleFn(d) { return Math.exp(-d * d * 2.2); }
+  function scaleFn(d) { return Math.exp(-d * d * 0.6); }
   /* Gentler falloff so the handoff moment (|d|=.5 on both cards) keeps a
      focal card at ~.63 alpha instead of a dead .45/.45 void. */
-  function alphaFn(d) { return Math.max(0, 1 - Math.abs(d) * 0.75); }
+  function alphaFn(d) { return Math.max(0, 1 - Math.abs(d) * 0.48); }
   function lerp(a,b,t) { return a + (b-a)*t; }
   function vclamp(v) { return Math.min(1, Math.max(0, v)); }
 
@@ -175,7 +175,7 @@
     ScrollTrigger.create({
       trigger: section,
       start: 'top top',
-      end: '+=380%',
+      end: '+=170%',
       pin: true,
       scrub: true,
       onUpdate(self) {
@@ -251,8 +251,8 @@
     const scyTarget = progress > 0.06 ? scyActive : scyIdle;
     scySmooth = scySmooth ? lerp(scySmooth, scyTarget, 0.08) : scyTarget;
     const scy = scySmooth;
-    const sx = window.innerWidth * 0.36 * (0.4 + 0.6 * vScale);
-    const sy = window.innerHeight * 0.22;
+    const sx = window.innerWidth * 0.30 * (0.4 + 0.6 * vScale);
+    const sy = window.innerHeight * 0.16;
     const MAX_TILT = 42;
     const rotX =  tiltSmooth * MAX_TILT;
     const rotY = -tiltSmooth * MAX_TILT;

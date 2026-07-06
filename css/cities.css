@@ -3,28 +3,23 @@
 ═══════════════════════════════════════════ */
 #s-cities {
   width: 100%;
-  background: linear-gradient(170deg, var(--sand-light) 0%, #c8b898 25%, #6a5840 55%, var(--sand-deep) 100%);
+  /* Night holds through the close — the "arrival" beat is a warm gold
+     bloom on black, never a light-mode inversion */
+  background:
+    radial-gradient(ellipse 85% 60% at 50% 0%, rgba(var(--gold-deep-rgb), .12), transparent 62%),
+    var(--night);
   padding: 56px 0 48px;
   overflow: hidden;
   position: relative;
   z-index: 5;
 }
-/* Edge plates: the 170deg body gradient never lands exactly on the seam
-   colors at the section edges, so pin both edges to the seam tokens. */
-#s-cities::before,
 #s-cities::after {
   content: '';
   position: absolute; left: 0; right: 0;
   pointer-events: none;
   z-index: 0;
-}
-#s-cities::before {
-  top: 0; height: 120px;
-  background: linear-gradient(to bottom, var(--sand-light), rgba(232, 224, 208, 0));
-}
-#s-cities::after {
   bottom: 0; height: 180px;
-  background: linear-gradient(to bottom, rgba(30, 22, 8, 0), var(--sand-deep));
+  background: linear-gradient(to bottom, rgba(5, 4, 3, 0), var(--night));
 }
 #s-cities > .cities-header,
 #s-cities > .marquee-wrapper {
@@ -48,11 +43,11 @@
 .cities-h2 {
   font-family: var(--font-display);
   font-size: var(--fs-h2); font-weight: 600;
-  color: #1a1206; line-height: 1.15; letter-spacing: -0.02em;
+  color: var(--text-1); line-height: 1.15; letter-spacing: -0.02em;
 }
-.cities-h2 em { font-style: italic; font-weight: 400; color: var(--bronze); }
+.cities-h2 em { font-style: italic; font-weight: 400; color: rgba(var(--gold-rgb), .9); }
 .cities-sub {
-  font-size: var(--fs-sub); font-weight: 300; color: #5a4828;
+  font-size: var(--fs-sub); font-weight: 300; color: var(--text-3);
   letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.75;
 }
 
@@ -83,9 +78,9 @@
   font-size: var(--fs-micro); font-weight: 600; letter-spacing: var(--ls-label); text-transform: uppercase;
   padding: 4px 11px; border-radius: var(--r-pill); backdrop-filter: blur(8px);
 }
-.badge-live    { background: rgba(30,120,60,0.45); border: 1px solid rgba(80,200,120,0.45); color: #a0ffb8; }
-.badge-planned { background: rgba(80,80,80,0.4); border: 1px solid rgba(200,200,200,0.3); color: #d8d4cc; }
-.badge-soon    { background: rgba(140,100,10,0.45); border: 1px solid rgba(220,170,50,0.45); color: #ffd878; }
+.badge-live    { background: rgba(201,146,26,0.30); border: 1px solid rgba(245,225,153,0.55); color: #f5e199; }
+.badge-planned { background: rgba(60,50,35,0.45); border: 1px solid rgba(200,180,140,0.25); color: #c8bda8; }
+.badge-soon    { background: rgba(140,100,10,0.35); border: 1px solid rgba(200,160,80,0.40); color: #e0c078; }
 .city-label {
   position: absolute; bottom: 14px; left: 16px; right: 16px; z-index: 2;
   transition: transform var(--dur-med) var(--ease-spring);
@@ -127,13 +122,13 @@
 }
 .city-card:hover .tc-wrap { opacity: 1; transform: translateY(0) rotate(10deg); }
 .tc { width: 100%; aspect-ratio: 1.586; border-radius: var(--r-card-sm); position: relative; overflow: hidden; }
-.tc-algiers     { background: linear-gradient(140deg,#2a1e08,#3e2c0e,#1e1406); border: 1px solid rgba(200,160,60,.35); --a:#c8a840; }
-.tc-oran        { background: linear-gradient(140deg,#0e1a28,#162438,#0a1018); border: 1px solid rgba(100,160,220,.3); --a:#5898d8; }
-.tc-constantine { background: linear-gradient(140deg,#180e28,#241438,#100818); border: 1px solid rgba(160,100,230,.3); --a:#a060e0; }
+.tc-algiers     { background: linear-gradient(140deg,#2a1e08,#3e2c0e,#1e1406); border: 1px solid rgba(200,160,60,.35); --a:#e8c96a; }
+.tc-oran        { background: linear-gradient(140deg,#241a0a,#342610,#180f06); border: 1px solid rgba(216,184,120,.3); --a:#d8b878; }
+.tc-constantine { background: linear-gradient(140deg,#1e1408,#2c1e0c,#140d05); border: 1px solid rgba(176,128,72,.32); --a:#b08048; }
 .tc-cairo       { background: linear-gradient(140deg,#1a1200,#2e2008,#120e00); border: 1px solid rgba(220,180,60,.3); --a:#d4b040; }
-.tc-lagos       { background: linear-gradient(140deg,#001a10,#002e1a,#001208); border: 1px solid rgba(40,180,100,.3); --a:#28b464; }
-.tc-kinshasa    { background: linear-gradient(140deg,#1a0800,#2e1000,#120600); border: 1px solid rgba(220,100,40,.3); --a:#dc6428; }
-.tc-luanda      { background: linear-gradient(140deg,#001020,#001830,#000c18); border: 1px solid rgba(40,140,220,.3); --a:#288cdc; }
+.tc-lagos       { background: linear-gradient(140deg,#20160a,#302210,#160e06); border: 1px solid rgba(200,160,80,.3); --a:#c8a060; }
+.tc-kinshasa    { background: linear-gradient(140deg,#1c1004,#2c1a06,#120a03); border: 1px solid rgba(201,146,26,.32); --a:#c9921a; }
+.tc-luanda      { background: linear-gradient(140deg,#221a0e,#322614,#181008); border: 1px solid rgba(232,210,150,.3); --a:#e0cc90; }
 .tc-grain {
   position: absolute; inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23f)' opacity='0.06'/%3E%3C/svg%3E");

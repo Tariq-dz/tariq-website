@@ -39,6 +39,18 @@
   pointer-events: none;
   perspective: 1200px; z-index: 3;
 }
+/* Gold guide rail — the diagonal the cards travel along; anchors the
+   lineup so the stage reads as a composed rail, not a void */
+#v-stage::before {
+  content: '';
+  position: absolute; left: -8%; right: -8%; top: 54%;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent, rgba(var(--gold-rgb), .22) 28%,
+    rgba(var(--gold-rgb), .22) 72%, transparent);
+  transform: rotate(-15deg);
+  transform-origin: center;
+}
 
 .vcard {
   position: absolute; top: 0; left: 0;

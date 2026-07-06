@@ -98,28 +98,25 @@
 }
 
 /* ── Seam 3b: App → Cities ──────────────────────
-   Black lifts to warm sand horizon. */
+   Night holds — a faint warm lift announces the arrival beat. */
 .seam-app-cities {
-  height: 18vh;
+  height: 12vh;
   background: linear-gradient(
     to bottom,
     var(--night) 0%,
-    #120a02 25%,
-    #3a2a10 55%,
-    #8a7050 80%,
-    var(--sand-light) 100%
+    #0a0703 50%,
+    #0d0904 100%
   );
 }
 
 /* ── Seam 4: Cities → Footer ────────────────────
-   Sand-deep fades into night. */
+   Night continues into the outro. */
 .seam-cities-footer {
-  height: 14vh;
+  height: 10vh;
   background: linear-gradient(
     to bottom,
-    var(--sand-deep) 0%,
-    #120a04 60%,
-    #080502 90%,
+    #0d0904 0%,
+    #080502 60%,
     var(--night) 100%
   );
 }

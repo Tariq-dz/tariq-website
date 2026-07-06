@@ -198,6 +198,9 @@ body.stories-active #sec-stories-dock-wrap { opacity: 1; pointer-events: auto; }
   border: 1px solid rgba(255, 255, 255, .07);
   box-shadow: var(--shadow-card-lg),
     0 0 64px var(--dest-glow, rgba(var(--gold-rgb), .16));
+  /* Gold grade: every scene's art renders in the brand gold family,
+     whatever hue the source gradients/SVG carry */
+  filter: sepia(1) saturate(1.3);
 }
 #s-stories .zscene::after {
   content: '';
@@ -331,6 +334,8 @@ body.stories-active #sec-stories-dock-wrap { opacity: 1; pointer-events: auto; }
   border: 1px solid rgba(255, 255, 255, .07);
   box-shadow: var(--shadow-card-lg),
     0 0 64px var(--dest-glow, rgba(var(--gold-rgb), .16));
+  /* Same gold grade as .zscene — one art family across the section */
+  filter: sepia(1) saturate(1.3);
 }
 #s-stories .s-panel-card::after {
   content: '';
