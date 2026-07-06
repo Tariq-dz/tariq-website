@@ -135,3 +135,46 @@ scroll depth, the label signals the chapter; leaving the continuous fill.
 lit during the crossfade — motion state, reads fine live.
 
 Stop rule: clean iteration 1 of 2 consecutive required.
+
+## Iteration 8 — 2026-07-06 — CLEAN PASS (2 of 2) → LOOP COMPLETE
+**Grades** — type/eyebrow: A · spacing rhythm: A- · gold usage: A · card language: A ·
+seams/transitions: A- · motion timing: B+ · composition: A- · mobile parity: A-
+
+**Findings: no high- or medium-severity offense — second consecutive clean pass.**
+Final spread verified: app chapter 5 fully engaged with synced chrome on desktop,
+mobile chapters 01/04 aligned tag-heading-phone, waitlist entry rhythm compact,
+cities→footer seam smooth in natural flow, wordmark ink over sand. Console clean
+at every sweep.
+
+---
+
+# FINAL SUMMARY FOR THE FOUNDER
+
+**The site now reads as one coherent, luxury dark+gold experience.** Eight audit
+iterations (two full-page screenshot sweeps per iteration, desktop 1440×900 and
+mobile 390×844), six fixing commits, two consecutive clean passes to close.
+
+**What the loop found and fixed, in order of impact:**
+1. **Seam surgery (loops 1, 2, 4).** Every section boundary had a visible defect:
+   vehicles cards piling up unstyled at the stories seam, the cities sand section
+   hard-cutting against both neighbors (its angled gradient never met the seam
+   colors — now pinned by edge plates), and both stories seams hue-flipping against
+   the fixed destination-tinted backdrop (now fading to transparent). Boundaries now
+   measure at background-noise deltas; the only remaining hard edge is the
+   intentional gold hairline cue.
+2. **One eyebrow language (loop 3).** Story panels now speak the same
+   "—— DEST · BEAT" grammar as the z-flight captions, in the destination accent.
+3. **Chrome that tells the truth (loop 6).** The story chapter label now follows
+   whichever moment actually holds the stage instead of uniform scroll math — it
+   agreed with the visible caption at every one of 13 measured scroll positions.
+4. **No more dead moments (loops 3, 4).** The vehicles rail keeps a ~.63-alpha focal
+   card through every handoff; the waitlist exit lost ~90px of silent black.
+5. **Legibility guarantee (loop 2).** The gold wordmark swaps to ink while the light
+   sand cities section passes beneath it, and back to gold after.
+
+**Accepted as-is (documented, low severity):** continuous story-bar fill vs.
+focal-driven label; momentary text dimness during app chapter crossfades; the
+deliberate Tram|way / Télé|phérique roman→italic mid-word device.
+
+**Untouched, as required:** night #050403, the gold ramp, Cormorant Garamond +
+Outfit, the token system, and every claim on the page.
