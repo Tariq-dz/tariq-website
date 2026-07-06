@@ -55,3 +55,25 @@ mobile parity: A-
 the zcap-eyebrow spec; centered on mobile). Waitlist bottom padding trimmed to
 clamp(56px, 9vh, 100px) — the 18vh seam supplies the exhale. Verified on both
 viewports; zero console errors.
+
+## Iteration 4 — 2026-07-06
+**Grades** — type/eyebrow: A- (post-loop-3 unification holds) · spacing rhythm: A- ·
+gold usage: A · card language: A- · seams/transitions: B+ · motion timing: B ·
+composition: B+ · mobile parity: B+
+
+**Top offenses found:**
+1. MEDIUM — Vehicles rail handoff void: alphaFn dropped both cards to .45 at the
+   midpoint (|d|=.5), scale .58 — over pure black the viewport went focal-less,
+   worst on mobile where cards are smaller.
+2. MEDIUM — Hero→stories and stories→vehicles seams hard-cut against the *fixed*,
+   destination-tinted stories backdrop (warm rgb(10,8,6) → cool rgb(23,32,47) hue
+   flip in one pixel row). Opaque seam edges can never match a fixed tinted layer.
+3. CLEARED — "Télé|phérique" mid-word roman→italic split inspected at 4×: tight but
+   legible, and it's the same deliberate device as Tram|way / Télé|cabine. Not a defect.
+
+**Fixes applied:** alphaFn falloff 1.1 → 0.75 (handoff keeps a ~.63-alpha focal card,
+neighbors gain rail depth); seam-hero-stories bottom and seam-stories-vehicles top now
+fade to/from transparent so the fixed backdrop shows through gradually. Verified: seam
+max adjacent-row delta 10–16 (noise) vs former 30+ hue step; handoff reads as two cards
+in motion; the only remaining hard edge at seam 2 is the intentional gold hairline cue.
+Zero console errors.
