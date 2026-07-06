@@ -55,19 +55,8 @@
     });
   }
 
-  /* ── Seam 3: Vehicles → Cities ──
-     Scale-fade the central vehicle card headline as we leave the section,
-     so the rail dissolves into the sand horizon instead of cutting. */
-  const vCenter = document.getElementById('v-center-text');
-  if (vCenter) {
-    ScrollTrigger.create({
-      trigger: '#s-vehicles',
-      start: 'bottom 80%',
-      end:   'bottom 20%',
-      scrub: true,
-      animation: gsap.to(vCenter, { opacity: 0, scale: 0.94, ease: 'none' }),
-    });
-  }
+  /* (Seam 3 center-text fade removed — the vehicles scrub owns the
+     headline handoff since the rail became scroll-driven.) */
 
   /* ── Seam 4: Cities → Footer ──
      Footer inner rises in as the seam enters the viewport. Uses a single

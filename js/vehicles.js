@@ -9,7 +9,7 @@
     { key:'sntf',    tag:'Commuter Rail',    name:'SNTF',    em:' Train',     badge:'Long Range', w:520, h:390, bg:'linear-gradient(145deg,#1a0a08 0%,#281008 45%,#120606 100%)', accent:'rgba(200,60,40,.30)'  },
     { key:'taxi',    tag:'On Demand',        name:'Taxi',    em:null,         badge:'On Demand',  w:446, h:335, bg:'linear-gradient(145deg,#1a1008 0%,#261604 45%,#140c04 100%)', accent:'rgba(220,180,30,.30)' },
     { key:null,      tag:'Maritime',         name:'Navette', em:' Maritime',  badge:'Ferry',      w:476, h:357, bg:'linear-gradient(145deg,#040e1c 0%,#061422 45%,#030a16 100%)', accent:'rgba(40,120,220,.30)' },
-    { key:null,      tag:'Gondola',          name:'Télé',    em:'cabine',     badge:'Gondola',    w:416, h:312, bg:'linear-gradient(145deg,#071414 0%,#0a1c18 45%,#050e10 100%)', accent:'rgba(40,180,160,.26)' },
+    { key:null,      tag:'Gondola',          name:'Télé',    em:'cabine',     badge:'Cable Line',    w:416, h:312, bg:'linear-gradient(145deg,#071414 0%,#0a1c18 45%,#050e10 100%)', accent:'rgba(40,180,160,.26)' },
   ];
 
   /* Gold line glyphs (1.5px stroke register, no fill) — replaces the emoji
@@ -83,10 +83,16 @@
 
   const vCardEls = VEHICLES_CARDS.map((d) => {
     const el = document.createElement('div');
-    el.className = 'vcard';
-    el.style.width      = d.w + 'px';
-    el.style.height     = d.h + 'px';
+    el.className = 'vcard' + (d.key ? '' : ' vcard-typo');
     el.style.background = d.bg;
+
+    if (!d.key) {
+      /* Deliberate typographic card for modes without photography:
+         the gold line glyph takes the stage over a ring motif */
+      const rings = document.createElement('div');
+      rings.className = 'vc-typo-rings';
+      el.appendChild(rings);
+    }
 
     const glow = document.createElement('div');
     glow.style.cssText = `position:absolute;top:0;left:0;right:0;height:55%;background:radial-gradient(ellipse 80% 120% at 50% 0%,${d.accent},transparent 80%);pointer-events:none;z-index:0;`;
@@ -123,6 +129,29 @@
   let progress = 0.0, progTarget = 0.0;
   const n = VEHICLES_CARDS.length;
   const DEAD_ZONE = 0.08, MAX_SPEED = 0.017, COAST_DECAY = 0.72;
+  const MAX_CARD_H = Math.max(...VEHICLES_CARDS.map(d => d.h));
+
+  /* Responsive card scale: fit width on phones, clear the headline on
+     short viewports. Applied to card boxes; recomputed on resize. */
+  const centerText = document.getElementById('v-center-text');
+  let vScale = 1, ctBottom = 300, scySmooth = 0;
+  function applySizes() {
+    ctBottom = centerText.getBoundingClientRect().bottom + window.scrollY -
+               (document.getElementById('s-vehicles').getBoundingClientRect().top + window.scrollY);
+    if (!(ctBottom > 0 && ctBottom < innerHeight)) ctBottom = innerHeight * 0.38;
+    vScale = Math.min(1,
+      (innerWidth - 48) / 560,
+      (innerHeight - ctBottom - 70) / MAX_CARD_H);
+    vScale = Math.max(vScale, 0.55);
+    vCardEls.forEach((el, i) => {
+      el.style.width  = VEHICLES_CARDS[i].w * vScale + 'px';
+      el.style.height = VEHICLES_CARDS[i].h * vScale + 'px';
+    });
+  }
+  applySizes();
+  window.addEventListener('resize', applySizes);
+  /* re-measure once fonts have settled */
+  setTimeout(applySizes, 600);
 
   function getDiag() { return ((vmx - 0.5) * 2 - (vmy - 0.5) * 2) / 2; }
   function getTilt() { return (vmx - 0.5) + (vmy - 0.5); }
@@ -132,7 +161,29 @@
   function vclamp(v) { return Math.min(1, Math.max(0, v)); }
 
   let vehiclesActive = false;
+  let scrubMode = false;
   const section = document.getElementById('s-vehicles');
+
+  /* Scroll-scrubbed rail: the section pins and the 9 cards advance with
+     scroll — the one gesture everyone already knows, on every device.
+     Pointer position is demoted to tilt garnish. */
+  if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+    scrubMode = true;
+    ScrollTrigger.create({
+      trigger: section,
+      start: 'top top',
+      end: '+=380%',
+      pin: true,
+      scrub: true,
+      onUpdate(self) {
+        progTarget = self.progress;
+        /* Headline hands the stage to the rail as scrubbing begins */
+        const fade = self.progress < 0.04 ? 1 : Math.max(0, 1 - (self.progress - 0.04) / 0.08);
+        centerText.style.opacity = fade;
+      },
+    });
+  }
   const vObs = new IntersectionObserver(entries => {
     vehiclesActive = entries[0].isIntersecting;
     document.body.classList.toggle('cursor-expanded', vehiclesActive);
@@ -146,13 +197,13 @@
     vmy = e.clientY / window.innerHeight;
   });
   section.addEventListener('pointerdown', e => {
-    if (!vehiclesActive || e.pointerType === 'mouse') return;
+    if (scrubMode || !vehiclesActive || e.pointerType === 'mouse') return;
     fingerDown = true; coastVel = 0;
     vmx = e.clientX / window.innerWidth; vmy = e.clientY / window.innerHeight;
     prevDiag = getDiag();
   });
   section.addEventListener('pointerup', e => {
-    if (!vehiclesActive || e.pointerType === 'mouse') return;
+    if (scrubMode || !vehiclesActive || e.pointerType === 'mouse') return;
     coastVel = getDiag() - prevDiag; fingerDown = false;
   });
   section.addEventListener('pointercancel', e => {
@@ -163,20 +214,23 @@
     requestAnimationFrame(vRender);
     if (!vehiclesActive) return;
 
-    let speed = 0;
-    if (fingerDown) {
-      const d = getDiag(), sign = Math.sign(d);
-      const mag = Math.max(0, Math.abs(d) - DEAD_ZONE) / (1 - DEAD_ZONE);
-      speed = sign * mag * MAX_SPEED; prevDiag = d;
-    } else if (Math.abs(coastVel) > 0.0001) {
-      speed = coastVel * MAX_SPEED * 6; coastVel *= COAST_DECAY;
-    } else {
-      const d = getDiag(), sign = Math.sign(d);
-      const mag = Math.max(0, Math.abs(d) - DEAD_ZONE) / (1 - DEAD_ZONE);
-      speed = sign * mag * MAX_SPEED;
+    if (!scrubMode) {
+      /* Fallback (no ScrollTrigger): pointer-driven rail */
+      let speed = 0;
+      if (fingerDown) {
+        const d = getDiag(), sign = Math.sign(d);
+        const mag = Math.max(0, Math.abs(d) - DEAD_ZONE) / (1 - DEAD_ZONE);
+        speed = sign * mag * MAX_SPEED; prevDiag = d;
+      } else if (Math.abs(coastVel) > 0.0001) {
+        speed = coastVel * MAX_SPEED * 6; coastVel *= COAST_DECAY;
+      } else {
+        const d = getDiag(), sign = Math.sign(d);
+        const mag = Math.max(0, Math.abs(d) - DEAD_ZONE) / (1 - DEAD_ZONE);
+        speed = sign * mag * MAX_SPEED;
+      }
+      progTarget = vclamp(progTarget + speed);
     }
-    progTarget = vclamp(progTarget + speed);
-    progress = lerp(progress, progTarget, fingerDown ? 0.18 : 0.07);
+    progress = lerp(progress, progTarget, fingerDown ? 0.18 : 0.1);
     tiltSmooth = lerp(tiltSmooth, getTilt(), 0.09);
 
     const focus = progress * (n - 1);
@@ -187,8 +241,15 @@
     progFill.style.width = (progress * 100) + '%';
 
     const scx = window.innerWidth / 2;
-    const scy = window.innerHeight * 0.65;
-    const sx = window.innerWidth * 0.36;
+    /* Stage center: below the headline while it shows, then the cards
+       drift up to own the frame as it fades */
+    const scyIdle   = Math.min(window.innerHeight * 0.65,
+                               (ctBottom + window.innerHeight - 30) / 2 + MAX_CARD_H * vScale * 0.5 * 0.2);
+    const scyActive = window.innerHeight * 0.54;
+    const scyTarget = progress > 0.06 ? scyActive : scyIdle;
+    scySmooth = scySmooth ? lerp(scySmooth, scyTarget, 0.08) : scyTarget;
+    const scy = scySmooth;
+    const sx = window.innerWidth * 0.36 * (0.4 + 0.6 * vScale);
     const sy = window.innerHeight * 0.22;
     const MAX_TILT = 42;
     const rotX =  tiltSmooth * MAX_TILT;
