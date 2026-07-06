@@ -59,6 +59,16 @@
   color: var(--text-3);
   animation: heroFadeUp var(--dur-grand) var(--ease-out) 0.7s both;
 }
+/* Concrete proposition — the one plain sentence under the mood line */
+.hero-prop {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(15px, 1.5vw, 20px);
+  color: rgba(var(--gold-rgb), .85);
+  margin-top: 22px;
+  animation: heroFadeUp var(--dur-grand) var(--ease-out) 0.9s both;
+}
 #hero-cta {
   position: absolute;
   left: 0; right: 0;

@@ -155,10 +155,10 @@
 
   function getDiag() { return ((vmx - 0.5) * 2 - (vmy - 0.5) * 2) / 2; }
   function getTilt() { return (vmx - 0.5) + (vmy - 0.5); }
-  function scaleFn(d) { return Math.exp(-d * d * 0.6); }
+  function scaleFn(d) { return Math.exp(-d * d * 0.42); }
   /* Gentler falloff so the handoff moment (|d|=.5 on both cards) keeps a
      focal card at ~.63 alpha instead of a dead .45/.45 void. */
-  function alphaFn(d) { return Math.max(0, 1 - Math.abs(d) * 0.48); }
+  function alphaFn(d) { return Math.max(0, 1 - Math.abs(d) * 0.34); }
   function lerp(a,b,t) { return a + (b-a)*t; }
   function vclamp(v) { return Math.min(1, Math.max(0, v)); }
 

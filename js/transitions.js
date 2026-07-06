@@ -2,7 +2,7 @@
    SEAM TRANSITIONS — one ScrollTrigger per seam
    • Seam 1 (hero → stories): CSS gradient does the heavy lift;
      ScrollTrigger gates the hero CTA fade-out so it doesn't linger.
-   • Seam 2 (stories → vehicles): gold hairline sweep on enter.
+   • Seam 2 (stories → vehicles): pure CSS fade — same grammar as all seams.
    • Seam 3 (vehicles → cities): last vehicle card scale-out cue.
    • Seam 4 (cities → footer): footer content rises in.
 ═══════════════════════════════════════════════════════════ */
@@ -37,21 +37,6 @@
       end:   'bottom 10%',
       scrub: true,
       animation: gsap.to(seam1Thread, { scaleY: 1, ease: 'none' }),
-    });
-  }
-
-  /* ── Seam 2: Stories → Vehicles ──
-     One-shot gold hairline sweep across the seam when it enters the
-     viewport from below. Leaves behind once active — a signature mark. */
-  const seam2 = document.querySelector('.seam-stories-vehicles');
-  if (seam2) {
-    ScrollTrigger.create({
-      trigger: seam2,
-      start: 'top 85%',
-      end:   'bottom top',
-      onEnter:     () => seam2.classList.add('active'),
-      onEnterBack: () => seam2.classList.add('active'),
-      onLeaveBack: () => seam2.classList.remove('active'),
     });
   }
 

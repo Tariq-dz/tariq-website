@@ -233,11 +233,15 @@
   transform-origin: left center;
 }
 
-/* ─── Waitlist band (normal flow, after the stage) ── */
+/* ─── The Close — standalone conversion section after Cities ── */
+#s-close {
+  position: relative;
+  background: var(--night);
+  z-index: 5;
+}
 #app-waitlist {
   position: relative;
-  /* Bottom stays tighter: the 18vh app→cities seam already provides the exhale */
-  padding: clamp(90px, 14vh, 150px) 24px clamp(56px, 9vh, 100px);
+  padding: clamp(100px, 16vh, 170px) 24px clamp(90px, 14vh, 150px);
   display: flex; flex-direction: column; align-items: center;
   text-align: center; gap: 22px;
 }

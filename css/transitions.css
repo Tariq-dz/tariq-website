@@ -47,7 +47,7 @@
 }
 
 /* ── Seam 2: Stories → Vehicles ─────────────────
-   Dark stories into vehicles black; gold hairline sweeps on enter. */
+   Dark stories into vehicles black — same fade grammar as every seam. */
 .seam-stories-vehicles {
   height: 14vh;
   /* Top fades in from transparent for the same reason: the fixed,
@@ -60,29 +60,6 @@
     #060402 75%,
     var(--night) 100%
   );
-}
-.seam-hairline {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%) scaleX(0);
-  transform-origin: center center;
-  width: 66%;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(var(--gold-rgb), .6) 30%,
-    rgba(var(--gold-bright-rgb), .95) 50%,
-    rgba(var(--gold-rgb), .6) 70%,
-    transparent 100%
-  );
-  opacity: 0;
-}
-.seam-stories-vehicles.active .seam-hairline {
-  transform: translate(-50%, -50%) scaleX(1);
-  opacity: 1;
-  transition: transform var(--dur-grand) var(--ease-out),
-              opacity var(--dur-slow) ease;
 }
 
 /* ── Seam 3a: Vehicles → App ────────────────────

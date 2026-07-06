@@ -72,6 +72,7 @@
     <h1 class="hero-name">Tariq</h1>
     <div class="hero-divider"></div>
     <p class="hero-sub">One tap. Every line. Every city.</p>
+    <p class="hero-prop">Nine modes of transit in Algiers — plan, ride and pay in one free app.</p>
   </div>
   <a id="hero-cta" href="#s-stories">Explore Tariq</a>
   <div class="hero-fade"></div>
@@ -177,10 +178,9 @@
   </div>
 </section>
 
-<!-- Seam: stories → vehicles (sand fades to black + gold hairline) -->
+<!-- Seam: stories → vehicles (fade through night, same grammar as every boundary) -->
 <div class="seam seam-stories-vehicles" aria-hidden="true">
   <div class="seam-overlay"></div>
-  <div class="seam-hairline"></div>
 </div>
 
 <!-- ════════════════════════════════════════
@@ -296,20 +296,6 @@
     </div>
   </div>
 
-  <!-- Waitlist — the site's single conversion action -->
-  <div id="app-waitlist">
-    <div class="app-eyebrow">Early access</div>
-    <h2>Be riding before <em>everyone else.</em></h2>
-    <p class="waitlist-body">Leave your email and we'll send one message when Tariq opens in Algiers. No newsletter, no noise.</p>
-    <form id="waitlist-form" novalidate>
-      <label for="waitlist-email" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Email address</label>
-      <input type="email" id="waitlist-email" name="email" placeholder="you@example.com" autocomplete="email" required>
-      <button type="submit" id="waitlist-submit">Join the waitlist</button>
-    </form>
-    <div class="waitlist-error" id="waitlist-error" role="alert"></div>
-    <p id="waitlist-done">You're on the list. We'll email you once, at launch.</p>
-    <p class="waitlist-micro">We'll email you once, at launch. That's it.</p>
-  </div>
 </section>
 
 <!-- Seam: app → cities (night holds; a warm gold horizon announces arrival) -->
@@ -472,6 +458,25 @@
   </div>
 </section>
 
+<!-- ════════════════════════════════════════
+     SECTION 6 — THE CLOSE (single conversion moment)
+════════════════════════════════════════ -->
+<section id="s-close">
+  <div id="app-waitlist">
+    <div class="app-eyebrow">Early access</div>
+    <h2>Be riding before <em>everyone else.</em></h2>
+    <p class="waitlist-body">Leave your email and we'll send one message when Tariq opens in Algiers. No newsletter, no noise.</p>
+    <form id="waitlist-form" novalidate>
+      <label for="waitlist-email" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Email address</label>
+      <input type="email" id="waitlist-email" name="email" placeholder="you@example.com" autocomplete="email" required>
+      <button type="submit" id="waitlist-submit">Join the waitlist</button>
+    </form>
+    <div class="waitlist-error" id="waitlist-error" role="alert"></div>
+    <p id="waitlist-done">You're on the list. We'll email you once, at launch.</p>
+    <p class="waitlist-micro">We'll email you once, at launch. That's it.</p>
+  </div>
+</section>
+
 <!-- Seam: cities → footer (night continues into the outro) -->
 <div class="seam seam-cities-footer" aria-hidden="true">
   <div class="seam-overlay"></div>
@@ -484,7 +489,6 @@
   <div class="footer-inner">
     <div class="footer-eyebrow">Coming to your city</div>
     <h2 class="footer-head">One tap.<br><em>Every line. Every city.</em></h2>
-    <a class="footer-cta" href="#app-waitlist">Join the waitlist <span class="arrow">↑</span></a>
     <div class="footer-meta">
       <span>© Tariq Transit</span>
       <span>Smart transit for African &amp; MENA cities</span>

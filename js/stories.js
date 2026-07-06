@@ -44,7 +44,7 @@ const DEV_MODE = false; // set true to enable debug logging
 const CONFIG = {
   /* Camera */
   CAM_MAX_Z   : 11000,   // px — must clear deepest card (-9000)
-  Z_END       : 0.78,    // scroll % where Z-travel ends
+  Z_END       : 0.94,    // scroll % where Z-travel ends (panels retired)
   LERP_FACTOR : 0.04,    // base for frame-rate-independent lerp: 1-pow(factor,delta)
 
   /* Card opacity windows — APPROACH wide enough that adjacent card
@@ -52,10 +52,11 @@ const CONFIG = {
   APPROACH_PX : 3200,    // px before card where it starts fading in
   EXIT_PX     : 900,     // px after camera passes card before it's invisible
 
-  /* Section panels — timed to pick up right as the last card exits
-     (eased camera passes card 5 around pr≈0.59), not at 0.80 */
-  P1_IN  : 0.56, P1_OUT : 0.76,
-  P2_IN  : 0.79, P2_OUT : 0.96,
+  /* Section panels — RETIRED (council 2): they reprised beats 4–5's art
+     and message, reading as the same Pivot shown three times. Windows
+     pushed past 1.0 so they never fire; markup/build kept for rollback. */
+  P1_IN  : 2.0, P1_OUT : 2.1,
+  P2_IN  : 2.2, P2_OUT : 2.3,
 
   /* Dock */
   ICON    : 68,

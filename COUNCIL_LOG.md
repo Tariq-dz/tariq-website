@@ -86,3 +86,70 @@ co-presence + gold rail.
 Protocol amended: new MUST NOT in the freedom charter — no future council may
 de-color the site; color-reduction findings are invalid. Critic charters will
 carry this directive from cycle 2 on.
+
+---
+
+## Cycle 2 — 2026-07-06
+
+### Council reports (sweep: screenshots/council-2; charters carry the founder color directive)
+
+**Critic A — Brand Director (opus):**
+- [HIGH] Cities proof-section is mostly empty placeholder cards — only Algiers has real imagery; 5 cities are hollow gradients.
+- [HIGH] The emotional Stories section uses the cheapest-looking visuals on the page (wireframe vector sketches) while Transit/App look premium.
+- [MED] The close fires twice (waitlist before Cities, repeat CTA in footer).
+- [MED] Stories under-filled and over-long (thin band + empty lower half, 5 pinned steps for one persona).
+- [MED] Stories persona toolbar reads as bolted-on app chrome in an editorial page.
+
+**Critic B — Continuity Director (sonnet):**
+- [HIGH] Transit carousel mixes finished photography with two bare icon-only cards (Navette, Télécabine) — one component, two finish levels.
+- [HIGH] Inconsistent connective grammar: Stories→Modes gets a hard gold rule; every other boundary cross-fades.
+- [MED] One-off giant watermark words ("Modes"/"Transit") used in exactly one chapter.
+- [MED] Mobile Ride phone balloons near-full-bleed with a bright map — one light-temperature spike.
+
+**Critic C — Cold Eyes (opus):**
+- [HIGH] Stories too long, same beat repeated (~6 screens, Pivot shown 3 near-identical times) — attention dies.
+- [HIGH] Signup asked before the footprint is shown, then an identical second ask closes the page; Cities orphaned between two endings.
+- [HIGH] Transit reads near-empty; off-focus cards nearly invisible (worst mobile) so "all nine modes" never lands.
+- [MED] Hero sells mood but never states the proposition.
+
+### Ruling — chosen moves
+1. **ONE CLOSE** (C-HIGH + A-MED + C-MED): reorder App → Cities → Waitlist → Footer; waitlist becomes the single conversion moment, footer demoted to outro; add one concrete proposition line at the hero.
+2. **STORIES TIGHTEN** (C-HIGH + A-MED): remove the two post-travel panels that reprise beats 4–5 (the tripled Pivot), shorten the pinned scroll accordingly.
+3. **ONE GRAMMAR + TRANSIT PRESENCE II** (B-HIGH + C-HIGH): delete the one-off gold hairline at Stories→Modes so every boundary shares the fade grammar; raise off-focus transit card alpha/scale so the 9-mode lineup registers, desktop and mobile.
+
+Deferred to cycle 3 (art-direction effort): city-card imagery richness (A-HIGH), story illustration upgrade (A-HIGH), watermark motif decision, dock chrome restyle, Ride mobile vignette.
+
+### Built
+1. **ONE CLOSE** — the waitlist band moved out of #s-app into a standalone
+   #s-close section AFTER Cities: the arc is now hero → stories → modes → app →
+   cities (proof) → one conversion moment → footer outro. The footer's duplicate
+   "Join the waitlist" button removed; footer is a sign-off, not a second ask.
+   Hero gained one concrete proposition line ("Nine modes of transit in Algiers —
+   plan, ride and pay in one free app" — facts from the frozen meta copy).
+2. **STORIES TIGHTEN** — the two post-travel panels (which reprised beats 4–5's
+   art and message, C's "Pivot shown three times") retired via CONFIG windows;
+   Z-travel now spans the whole scroll (Z_END .78→.94) and the wrapper shrank
+   640vh→440vh. Each beat appears exactly once.
+3. **ONE GRAMMAR + TRANSIT PRESENCE II** — the one-off gold hairline sweep at
+   Stories→Modes removed (CSS+JS); every boundary now shares the fade-through-
+   night grammar. Transit falloffs relaxed again (scale exp -0.42d², alpha
+   1−.34|d|): 4 cards co-present on desktop AND mobile, lineup finally reads.
+   Page: 15068px → 13331px (desktop).
+
+### Verify
+- Full re-sweep: screenshots/council-2-post (18 frames per viewport).
+- Console errors: 0 desktop, 0 mobile (scripted full-page scroll).
+- Checked: hero prop line renders; cities (colors intact per founder directive)
+  precedes the single close; footer has no CTA; transit shows 4 cards both
+  viewports; stories ends without panel reprises.
+
+### Grades (chair, post-build)
+composition B+ · continuity B+ · value B · mobile B+
+
+### Verdict
+Narrative arc and connective grammar are fixed; transit finally shows its
+breadth. Remaining for cycle 3: the two art-quality HIGHs (5 placeholder city
+cards, wireframe story art), watermark motif decision, dock chrome, Ride
+mobile vignette — and a fresh council on the post-fix state.
+
+VERDICT: ITERATE
