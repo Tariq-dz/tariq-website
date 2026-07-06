@@ -11,6 +11,16 @@
       }, { threshold: 0.08 });
       obs.observe(hero);
     }
+
+    /* Ink swap while the light cities section sits under the mark:
+       intersect against a thin strip at the mark's height. */
+    const cities = document.getElementById('s-cities');
+    if (cities) {
+      const lightObs = new IntersectionObserver(entries => {
+        mark.classList.toggle('on-light', entries[0].isIntersecting);
+      }, { rootMargin: '-16px 0px -94% 0px' });
+      lightObs.observe(cities);
+    }
   }
 
   /* Scroll hairline: width = scroll progress × 100% */

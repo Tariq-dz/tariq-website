@@ -13,13 +13,18 @@
   color: rgba(var(--gold-rgb), .82);
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--dur-xslow) ease;
+  transition: opacity var(--dur-xslow) ease, color .45s ease;
   text-decoration: none;
   cursor: none;
 }
 #tariq-mark.visible {
   opacity: 1;
   pointer-events: auto;
+}
+/* Over the light sand of the cities section gold has no contrast:
+   borrow the section's own ink color while it sits under the mark. */
+#tariq-mark.on-light {
+  color: rgba(26, 18, 6, .8);
 }
 
 /* ─── Scroll progress hairline (1px gold, top of viewport) ─ */

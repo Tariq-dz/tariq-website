@@ -9,6 +9,28 @@
   position: relative;
   z-index: 5;
 }
+/* Edge plates: the 170deg body gradient never lands exactly on the seam
+   colors at the section edges, so pin both edges to the seam tokens. */
+#s-cities::before,
+#s-cities::after {
+  content: '';
+  position: absolute; left: 0; right: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+#s-cities::before {
+  top: 0; height: 120px;
+  background: linear-gradient(to bottom, var(--sand-light), rgba(232, 224, 208, 0));
+}
+#s-cities::after {
+  bottom: 0; height: 180px;
+  background: linear-gradient(to bottom, rgba(30, 22, 8, 0), var(--sand-deep));
+}
+#s-cities > .cities-header,
+#s-cities > .marquee-wrapper {
+  position: relative;
+  z-index: 1;
+}
 .cities-header {
   padding: 0 64px;
   margin-bottom: 36px;
