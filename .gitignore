@@ -1,8 +1,12 @@
 # Ignore Markdown Documentation
 *.md
+!AUDIT.md
 docs/
 preview/
 ui_kits/
+
+# Generated verification artifacts (regenerable via Playwright)
+screenshots/
 
 # Ignore Sensitive / Temporary Files
 ssh_key_to_add.txt
