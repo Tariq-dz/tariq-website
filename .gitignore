@@ -13,3 +13,10 @@ screenshots/
 ssh_key_to_add.txt
 uploads/
 .DS_Store
+
+# Council tooling
+node_modules/
+package.json
+package-lock.json
+!COUNCIL_PROTOCOL.md
+!COUNCIL_LOG.md
