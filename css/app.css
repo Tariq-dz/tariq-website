@@ -1,0 +1,348 @@
+/* ═══════════════════════════════════════════
+   SECTION 4 — THE APP (flagship product showcase)
+   Sticky stage: chapters (device-framed screen + caption) crossfade
+   on scroll; two ghost phones drift behind. Waitlist band follows
+   in normal flow. Mobile + reduced-motion collapse to static flow.
+═══════════════════════════════════════════ */
+#s-app {
+  position: relative;
+  background: var(--night);
+  z-index: 5;
+}
+
+/* ─── Sticky stage ─────────────────────────────── */
+#app-wrapper { position: relative; height: 420vh; }
+#app-sticky  { position: sticky; top: 0; height: 100vh; overflow: hidden; }
+
+/* Backdrop: ring motif echoing stories + gold floor glow */
+#app-backdrop { position: absolute; inset: 0; pointer-events: none; }
+#app-backdrop svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+#app-glow {
+  position: absolute; left: 50%; bottom: -12%;
+  width: 72vmin; height: 38vmin;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse 50% 50% at 50% 50%,
+    rgba(var(--gold-rgb), .14), rgba(var(--gold-rgb), .05) 55%, transparent 75%);
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+/* ─── Device frame ─────────────────────────────
+   440×870 screens; bezel via padding. The frame is a physical object —
+   its radii are device-scale, deliberately outside the card tokens. */
+.phone {
+  position: relative;
+  aspect-ratio: 440 / 870;
+  border-radius: 34px;
+  padding: 10px;
+  background: linear-gradient(160deg, #201a12 0%, #0e0b08 55%, #16110c 100%);
+  border: 1px solid rgba(var(--gold-rgb), .28);
+  box-shadow:
+    var(--shadow-card-lg),
+    0 0 54px rgba(var(--gold-rgb), .10),
+    inset 0 1px 0 rgba(var(--gold-bright-rgb), .18);
+}
+/* metallic edge sheen */
+.phone::before {
+  content: '';
+  position: absolute; inset: -1px;
+  border-radius: 34px;
+  background: linear-gradient(115deg,
+    transparent 8%, rgba(var(--gold-bright-rgb), .16) 12%, transparent 18%,
+    transparent 78%, rgba(var(--gold-rgb), .12) 88%, transparent 94%);
+  pointer-events: none;
+}
+.phone-screen {
+  position: relative;
+  width: 100%; height: 100%;
+  border-radius: 25px;
+  overflow: hidden;
+  background: #000;
+}
+.phone-screen img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+/* punch-hole camera */
+.phone-screen::before {
+  content: '';
+  position: absolute; top: 10px; left: 50%;
+  width: 9px; height: 9px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: #000;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, .05);
+  z-index: 2;
+}
+/* screen glass reflection */
+.phone-screen::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(118deg,
+    rgba(255, 255, 255, .07) 0%, rgba(255, 255, 255, .02) 18%, transparent 32%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ─── Ghost phones (persistent, behind chapters) ── */
+.app-ghost {
+  position: absolute;
+  top: 50%;
+  width: clamp(150px, 15vw, 220px);
+  opacity: .34;
+  filter: saturate(.7) brightness(.6);
+  will-change: transform;
+  pointer-events: none;
+}
+#app-ghost-l { left: clamp(16px, 9vw, 160px);  transform: translateY(-46%) rotate(-9deg); }
+#app-ghost-r { right: clamp(16px, 9vw, 160px); transform: translateY(-54%) rotate(10deg); }
+.app-ghost .phone { box-shadow: 0 24px 60px rgba(0, 0, 0, .5); }
+
+/* ─── Section intro (chapter 0) ────────────────── */
+#app-intro {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  gap: 20px;
+  padding: 0 24px;
+  z-index: 3;
+}
+.app-eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--fs-micro); font-weight: 600;
+  letter-spacing: var(--ls-eyebrow); text-transform: uppercase;
+  color: var(--gold-dim);
+  display: flex; align-items: center; gap: 14px;
+}
+.app-eyebrow::before, .app-eyebrow::after {
+  content: ''; width: 28px; height: 1px;
+  background: var(--gold-dim); opacity: .6;
+}
+#app-intro h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: 300; line-height: 1.1; letter-spacing: -0.01em;
+  color: var(--text-1);
+}
+#app-intro h2 em {
+  font-style: italic; font-weight: 400;
+  color: rgba(var(--gold-rgb), .92);
+}
+.app-intro-sub {
+  font-family: var(--font-sans);
+  font-size: var(--fs-sub); font-weight: 300;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-3);
+  max-width: 560px;
+}
+.app-intro-free {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(15px, 1.4vw, 19px);
+  color: rgba(var(--gold-rgb), .85);
+}
+
+/* ─── Chapters ─────────────────────────────────── */
+.app-chapter {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  gap: clamp(40px, 6vw, 110px);
+  padding: 0 8vw;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 4;
+}
+.app-chapter .phone {
+  flex: 0 0 auto;
+  height: clamp(400px, 64vh, 580px);
+  will-change: transform, opacity;
+}
+.app-chapter-text {
+  flex: 0 1 auto;
+  width: clamp(260px, 30vw, 420px);
+  display: flex; flex-direction: column; gap: 18px;
+  will-change: transform, opacity;
+}
+.app-chapter-tag {
+  font-family: var(--font-sans);
+  font-size: var(--fs-micro); font-weight: 600;
+  letter-spacing: var(--ls-eyebrow); text-transform: uppercase;
+  color: rgba(var(--gold-rgb), .7);
+  display: flex; align-items: center; gap: 12px;
+}
+.app-chapter-tag::before {
+  content: ''; width: 30px; height: 1px;
+  background: rgba(var(--gold-rgb), .65);
+}
+.app-chapter-text h3 {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: 600; line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--text-1);
+}
+.app-chapter-text h3 em {
+  font-style: italic; font-weight: 400;
+  color: rgba(var(--gold-rgb), .92);
+}
+.app-chapter-text p {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body); font-weight: 300; line-height: 1.75;
+  color: var(--text-2);
+  max-width: 380px;
+}
+
+/* Alternate chapters flip sides for rhythm */
+.app-chapter.flip { flex-direction: row-reverse; }
+.app-chapter.flip .app-chapter-text { text-align: right; align-items: flex-end; }
+.app-chapter.flip .app-chapter-tag  { flex-direction: row-reverse; }
+
+/* ─── Progress segments (echo stories beats) ───── */
+#app-prog {
+  position: absolute; bottom: 22px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  z-index: 6; pointer-events: none;
+  opacity: 0; transition: opacity var(--dur-med) ease;
+}
+#app-prog.on { opacity: 1; }
+#app-prog-label {
+  font-family: var(--font-sans);
+  font-size: var(--fs-micro); font-weight: 500;
+  letter-spacing: var(--ls-eyebrow); text-transform: uppercase;
+  color: rgba(var(--gold-rgb), .75);
+  white-space: nowrap;
+}
+#app-prog-segs { display: flex; gap: 6px; }
+.app-seg {
+  width: 30px; height: 2px;
+  background: rgba(var(--gold-rgb), .18);
+  border-radius: 1px; overflow: hidden;
+}
+.app-seg-fill {
+  display: block; width: 100%; height: 100%;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+/* ─── Waitlist band (normal flow, after the stage) ── */
+#app-waitlist {
+  position: relative;
+  padding: clamp(90px, 14vh, 150px) 24px;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; gap: 22px;
+}
+#app-waitlist::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 55% 70% at 50% 30%,
+    rgba(var(--gold-rgb), .06), transparent 65%);
+  pointer-events: none;
+}
+#app-waitlist h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: 300; line-height: 1.15; letter-spacing: -0.01em;
+  color: var(--text-1);
+}
+#app-waitlist h2 em {
+  font-style: italic; font-weight: 400;
+  color: rgba(var(--gold-rgb), .92);
+}
+.waitlist-body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body); font-weight: 300; line-height: 1.7;
+  color: var(--text-2);
+  max-width: 440px;
+}
+#waitlist-form {
+  position: relative;
+  display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+  margin-top: 8px;
+}
+#waitlist-email {
+  width: min(340px, 80vw);
+  padding: 14px 18px;
+  font-family: var(--font-sans);
+  font-size: 15px; font-weight: 300;
+  color: var(--text-1);
+  background: rgba(255, 255, 255, .03);
+  border: 1px solid rgba(var(--gold-rgb), .3);
+  border-radius: 2px;
+  outline: none;
+  transition: border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+  user-select: text; -webkit-user-select: text;
+}
+#waitlist-email::placeholder { color: var(--text-4); }
+#waitlist-email:focus-visible {
+  border-color: rgba(var(--gold-rgb), .8);
+  box-shadow: 0 0 24px rgba(var(--gold-rgb), .18);
+}
+#waitlist-submit {
+  font-family: var(--font-sans);
+  font-size: var(--fs-cta); font-weight: 400;
+  letter-spacing: var(--ls-eyebrow); text-transform: uppercase;
+  color: rgba(var(--gold-rgb), .9);
+  background: transparent;
+  border: 1px solid rgba(var(--gold-deep-rgb), .45);
+  border-radius: 2px;
+  padding: 13px 30px;
+  cursor: none;
+  transition: all var(--dur-med) ease;
+}
+#waitlist-submit:hover, #waitlist-submit:focus-visible {
+  background: rgba(var(--gold-deep-rgb), .1);
+  border-color: rgba(245, 220, 80, .9);
+  color: var(--gold-bright);
+  box-shadow: var(--glow-gold);
+  outline: none;
+}
+.waitlist-micro {
+  font-family: var(--font-sans);
+  font-size: var(--fs-label); font-weight: 300;
+  color: var(--text-4);
+  letter-spacing: var(--ls-body);
+}
+.waitlist-error {
+  font-family: var(--font-sans);
+  font-size: var(--fs-label);
+  color: #d88a6a;
+  min-height: 1.2em;
+}
+#waitlist-done {
+  display: none;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(17px, 1.6vw, 21px);
+  color: rgba(var(--gold-rgb), .9);
+}
+#app-waitlist.done #waitlist-form,
+#app-waitlist.done .waitlist-error,
+#app-waitlist.done .waitlist-micro { display: none; }
+#app-waitlist.done #waitlist-done  { display: block; }
+
+/* ─── Static flow: mobile & reduced motion ─────── */
+@media (max-width: 900px), (prefers-reduced-motion: reduce) {
+  #app-wrapper { height: auto; }
+  #app-sticky  { position: relative; height: auto; overflow: visible; }
+  .app-ghost, #app-prog { display: none; }
+  #app-intro {
+    position: relative; inset: auto;
+    padding: 90px 24px 30px;
+  }
+  .app-chapter, .app-chapter.flip {
+    position: relative; inset: auto;
+    opacity: 1 !important;
+    pointer-events: auto;
+    flex-direction: column;
+    gap: 28px;
+    padding: 48px 24px;
+  }
+  .app-chapter .phone { height: min(64vh, 480px); }
+  .app-chapter-text, .app-chapter.flip .app-chapter-text {
+    text-align: center; align-items: center; width: 100%;
+  }
+  .app-chapter-tag, .app-chapter.flip .app-chapter-tag { flex-direction: row; }
+}

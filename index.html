@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="css/hero.css">
 <link rel="stylesheet" href="css/stories.css">
 <link rel="stylesheet" href="css/vehicles.css">
+<link rel="stylesheet" href="css/app.css">
 <link rel="stylesheet" href="css/cities.css">
 <link rel="stylesheet" href="css/transitions.css">
 </head>
@@ -172,8 +173,117 @@
   <div id="v-prog"><div id="v-prog-fill"></div></div>
 </section>
 
-<!-- Seam: vehicles → cities (black lifts into sand gradient) -->
-<div class="seam seam-vehicles-cities" aria-hidden="true">
+<!-- Seam: vehicles → app (night holds, breath between machine and product) -->
+<div class="seam seam-vehicles-app" aria-hidden="true">
+  <div class="seam-overlay"></div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SECTION 4 — THE APP
+════════════════════════════════════════ -->
+<section id="s-app">
+  <div id="app-wrapper">
+    <div id="app-sticky">
+
+      <div id="app-backdrop">
+        <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <ellipse cx="720" cy="940" rx="300"  ry="170" fill="none" stroke="rgba(200,160,80,.08)" stroke-width="1"/>
+          <ellipse cx="720" cy="940" rx="540"  ry="300" fill="none" stroke="rgba(200,160,80,.06)" stroke-width="1"/>
+          <ellipse cx="720" cy="940" rx="820"  ry="450" fill="none" stroke="rgba(200,160,80,.04)" stroke-width="1"/>
+          <ellipse cx="720" cy="940" rx="1140" ry="620" fill="none" stroke="rgba(200,160,80,.03)" stroke-width="1"/>
+        </svg>
+        <div id="app-glow"></div>
+      </div>
+
+      <!-- Ghost phones — persistent depth props -->
+      <div class="app-ghost" id="app-ghost-l" aria-hidden="true">
+        <div class="phone"><div class="phone-screen"><img src="assets/app/03_trips.jpg" alt="" loading="lazy"></div></div>
+      </div>
+      <div class="app-ghost" id="app-ghost-r" aria-hidden="true">
+        <div class="phone"><div class="phone-screen"><img src="assets/app/06_notifications.jpg" alt="" loading="lazy"></div></div>
+      </div>
+
+      <!-- Chapter 0 — intro -->
+      <div id="app-intro">
+        <div class="app-eyebrow">04 — The App</div>
+        <h2>Built for the <em>daily ride.</em></h2>
+        <p class="app-intro-sub">Real screens from the app we're bringing to Algiers.</p>
+        <p class="app-intro-free">The app is free — you pay only your fares.</p>
+      </div>
+
+      <!-- Chapters -->
+      <div class="app-chapter" data-chapter="1">
+        <div class="phone"><div class="phone-screen"><img src="assets/app/01_home.jpg" alt="Tariq home screen: departures near you, wallet and recent trips" loading="lazy"></div></div>
+        <div class="app-chapter-text">
+          <div class="app-chapter-tag">01 · Home</div>
+          <h3>Everything <em>in reach</em></h3>
+          <p>Departures near you, your wallet, your recent trips — one screen, ready when you are.</p>
+        </div>
+      </div>
+
+      <div class="app-chapter flip" data-chapter="2">
+        <div class="phone"><div class="phone-screen"><img src="assets/app/09_search.jpg" alt="Tariq search screen: type a destination, get a route" loading="lazy"></div></div>
+        <div class="app-chapter-text">
+          <div class="app-chapter-tag">02 · Plan</div>
+          <h3>Search like <em>you talk</em></h3>
+          <p>Type a place. Get a route.</p>
+        </div>
+      </div>
+
+      <div class="app-chapter" data-chapter="3">
+        <div class="phone"><div class="phone-screen"><img src="assets/app/02_map.jpg" alt="Tariq live navigation map across the network" loading="lazy"></div></div>
+        <div class="app-chapter-text">
+          <div class="app-chapter-tag">03 · Ride</div>
+          <h3>Follow the route <em>live</em></h3>
+          <p>Turn-by-turn across the whole network, from your door to the last stop.</p>
+        </div>
+      </div>
+
+      <div class="app-chapter flip" data-chapter="4">
+        <div class="phone"><div class="phone-screen"><img src="assets/app/04_wallet.jpg" alt="Tariq wallet in Algerian dinars with tickets and history" loading="lazy"></div></div>
+        <div class="app-chapter-text">
+          <div class="app-chapter-tag">04 · Pay</div>
+          <h3>A wallet that speaks <em>DZD</em></h3>
+          <p>Your balance, your tickets, your history — in dinars, where they belong. Top up in the app — built around how Algiers already pays, CCP and Carte Dahabia included.</p>
+        </div>
+      </div>
+
+      <div class="app-chapter" data-chapter="5">
+        <div class="phone"><div class="phone-screen"><img src="assets/app/08_topup.jpg" alt="Tariq top-up screen: add funds to the wallet in the app" loading="lazy"></div></div>
+        <div class="app-chapter-text">
+          <div class="app-chapter-tag">05 · Top up</div>
+          <h3>Top up <em>in seconds</em></h3>
+          <p>Add funds in the app instead of hunting for a kiosk.</p>
+        </div>
+      </div>
+
+      <!-- Progress -->
+      <div id="app-prog" aria-hidden="true">
+        <div id="app-prog-label"></div>
+        <div id="app-prog-segs"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Waitlist — the site's single conversion action -->
+  <div id="app-waitlist">
+    <div class="app-eyebrow">Early access</div>
+    <h2>Be riding before <em>everyone else.</em></h2>
+    <p class="waitlist-body">Leave your email and we'll send one message when Tariq opens in Algiers. No newsletter, no noise.</p>
+    <form id="waitlist-form" novalidate>
+      <label for="waitlist-email" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Email address</label>
+      <input type="email" id="waitlist-email" name="email" placeholder="you@example.com" autocomplete="email" required>
+      <button type="submit" id="waitlist-submit">Join the waitlist</button>
+    </form>
+    <div class="waitlist-error" id="waitlist-error" role="alert"></div>
+    <p id="waitlist-done">You're on the list. We'll email you once, at launch.</p>
+    <p class="waitlist-micro">We'll email you once, at launch. That's it.</p>
+  </div>
+</section>
+
+<!-- Seam: app → cities (black lifts into sand gradient) -->
+<div class="seam seam-app-cities" aria-hidden="true">
   <div class="seam-overlay"></div>
 </div>
 
@@ -182,7 +292,7 @@
 ════════════════════════════════════════ -->
 <section id="s-cities">
   <div class="cities-header">
-    <div class="cities-eyebrow">04 — Cities</div>
+    <div class="cities-eyebrow">05 — Cities</div>
     <h2 class="cities-h2">We're in your city.<br>Are you <em>on board?</em></h2>
     <p class="cities-sub">Tap once · Ride everywhere</p>
   </div>
@@ -338,10 +448,11 @@
   <div class="footer-inner">
     <div class="footer-eyebrow">Coming to your city</div>
     <h2 class="footer-head">One tap.<br><em>Every line. Every city.</em></h2>
-    <a class="footer-cta" href="#s-hero">Back to top <span class="arrow">↑</span></a>
+    <a class="footer-cta" href="#app-waitlist">Join the waitlist <span class="arrow">↑</span></a>
     <div class="footer-meta">
       <span>© Tariq Transit</span>
       <span>Smart transit for African &amp; MENA cities</span>
+      <a href="#s-hero" class="footer-top-link">Back to top ↑</a>
     </div>
   </div>
 </footer>
@@ -351,6 +462,7 @@
 <script src="js/hero.js"></script>
 <script src="js/stories.js"></script>
 <script src="js/vehicles.js"></script>
+<script src="js/app.js"></script>
 <script src="js/cities.js"></script>
 <script src="js/transitions.js"></script>
 <script src="js/global-nav.js"></script>

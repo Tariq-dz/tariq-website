@@ -79,9 +79,21 @@
               opacity var(--dur-slow) ease;
 }
 
-/* ── Seam 3: Vehicles → Cities ──────────────────
+/* ── Seam 3a: Vehicles → App ────────────────────
+   Night holds — one breath between the machines and the product. */
+.seam-vehicles-app {
+  height: 12vh;
+  background: linear-gradient(
+    to bottom,
+    var(--night) 0%,
+    #080604 50%,
+    var(--night) 100%
+  );
+}
+
+/* ── Seam 3b: App → Cities ──────────────────────
    Black lifts to warm sand horizon. */
-.seam-vehicles-cities {
+.seam-app-cities {
   height: 18vh;
   background: linear-gradient(
     to bottom,
@@ -187,4 +199,13 @@
   font-size: var(--fs-label); font-weight: 300;
   color: var(--text-4);
   letter-spacing: var(--ls-body);
+}
+.footer-top-link {
+  color: var(--text-4);
+  text-decoration: none;
+  cursor: none;
+  transition: color var(--dur-fast) ease;
+}
+.footer-top-link:hover, .footer-top-link:focus-visible {
+  color: rgba(var(--gold-rgb), .8);
 }
