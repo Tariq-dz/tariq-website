@@ -6,7 +6,7 @@
 ═══════════════════════════════════════════ */
 #s-app {
   position: relative;
-  background: var(--night);
+  background: var(--starfield) repeat, var(--night);
   z-index: 5;
 }
 
@@ -243,12 +243,32 @@
 /* ─── The Close — standalone conversion section after Cities ── */
 #s-close {
   position: relative;
-  background: var(--night);
+  background: var(--starfield) repeat, var(--night);
   z-index: 5;
+}
+/* Closing scene: the gold horizon returns for the final act */
+#s-close::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 62% 46% at 50% 108%,
+      rgba(var(--gold-deep-rgb), .18), rgba(var(--gold-deep-rgb), .06) 55%, transparent 78%),
+    radial-gradient(ellipse 45% 60% at 50% 20%,
+      rgba(var(--gold-rgb), .05), transparent 65%);
+  pointer-events: none;
+}
+#s-close::after {
+  content: '';
+  position: absolute; left: 50%; bottom: -14vmin;
+  width: 90vmin; height: 44vmin;
+  transform: translateX(-50%);
+  border: 1px solid rgba(var(--gold-rgb), .14);
+  border-radius: 50%;
+  pointer-events: none;
 }
 #app-waitlist {
   position: relative;
-  padding: clamp(100px, 16vh, 170px) 24px clamp(90px, 14vh, 150px);
+  padding: clamp(80px, 12vh, 130px) 24px clamp(70px, 11vh, 110px);
   display: flex; flex-direction: column; align-items: center;
   text-align: center; gap: 22px;
 }
@@ -300,21 +320,23 @@
 }
 #waitlist-submit {
   font-family: var(--font-sans);
-  font-size: var(--fs-cta); font-weight: 400;
+  font-size: var(--fs-cta); font-weight: 600;
   letter-spacing: var(--ls-eyebrow); text-transform: uppercase;
-  color: rgba(var(--gold-rgb), .9);
-  background: transparent;
-  border: 1px solid rgba(var(--gold-deep-rgb), .45);
+  color: #1a1206;
+  background: linear-gradient(180deg, var(--gold-mid) 0%, var(--gold) 55%, var(--gold-deep) 100%);
+  border: 1px solid rgba(var(--gold-bright-rgb), .5);
   border-radius: 2px;
-  padding: 13px 30px;
+  padding: 14px 34px;
   cursor: none;
+  box-shadow: 0 0 34px rgba(var(--gold-deep-rgb), .3),
+    inset 0 1px 0 rgba(255, 255, 255, .35);
   transition: all var(--dur-med) ease;
 }
 #waitlist-submit:hover, #waitlist-submit:focus-visible {
-  background: rgba(var(--gold-deep-rgb), .1);
-  border-color: rgba(245, 220, 80, .9);
-  color: var(--gold-bright);
-  box-shadow: var(--glow-gold);
+  background: linear-gradient(180deg, var(--gold-bright) 0%, var(--gold-mid) 55%, var(--gold) 100%);
+  color: #140d04;
+  box-shadow: 0 0 54px rgba(var(--gold-deep-rgb), .5),
+    inset 0 1px 0 rgba(255, 255, 255, .45);
   outline: none;
 }
 .waitlist-micro {

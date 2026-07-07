@@ -282,3 +282,71 @@ councils is now fixed. SHIP requires a fresh council returning NO MACRO
 OFFENSE in the same cycle — convening cycle 5 on this state.
 
 VERDICT: ITERATE
+
+---
+
+## Cycle 5 — 2026-07-07 (SHIP test)
+
+### Council reports (sweep: screenshots/council-5) — NOT SHIP
+
+**Critic A — Brand Director (opus):** hero/transit/cities premium.
+- [HIGH] Stories renders as a collapsed collision: intro composited over beat 1 + cards + silhouette — the "believe" beat reads broken.
+- [MED] The conversion finale deflates: small form + ghost button in a near-black void.
+- [MED] Télécabine & Navette are flat line-icon cards beside 7 photographic ones (3rd cycle flagged).
+
+**Critic B — Continuity Director (sonnet):**
+- [HIGH] Story-beat text collision at the pinned transition — two beats legible-fighting simultaneously (motion-grammar break).
+- [MED] Hero's starfield texture vanishes after Stories — night sky absent for ~70% of the reel (absence-based stitch).
+
+**Critic C — Cold Eyes (opus):**
+- [HIGH] Stories reads broken/cluttered mid-scroll — intro over beat 1, tiny text stacked on headings.
+- [MED] Emotional narrative before comprehension; picker pills don't read as controls.
+
+Chair's note: cycle 4's "always-on" windows (sine.out + wide APPROACH + intro floor
+.35) overcorrected the void into co-visibility. The three HIGHs are one defect.
+
+### Ruling — chosen moves
+1. **ONE BEAT ON STAGE** (A/B/C-HIGH + C-MED): rebuild beat grammar — intro alone at rest
+   (silhouette removed), snappy intro exit, then strict handoffs (APPROACH 2600/2200px,
+   EXIT 900/800px, pow-1.5 presence curve) so one beat dominates every position with a
+   brief crossfade dip, never a pile, never a void; intro sub becomes a concrete
+   comprehension line; picker pills get visible control affordance.
+2. **FINALE WEIGHT + MODE PARITY** (A-MED×2): gold-filled primary CTA + composed closing
+   scene (rings/glow, tighter void); elevate the two typographic mode cards into
+   deliberate layered art (glow glyph, ring field, grain) at the photo cards' value level.
+3. **PERSISTENT NIGHT SKY** (B-MED): a faint shared starfield layer carried through
+   Modes, App, Cities, Close, and Footer.
+
+### Built
+1. **ONE BEAT ON STAGE** — beat grammar rebuilt: APPROACH 4200→2600px (mobile
+   2200), EXIT 1200→900px (mobile 800), presence curve pow(t,1.5); intro gate
+   back to 0 with a fast ramp (alone at rest, beats enter the moment it exits);
+   silhouette removed; picker pills carry a visible ring + fill (controls, not
+   icons); intro sub is now the comprehension line "Tariq plans the route,
+   guides the ride live, and pays the fare. Here is what that feels like."
+   Verified: one beat fully legible per position, next beat only a faint depth
+   echo; rest state is the intro alone.
+2. **FINALE WEIGHT + MODE PARITY** — the waitlist button is now a gold-filled
+   primary (gradient fill, dark text, bloom) — the heaviest element on the
+   page; #s-close gained a returning gold horizon + orbit arc; padding
+   tightened. Télécabine/Navette rebuilt as lit gold emblems over ring fields
+   with a horizon line on their own color grades — designed art, not missing
+   images.
+3. **PERSISTENT NIGHT SKY** — a --starfield token (sparse white+gold 420px SVG
+   tile) layered into Modes, App, Close, Cities, and Footer; the hero's sky now
+   runs the full reel.
+
+### Verify
+- Full re-sweep: screenshots/council-5-post; console errors: 0/0.
+- Checked: no text collisions at former frame-002; intro clean at rest; gold
+  CTA reads as the conversion moment; typo mode cards read premium; stars
+  visible through all sections.
+
+### Grades (chair, post-build)
+composition A- · continuity A- · value A- · mobile A-
+
+### Verdict
+The unanimous stories HIGH and all MEDIUMs are addressed. Cycle 6 convenes a
+fresh council (SHIP test) on this state.
+
+VERDICT: ITERATE

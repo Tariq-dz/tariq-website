@@ -88,10 +88,13 @@
 
     if (!d.key) {
       /* Deliberate typographic card for modes without photography:
-         the gold line glyph takes the stage over a ring motif */
+         lit gold emblem over a ring field and horizon line */
       const rings = document.createElement('div');
       rings.className = 'vc-typo-rings';
       el.appendChild(rings);
+      const horizon = document.createElement('div');
+      horizon.className = 'vc-typo-horizon';
+      el.appendChild(horizon);
     }
 
     const glow = document.createElement('div');

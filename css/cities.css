@@ -6,6 +6,7 @@
   /* Night holds through the close — the "arrival" beat is a warm gold
      bloom on black, never a light-mode inversion */
   background:
+    var(--starfield) repeat,
     radial-gradient(ellipse 85% 60% at 50% 0%, rgba(var(--gold-deep-rgb), .12), transparent 62%),
     var(--night);
   padding: 56px 0 48px;
