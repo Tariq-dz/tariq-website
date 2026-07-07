@@ -93,7 +93,7 @@ const { CAM_MAX_Z, Z_END, APPROACH_PX, EXIT_PX, P1_IN, P1_OUT, P2_IN, P2_OUT } =
 const DESTINATIONS = [
   {
     /* 0 — UNIVERSITY */
-    id:0, emoji:'🎓', label:'University', color:'#c94444', bg:'#e8d4d4',
+    id:0, emoji:'🎓', label:'University', person:'Amina', color:'#c94444', bg:'#e8d4d4',
     cards:[
       { beat:'The Context / The Rush', num:'01',
         title:'8:47 AM. Gates close at 9:05.',
@@ -201,7 +201,7 @@ const DESTINATIONS = [
 
   {
     /* 1 — OFFICE */
-    id:1, emoji:'💼', label:'Office', color:'#d4820a', bg:'#ecddd0',
+    id:1, emoji:'💼', label:'Office', person:'Hassan', color:'#d4820a', bg:'#ecddd0',
     cards:[
       { beat:'The Context / The Rush', num:'01',
         title:'22 km every morning.',
@@ -314,7 +314,7 @@ const DESTINATIONS = [
 
   {
     /* 2 — CLINIC */
-    id:2, emoji:'🏥', label:'Clinic', color:'#4A82D8', bg:'#d6dcea',
+    id:2, emoji:'🏥', label:'Clinic', person:'Fatima', color:'#4A82D8', bg:'#d6dcea',
     cards:[
       { beat:'The Context / The Rush', num:'01',
         title:'Stairs are hard. Stops matter.',
@@ -424,7 +424,7 @@ const DESTINATIONS = [
 
   {
     /* 3 — OLD TOWN */
-    id:3, emoji:'🗺️', label:'Old Town', color:'#3BAA60', bg:'#d4ead8',
+    id:3, emoji:'🗺️', label:'Old Town', person:'Marcus', color:'#3BAA60', bg:'#d4ead8',
     cards:[
       { beat:'The Context / The Rush', num:'01',
         title:'No language. No data.',
@@ -540,7 +540,7 @@ const DESTINATIONS = [
 
   {
     /* 4 — SCHOOL */
-    id:4, emoji:'🏫', label:'School', color:'#8B5CF6', bg:'#dcdce6',
+    id:4, emoji:'🏫', label:'School', person:'Yasmine', color:'#8B5CF6', bg:'#dcdce6',
     cards:[
       { beat:'The Context / The Rush', num:'01',
         title:'Two kids. A stroller. 8 AM.',
@@ -708,7 +708,7 @@ DESTINATIONS.forEach(dest => {
   const pill = document.createElement('div');
   pill.setAttribute('role', 'button');
   pill.setAttribute('tabindex', '0');
-  pill.setAttribute('aria-label', `Story: ${dest.label}`);
+  pill.setAttribute('aria-label', `Story: ${dest.person} — ${dest.label}`);
   pill.style.cssText = `position:absolute;top:0;left:0;height:${ICON}px;border-radius:${ICON/2}px;display:flex;align-items:center;overflow:hidden;cursor:pointer;opacity:0;`;
   pill.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleDockClick(dest.id); }
@@ -720,7 +720,7 @@ DESTINATIONS.forEach(dest => {
 
   const lbl = document.createElement('div');
   lbl.style.cssText = `padding-left:4px;padding-right:20px;color:#fff;font-size:15px;font-weight:400;white-space:nowrap;font-family:var(--font-sans);user-select:none;pointer-events:none;opacity:0;transition:opacity 0.15s ease;`;
-  lbl.textContent = dest.label;
+  lbl.textContent = `${dest.person} — ${dest.label}`;
 
   pill.appendChild(ico);
   pill.appendChild(lbl);
@@ -732,7 +732,7 @@ DESTINATIONS.forEach(dest => {
   pill.addEventListener('mouseenter', () => {
     if (dest.id === centerId) return;
     gsap.to(pill, { scale:1.06, duration:0.35, ease:'elastic.out(1, 0.5)', overwrite:'auto' });
-    dockTip.textContent = dest.label;
+    dockTip.textContent = `${dest.person} — ${dest.label}`;
     dockTip.style.left  = `${slotX(slots[dest.id]) + CONFIG.ICON / 2}px`;
     dockTip.classList.add('show');
   });
@@ -996,7 +996,7 @@ function buildCards(destId) {
     const cap = document.createElement('div');
     cap.className = 'zcaption';
     cap.innerHTML = `
-      <div class="zcap-line zcap-eyebrow"><span class="zcap-rule"></span>${dest.label} · ${card.beat.split('/')[0].trim()}</div>
+      <div class="zcap-line zcap-eyebrow"><span class="zcap-rule"></span>${dest.person} — ${dest.label} · ${card.beat.split('/')[0].trim()}</div>
       <div class="zcap-line zcap-title">${titleHtml}</div>
       <div class="zcap-line zcap-body">${card.body}</div>`;
 

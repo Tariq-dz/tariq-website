@@ -31,6 +31,16 @@
   pointer-events: none;
 }
 body.stories-active #sec-stories-backdrop { opacity: 1; }
+/* Warm horizon form: the intro beat is anchored by light, not floating
+   in an empty field (C6) */
+#sec-stories-backdrop::after {
+  content: '';
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: 46vh;
+  background: radial-gradient(ellipse 70% 62% at 50% 108%,
+    rgba(var(--gold-deep-rgb), .14), rgba(var(--gold-deep-rgb), .05) 55%, transparent 78%);
+  pointer-events: none;
+}
 /* Destination color wash — GSAP sweeps it in on every destination switch */
 #sec-stories-tint {
   position: absolute; inset: 0; z-index: 0;

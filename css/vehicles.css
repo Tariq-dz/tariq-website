@@ -127,6 +127,10 @@
   width: clamp(72px, 11vw, 120px);
   height: auto;
 }
+.vc-art {
+  position: absolute; inset: 0;
+  z-index: 1; overflow: hidden;
+}
 .vc-img {
   position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;

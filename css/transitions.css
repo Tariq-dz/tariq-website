@@ -19,7 +19,7 @@
 /* ── Seam 1: Hero → Stories ─────────────────────
    Both sections are night-dark; a gold thread grows downward as cue. */
 .seam-hero-stories {
-  height: 15vh;
+  height: 8vh;
   /* Bottom fades to transparent: the stories backdrop is fixed and
      destination-tinted, so an opaque edge would hard-cut against it. */
   background: linear-gradient(

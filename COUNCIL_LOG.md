@@ -350,3 +350,70 @@ The unanimous stories HIGH and all MEDIUMs are addressed. Cycle 6 convenes a
 fresh council (SHIP test) on this state.
 
 VERDICT: ITERATE
+
+---
+
+## Cycle 6 — 2026-07-07 (SHIP test #2)
+
+### Council reports (sweep: screenshots/council-6) — NOT SHIP
+
+**Critic A — Brand Director (opus):** site holds strongly at macro level, but:
+- [HIGH] Navette Maritime & Télécabine read as flat line-icon placeholders inside a photographic carousel (4th cycle flagged).
+- [MED] App reveal promises "real screens" but flanking phones are near-black at entry; payoff arrives frames later.
+- [MED] Connective intro beats (Stories, App) are thin text islands in empty black.
+
+**Critic B — Continuity Director (sonnet):** everything holds except one stitch:
+- [HIGH] Light-mode captures (Home/Map) puncture the night scene on MOBILE where the mockup nears full-bleed; splash/notifications/wallet sit correctly.
+
+**Critic C — Cold Eyes (opus):** hero/vehicles/cities/waitlist confident; 4 MEDs:
+- [MED] Rider selector illegible to a passive visitor — unlabeled icons, rider never named.
+- [MED] Desktop app-proof hides the product in near-darkness (mirrors A-MED).
+- [MED] Near-empty black viewport between hero and stories reads as dead air.
+- [MED, low-confidence] Pivot headline may overlap the card (likely a transition frame — verify settled state).
+
+### Ruling — chosen moves
+1. **MODE ART TIER** (A-HIGH): author cinematic layered SVG night-scene art for
+   Navette Maritime (moonlit harbor ferry) and Télécabine (cable cabin over the
+   heights) in their own accent hues — full-card scenes at the photographic
+   cards' production tier, replacing the emblem treatment.
+2. **PRODUCT IN THE LIGHT** (B-HIGH + A-MED + C-MED): verify/fix the mobile
+   light-capture grade; raise desktop intro phone luminance so a legible screen
+   anchors "real screens" at entry.
+3. **CONNECTIVE PRESENCE** (A-MED + C-MED×2): name the riders (picker labels +
+   beat eyebrows), anchor the intro beats with a light form, tighten the
+   hero→stories dead air.
+
+### Built
+1. **MODE ART TIER** — authored cinematic layered SVG night scenes for the two
+   modes without photography: Navette Maritime (moonlit harbor, lit ferry
+   windows, sea glints, quay lights) and Télécabine (cable spanning the frame,
+   lit cabin + distant second cabin, hillside homes, mist) — full-card scenes
+   in each mode's own hue at the photo cards' production tier. (Fixed a ph
+   scoping regression this introduced — caught by the console check, 7 errors
+   → 0.)
+2. **PRODUCT IN THE LIGHT** — mobile: deeper night register for light captures
+   at near-full-bleed (brightness .4, sepia .5 + stronger warm scrim/vignette
+   under 900px); desktop: prop phones raised to legible (opacity .78,
+   brightness 1, blur 1.5px) so a readable screen anchors "real screens" at
+   the reveal.
+3. **CONNECTIVE PRESENCE** — riders are now named end to end: picker center
+   pill/tooltip/aria say "Fatima — Clinic" etc., beat eyebrows read
+   "Fatima — Clinic · The Context"; the stories intro is anchored by a warm
+   gold horizon form; hero→stories seam tightened 15vh→8vh.
+
+### Verify
+- Full re-sweep: screenshots/council-6-post; console errors: 0 desktop,
+  0 mobile (after fixing the ph regression).
+- Checked: both scene-art cards read art-directed night scenes; mobile map
+  sits in deep amber night register; named picker + anchored intro confirmed.
+- C's low-confidence pivot-overlap: settled states are clean (strict handoff
+  from C5); the flagged frame was a transition moment.
+
+### Grades (chair, post-build)
+composition A · continuity A- · value A- · mobile A-
+
+### Verdict
+Both HIGHs and all MEDIUMs addressed. Cycle 7 convenes a fresh council
+(SHIP test #3) on this state. Hard cap after cycle 8.
+
+VERDICT: ITERATE

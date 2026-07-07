@@ -1,5 +1,97 @@
 /* Section 3 — VEHICLES: diagonal card rail with pointer tracking */
 (function initVehicles() {
+  /* Cinematic night-scene art for the two modes without photography —
+     same production tier as the photo cards (council 6) */
+  const NAVETTE_ART = `<svg viewBox="0 0 300 190" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;display:block">
+    <defs>
+      <linearGradient id="nv-sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#0a1e34"/><stop offset=".62" stop-color="#071527"/><stop offset="1" stop-color="#04101e"/>
+      </linearGradient>
+      <linearGradient id="nv-sea" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#0a1c30"/><stop offset="1" stop-color="#030a14"/>
+      </linearGradient>
+      <radialGradient id="nv-moon" cx=".78" cy=".2" r=".5">
+        <stop offset="0" stop-color="rgba(232,224,200,.34)"/><stop offset=".35" stop-color="rgba(180,200,220,.1)"/><stop offset="1" stop-color="rgba(0,0,0,0)"/>
+      </radialGradient>
+      <linearGradient id="nv-hull" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#1a2c40"/><stop offset="1" stop-color="#060d16"/>
+      </linearGradient>
+    </defs>
+    <rect width="300" height="112" fill="url(#nv-sky)"/>
+    <rect width="300" height="190" fill="url(#nv-moon)"/>
+    <circle cx="234" cy="38" r="9" fill="#e8e4d4" opacity=".85"/>
+    <circle cx="231" cy="35" r="9" fill="#0a1e34" opacity=".55"/>
+    <g fill="white"><circle cx="30" cy="24" r="0.9" opacity=".5"/><circle cx="74" cy="48" r="0.7" opacity=".35"/><circle cx="132" cy="18" r="0.8" opacity=".45"/><circle cx="187" cy="56" r="0.6" opacity=".3"/><circle cx="268" cy="72" r="0.7" opacity=".35"/><circle cx="52" cy="76" r="0.6" opacity=".3"/></g>
+    <rect y="112" width="300" height="78" fill="url(#nv-sea)"/>
+    <g stroke="#7ab0e0" stroke-width="1">
+      <line x1="18" y1="128" x2="66" y2="128" opacity=".28"/><line x1="210" y1="124" x2="288" y2="124" opacity=".38"/>
+      <line x1="60" y1="146" x2="130" y2="146" opacity=".22"/><line x1="196" y1="160" x2="252" y2="160" opacity=".16"/>
+      <line x1="24" y1="170" x2="90" y2="170" opacity=".12"/>
+    </g>
+    <g>
+      <path d="M60 118 L240 118 L226 138 Q150 144 74 138 Z" fill="url(#nv-hull)"/>
+      <path d="M60 118 L240 118 L237 122 L63 122 Z" fill="#2a4058" opacity=".8"/>
+      <rect x="92" y="96" width="116" height="22" rx="4" fill="#0d1a2a"/>
+      <rect x="92" y="96" width="116" height="3" rx="1.5" fill="#3a5a7a" opacity=".7"/>
+      <g fill="#f0d488">
+        <rect x="102" y="103" width="10" height="7" rx="2" opacity=".95"/><rect x="120" y="103" width="10" height="7" rx="2" opacity=".8"/>
+        <rect x="138" y="103" width="10" height="7" rx="2" opacity=".95"/><rect x="156" y="103" width="10" height="7" rx="2" opacity=".7"/>
+        <rect x="174" y="103" width="10" height="7" rx="2" opacity=".9"/><rect x="190" y="103" width="8" height="7" rx="2" opacity=".8"/>
+      </g>
+      <rect x="130" y="80" width="34" height="16" rx="3" fill="#122238"/>
+      <rect x="134" y="84" width="12" height="7" rx="2" fill="#f0d488" opacity=".9"/>
+      <line x1="170" y1="80" x2="170" y2="66" stroke="#2a4058" stroke-width="2"/>
+      <circle cx="170" cy="64" r="2.4" fill="#ffd878" opacity=".95"/>
+    </g>
+    <g>
+      <rect x="104" y="142" width="9" height="4" rx="2" fill="#c8a860" opacity=".4"/>
+      <rect x="140" y="150" width="12" height="4" rx="2" fill="#c8a860" opacity=".3"/>
+      <rect x="176" y="144" width="9" height="4" rx="2" fill="#c8a860" opacity=".35"/>
+    </g>
+    <path d="M50 138 Q40 132 30 138 M250 138 Q262 130 274 136" stroke="#5a86b0" stroke-width="1" fill="none" opacity=".4"/>
+  </svg>`;
+  const TELECABINE_ART = `<svg viewBox="0 0 300 190" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;display:block">
+    <defs>
+      <linearGradient id="tc-sky2" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#0a2622"/><stop offset=".6" stop-color="#071a17"/><stop offset="1" stop-color="#04100e"/>
+      </linearGradient>
+      <linearGradient id="tc-cab" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#1c3833"/><stop offset="1" stop-color="#081412"/>
+      </linearGradient>
+      <radialGradient id="tc-mist" cx=".5" cy=".82" r=".65">
+        <stop offset="0" stop-color="rgba(120,200,180,.16)"/><stop offset=".55" stop-color="rgba(80,150,130,.06)"/><stop offset="1" stop-color="rgba(0,0,0,0)"/>
+      </radialGradient>
+    </defs>
+    <rect width="300" height="190" fill="url(#tc-sky2)"/>
+    <g fill="white"><circle cx="42" cy="30" r="0.8" opacity=".45"/><circle cx="108" cy="16" r="0.6" opacity=".3"/><circle cx="205" cy="26" r="0.9" opacity=".5"/><circle cx="262" cy="54" r="0.6" opacity=".3"/><circle cx="26" cy="72" r="0.7" opacity=".35"/><circle cx="286" cy="14" r="0.7" opacity=".4"/></g>
+    <rect width="300" height="190" fill="url(#tc-mist)"/>
+    <path d="M0 148 L46 122 L88 140 L132 118 L178 142 L216 126 L258 146 L300 130 L300 190 L0 190 Z" fill="#081613" opacity=".5"/>
+    <path d="M0 162 L60 140 L110 156 L168 138 L224 158 L272 144 L300 154 L300 190 L0 190 Z" fill="#050f0d"/>
+    <g fill="#f0d488">
+      <rect x="52" y="150" width="2.6" height="2.6" rx="0.6" opacity=".8"/><rect x="84" y="158" width="2.2" height="2.2" rx="0.6" opacity=".55"/>
+      <rect x="140" y="152" width="2.6" height="2.6" rx="0.6" opacity=".7"/><rect x="196" y="162" width="2.2" height="2.2" rx="0.6" opacity=".6"/>
+      <rect x="236" y="154" width="2.6" height="2.6" rx="0.6" opacity=".75"/><rect x="118" y="166" width="2" height="2" rx="0.5" opacity=".45"/>
+    </g>
+    <line x1="-8" y1="86" x2="308" y2="34" stroke="#4a8a7a" stroke-width="1.4" opacity=".75"/>
+    <g>
+      <line x1="150" y1="63" x2="150" y2="76" stroke="#2c5248" stroke-width="3"/>
+      <path d="M150 63 L142 70 L158 70 Z" fill="#2c5248"/>
+      <rect x="126" y="76" width="48" height="38" rx="9" fill="url(#tc-cab)"/>
+      <rect x="126" y="76" width="48" height="3.5" rx="1.75" fill="#4a8a7a" opacity=".9"/>
+      <rect x="133" y="84" width="34" height="15" rx="4" fill="#f0d488" opacity=".9"/>
+      <rect x="133" y="84" width="34" height="15" rx="4" fill="none" stroke="#0a1e1a" stroke-width="1" opacity=".6"/>
+      <line x1="150" y1="84" x2="150" y2="99" stroke="#0a1e1a" stroke-width="1.4" opacity=".7"/>
+      <rect x="126" y="108" width="48" height="6" rx="3" fill="#0a1a16"/>
+    </g>
+    <g opacity=".8">
+      <line x1="236" y1="49" x2="236" y2="57" stroke="#2c5248" stroke-width="1.6"/>
+      <rect x="226" y="57" width="20" height="16" rx="4" fill="#0c1c18"/>
+      <rect x="229" y="60" width="14" height="6" rx="2" fill="#f0d488" opacity=".55"/>
+    </g>
+    <line x1="42" y1="79" x2="42" y2="146" stroke="#12312a" stroke-width="4" opacity=".9"/>
+    <path d="M34 79 L50 79 L46 88 L38 88 Z" fill="#12312a" opacity=".9"/>
+  </svg>`;
+
   const VEHICLES_CARDS = [
     { key:'metro',   tag:'Underground',      name:'Metro',   em:null,         badge:'Fastest',    w:476, h:357, bg:'linear-gradient(145deg,#090e1a 0%,#0d1528 45%,#060a14 100%)', accent:'rgba(80,120,220,.30)' },
     { key:'tram',    tag:'Street Level',     name:'Tram',    em:'way',        badge:'Electric',   w:520, h:390, bg:'linear-gradient(145deg,#0a1408 0%,#0f1e0a 45%,#070f06 100%)', accent:'rgba(80,180,80,.28)'  },
@@ -8,8 +100,8 @@
     { key:'teleph',  tag:'Aerial',           name:'Télé',    em:'phérique',   badge:'Aerial',     w:400, h:300, bg:'linear-gradient(145deg,#071020 0%,#0a1830 45%,#050c18 100%)', accent:'rgba(60,160,240,.30)' },
     { key:'sntf',    tag:'Commuter Rail',    name:'SNTF',    em:' Train',     badge:'Long Range', w:520, h:390, bg:'linear-gradient(145deg,#1a0a08 0%,#281008 45%,#120606 100%)', accent:'rgba(200,60,40,.30)'  },
     { key:'taxi',    tag:'On Demand',        name:'Taxi',    em:null,         badge:'On Demand',  w:446, h:335, bg:'linear-gradient(145deg,#1a1008 0%,#261604 45%,#140c04 100%)', accent:'rgba(220,180,30,.30)' },
-    { key:null,      tag:'Maritime',         name:'Navette', em:' Maritime',  badge:'Ferry',      w:476, h:357, bg:'linear-gradient(145deg,#040e1c 0%,#061422 45%,#030a16 100%)', accent:'rgba(40,120,220,.30)' },
-    { key:null,      tag:'Gondola',          name:'Télé',    em:'cabine',     badge:'Cable Line',    w:416, h:312, bg:'linear-gradient(145deg,#071414 0%,#0a1c18 45%,#050e10 100%)', accent:'rgba(40,180,160,.26)' },
+    { key:null,      tag:'Maritime',         name:'Navette', em:' Maritime',  badge:'Ferry',      w:476, h:357, bg:'linear-gradient(145deg,#040e1c 0%,#061422 45%,#030a16 100%)', accent:'rgba(40,120,220,.30)', art: NAVETTE_ART },
+    { key:null,      tag:'Gondola',          name:'Télé',    em:'cabine',     badge:'Cable Line',    w:416, h:312, bg:'linear-gradient(145deg,#071414 0%,#0a1c18 45%,#050e10 100%)', accent:'rgba(40,180,160,.26)', art: TELECABINE_ART },
   ];
 
   /* Gold line glyphs (1.5px stroke register, no fill) — replaces the emoji
@@ -83,10 +175,10 @@
 
   const vCardEls = VEHICLES_CARDS.map((d) => {
     const el = document.createElement('div');
-    el.className = 'vcard' + (d.key ? '' : ' vcard-typo');
+    el.className = 'vcard' + (d.key || d.art ? '' : ' vcard-typo');
     el.style.background = d.bg;
 
-    if (!d.key) {
+    if (!d.key && !d.art) {
       /* Deliberate typographic card for modes without photography:
          lit gold emblem over a ring field and horizon line */
       const rings = document.createElement('div');
@@ -101,10 +193,18 @@
     glow.style.cssText = `position:absolute;top:0;left:0;right:0;height:55%;background:radial-gradient(ellipse 80% 120% at 50% 0%,${d.accent},transparent 80%);pointer-events:none;z-index:0;`;
     el.appendChild(glow);
 
-    const ph = document.createElement('div');
-    ph.className = 'vc-placeholder';
-    ph.innerHTML = VEHICLE_GLYPHS[d.tag] || VEHICLE_GLYPHS['City Bus'];
-    el.appendChild(ph);
+    let ph = null;
+    if (d.art) {
+      const art = document.createElement('div');
+      art.className = 'vc-art';
+      art.innerHTML = d.art;
+      el.appendChild(art);
+    } else {
+      ph = document.createElement('div');
+      ph.className = 'vc-placeholder';
+      ph.innerHTML = VEHICLE_GLYPHS[d.tag] || VEHICLE_GLYPHS['City Bus'];
+      el.appendChild(ph);
+    }
 
     if (d.key) {
       const imgWrap = document.createElement('div');
@@ -113,7 +213,7 @@
       img.src = `assets/vehicles/${d.key}.webp`;
       img.alt = d.name;
       img.loading = 'lazy';
-      img.addEventListener('load', () => { ph.style.display = 'none'; });
+      img.addEventListener('load', () => { if (ph) ph.style.display = 'none'; });
       imgWrap.appendChild(img);
       el.appendChild(imgWrap);
     }

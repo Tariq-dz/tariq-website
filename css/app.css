@@ -101,9 +101,9 @@
   position: absolute;
   top: 50%;
   width: clamp(150px, 15vw, 220px);
-  opacity: .62;
+  opacity: .78;
   /* Soft blur = deliberate depth of field: staged props, not filler */
-  filter: saturate(.85) brightness(.88) blur(2.5px);
+  filter: saturate(.9) brightness(1) blur(1.5px);
   will-change: transform;
   pointer-events: none;
 }
@@ -362,6 +362,22 @@
 #app-waitlist.done .waitlist-error,
 #app-waitlist.done .waitlist-micro { display: none; }
 #app-waitlist.done #waitlist-done  { display: block; }
+
+/* Narrow viewports: the mockup nears full-bleed, so light captures
+   need a deeper night register to hold the scene (C6) */
+@media (max-width: 900px) {
+  .phone-screen img.light-src {
+    filter: brightness(.4) contrast(1.12) sepia(.5) saturate(.88);
+  }
+  .phone-screen::after {
+    background:
+      linear-gradient(118deg,
+        rgba(255, 255, 255, .05) 0%, rgba(255, 255, 255, .01) 18%, transparent 32%),
+      linear-gradient(rgba(26, 18, 8, .24), rgba(26, 18, 8, .24)),
+      radial-gradient(ellipse 120% 100% at 50% 45%,
+        transparent 45%, rgba(10, 7, 3, .46) 100%);
+  }
+}
 
 /* ─── Static flow: mobile & reduced motion ─────── */
 @media (max-width: 900px), (prefers-reduced-motion: reduce) {
