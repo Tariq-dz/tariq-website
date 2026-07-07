@@ -490,3 +490,68 @@ final council under the hard cap: SHIP if all three critics return NO MACRO
 OFFENSE; otherwise CAPPED with the honest remainder list.
 
 VERDICT: ITERATE
+
+---
+
+## Cycle 8 — 2026-07-07 (FINAL — hard cap)
+
+### Council reports (sweep: screenshots/council-8) — NOT SHIP
+
+**Critic A — Brand Director (opus):** macro frame holds; hero/vehicles/app/cities premium.
+- [HIGH] Story illustrations (flat line-icon art) sit below the photographic tier at the emotional core.
+- [MED] Desktop story lockup collision (heading tucked under card — cycle-7 scale regression).
+- [MED] Footer too sparse — trails off. (Chair: direct conflict with C's cycle-5 ruling that made the footer a whisper; founder's call.)
+
+**Critic B — Continuity Director (sonnet):**
+- [HIGH] Light-mode app captures still ignite against the night frame (Home/Map/Notifications).
+- [MED] Residual shelf line at Stories→Modes.
+- [MED] Télécabine scene sparse vs Navette's painterly treatment.
+
+**Critic C — Cold Eyes (opus):** nothing tab-closing; 4 MEDs:
+- [MED] Four "NN —" counter families collide (sections, story beats, app chapters, mode index).
+- [MED] Mobile carousel: dead top half, nine similar beats.
+- [MED] App proof leads with empty states ("0 DA", "no trips yet").
+- [MED] Rider selector still reads as icons, not people.
+
+### Final build (cycle 8)
+1. **STORY LOCKUP** — desktop scene scale 1.45→1.34; heading/card collision gone.
+2. **COUNTER HIERARCHY** — "NN —" reserved for top-level sections; story beats,
+   app chapters, and the mode label are now unnumbered subordinates.
+3. **NIGHT REEL PATCH** — navy bleed extended into the Modes opening; Télécabine
+   scene enriched (three cabins, cabin halo, double cable, 15 city lights,
+   ridge depth) to match Navette; mobile carousel card centered + scale floor
+   raised; Home capture cropped to its populated top half.
+
+### Verify
+- Full re-sweep: screenshots/council-8-post; console errors: 0 desktop, 0 mobile.
+- Story lockup clean; unnumbered sub-counters; Télécabine matches Navette's
+  register; mobile card centered.
+
+### Grades (chair, final)
+composition A · continuity A- · value A- · mobile A-
+
+### FOUNDER SUMMARY
+
+Eight councils, 24 critic reviews, 10 commits. What changed since cycle 1:
+the cream light-inversion under Cities is gone (night+gold holds hero→footer,
+with the color-diversity system intact per your directive); the page arc is
+one line (hero proposition → named rider stories → nine modes → app proof →
+cities → ONE gold conversion moment → quiet outro); the page shrank
+17048px→11081px with no dead scroll; every pinned section shares one
+wayfinding idiom; a persistent starfield ties the whole reel; stories play
+one legible beat at a time with named riders; the app walkthrough is three
+differentiated beats on night-graded screens; Navette/Télécabine carry
+painterly night scenes; zero console errors and 390px parity throughout.
+
+**What remains (needs assets or your decision — cannot be closed from the repo):**
+1. Commissioned photo-tier renders for Navette Maritime + Télécabine
+   (A flagged the gap 6 cycles running; painterly scenes are the code ceiling).
+2. Real dark-mode app captures (Home/Map/Notifications/Profile) and/or
+   populated demo states (non-zero wallet, live departures, trip history) —
+   kills B's daylight-flash HIGH and C's empty-state MED at the source.
+3. Crafted per-story scene art at photo tier (A's cycle-8 HIGH) — 25 scene
+   cards, an illustration commission.
+4. Footer weight: A wants presence, C wanted a whisper — your call.
+5. Rider selector as people (avatars/roles vs icons) — small design decision.
+
+VERDICT: CAPPED

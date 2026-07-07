@@ -63,47 +63,61 @@
   const TELECABINE_ART = `<svg viewBox="0 0 300 190" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;display:block">
     <defs>
       <linearGradient id="tc-sky3" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#0b2a24"/><stop offset=".55" stop-color="#081c18"/><stop offset="1" stop-color="#04100d"/>
+        <stop offset="0" stop-color="#0c2e27"/><stop offset=".5" stop-color="#08201b"/><stop offset="1" stop-color="#04110e"/>
       </linearGradient>
       <linearGradient id="tc-cabg" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#1a352e"/><stop offset=".2" stop-color="#0e211c"/><stop offset="1" stop-color="#060f0c"/>
+        <stop offset="0" stop-color="#22443b"/><stop offset=".2" stop-color="#112821"/><stop offset="1" stop-color="#07110d"/>
       </linearGradient>
-      <radialGradient id="tc-cityglow" cx=".5" cy="1" r=".8">
-        <stop offset="0" stop-color="rgba(240,200,110,.2)"/><stop offset=".4" stop-color="rgba(200,160,80,.07)"/><stop offset="1" stop-color="rgba(0,0,0,0)"/>
+      <radialGradient id="tc-cityglow" cx=".5" cy="1" r=".85">
+        <stop offset="0" stop-color="rgba(240,200,110,.3)"/><stop offset=".4" stop-color="rgba(200,160,80,.1)"/><stop offset="1" stop-color="rgba(0,0,0,0)"/>
+      </radialGradient>
+      <radialGradient id="tc-cabhalo" cx=".5" cy=".5" r=".5">
+        <stop offset="0" stop-color="rgba(242,212,136,.22)"/><stop offset=".6" stop-color="rgba(242,212,136,.06)"/><stop offset="1" stop-color="rgba(0,0,0,0)"/>
       </radialGradient>
       <filter id="tc-soft" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="2.2"/></filter>
       <filter id="tc-soft1" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="0.9"/></filter>
       <filter id="tc-soft4" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="5"/></filter>
     </defs>
     <rect width="300" height="190" fill="url(#tc-sky3)"/>
-    <g fill="white"><circle cx="46" cy="26" r="0.7" opacity=".4"/><circle cx="112" cy="14" r="0.5" opacity=".26"/><circle cx="208" cy="22" r="0.8" opacity=".45"/><circle cx="266" cy="50" r="0.5" opacity=".26"/><circle cx="28" cy="68" r="0.6" opacity=".3"/></g>
-    <path d="M0 132 L52 108 L96 126 L146 104 L198 128 L242 112 L300 134 L300 190 L0 190 Z" fill="#0a1a15" filter="url(#tc-soft)"/>
-    <path d="M0 156 L64 134 L116 150 L172 132 L230 152 L278 140 L300 148 L300 190 L0 190 Z" fill="#040d0a"/>
-    <rect y="120" width="300" height="70" fill="url(#tc-cityglow)"/>
+    <g fill="white"><circle cx="46" cy="26" r="0.7" opacity=".4"/><circle cx="112" cy="14" r="0.5" opacity=".26"/><circle cx="208" cy="20" r="0.8" opacity=".45"/><circle cx="266" cy="46" r="0.5" opacity=".26"/><circle cx="28" cy="64" r="0.6" opacity=".3"/><circle cx="180" cy="38" r="0.5" opacity=".24"/></g>
+    <path d="M0 118 L44 100 L84 114 L128 96 L176 118 L224 102 L262 120 L300 108 L300 190 L0 190 Z" fill="#0c1f19" filter="url(#tc-soft)"/>
+    <path d="M0 138 L52 116 L96 132 L146 112 L198 134 L242 120 L300 140 L300 190 L0 190 Z" fill="#081712" filter="url(#tc-soft1)"/>
+    <path d="M0 160 L64 138 L116 154 L172 136 L230 156 L278 144 L300 152 L300 190 L0 190 Z" fill="#040d0a"/>
+    <rect y="104" width="300" height="86" fill="url(#tc-cityglow)"/>
     <g fill="#f0c878" filter="url(#tc-soft1)">
-      <circle cx="54" cy="146" r="1.2" opacity=".85"/><circle cx="88" cy="156" r="0.9" opacity=".55"/>
-      <circle cx="142" cy="148" r="1.1" opacity=".7"/><circle cx="198" cy="158" r="0.9" opacity=".6"/>
-      <circle cx="238" cy="150" r="1.2" opacity=".8"/><circle cx="120" cy="164" r="0.8" opacity=".45"/>
-      <circle cx="170" cy="168" r="0.9" opacity=".5"/><circle cx="266" cy="160" r="0.8" opacity=".5"/>
+      <circle cx="38" cy="128" r="1" opacity=".6"/><circle cx="54" cy="146" r="1.3" opacity=".9"/><circle cx="72" cy="138" r="0.9" opacity=".5"/>
+      <circle cx="88" cy="156" r="1" opacity=".6"/><circle cx="106" cy="146" r="0.9" opacity=".55"/><circle cx="122" cy="160" r="1" opacity=".5"/>
+      <circle cx="142" cy="148" r="1.2" opacity=".75"/><circle cx="158" cy="162" r="0.9" opacity=".5"/><circle cx="176" cy="152" r="1" opacity=".6"/>
+      <circle cx="198" cy="158" r="1" opacity=".65"/><circle cx="216" cy="146" r="0.9" opacity=".55"/><circle cx="238" cy="150" r="1.3" opacity=".85"/>
+      <circle cx="258" cy="162" r="0.9" opacity=".5"/><circle cx="276" cy="150" r="1" opacity=".6"/><circle cx="288" cy="166" r="0.8" opacity=".45"/>
     </g>
-    <path d="M-8 84 Q150 52 308 30" stroke="#5a9482" stroke-width="1.1" fill="none" opacity=".65" filter="url(#tc-soft1)"/>
+    <path d="M-8 78 Q150 44 308 24" stroke="#63a08c" stroke-width="1.2" fill="none" opacity=".7" filter="url(#tc-soft1)"/>
+    <path d="M-8 82 Q150 48 308 28" stroke="#2c5548" stroke-width="0.8" fill="none" opacity=".5" filter="url(#tc-soft1)"/>
+    <circle cx="150" cy="92" r="52" fill="url(#tc-cabhalo)"/>
     <g>
-      <path d="M150 62 L150 74" stroke="#14302a" stroke-width="2.6"/>
-      <path d="M143 66 L157 66 L150 59 Z" fill="#14302a"/>
-      <path d="M128 74 Q128 72 132 72 L168 72 Q172 72 172 74 L170 106 Q170 112 162 113 Q150 115 138 113 Q130 112 130 106 Z" fill="url(#tc-cabg)"/>
-      <path d="M128 74 Q128 72 132 72 L168 72 Q172 72 172 74" fill="none" stroke="#4a8a74" stroke-width="1" opacity=".6" filter="url(#tc-soft1)"/>
-      <rect x="135" y="80" width="30" height="13" rx="3" fill="#f2d488" opacity=".85" filter="url(#tc-soft1)"/>
-      <path d="M135 93 L165 93" stroke="#0a1e18" stroke-width="1" opacity=".5"/>
-      <ellipse cx="150" cy="120" rx="26" ry="7" fill="#f0c878" opacity=".1" filter="url(#tc-soft4)"/>
+      <path d="M150 56 L150 70" stroke="#1a3d33" stroke-width="3"/>
+      <path d="M141 61 L159 61 L150 53 Z" fill="#1a3d33"/>
+      <path d="M122 70 Q122 67 127 67 L173 67 Q178 67 178 70 L176 108 Q176 116 166 117.5 Q150 120 134 117.5 Q124 116 124 108 Z" fill="url(#tc-cabg)"/>
+      <path d="M122 70 Q122 67 127 67 L173 67 Q178 67 178 70" fill="none" stroke="#5aa88e" stroke-width="1.2" opacity=".75" filter="url(#tc-soft1)"/>
+      <rect x="130" y="76" width="40" height="17" rx="3.5" fill="#f2d488" opacity=".92" filter="url(#tc-soft1)"/>
+      <line x1="150" y1="76" x2="150" y2="93" stroke="#0a1e18" stroke-width="1.6" opacity=".65"/>
+      <line x1="130" y1="98" x2="170" y2="98" stroke="#5aa88e" stroke-width="0.8" opacity=".4"/>
+      <rect x="136" y="103" width="28" height="6" rx="3" fill="#0a1a15"/>
+      <ellipse cx="150" cy="126" rx="30" ry="8" fill="#f0c878" opacity=".12" filter="url(#tc-soft4)"/>
     </g>
-    <g opacity=".75" filter="url(#tc-soft1)">
-      <line x1="234" y1="46" x2="234" y2="54" stroke="#14302a" stroke-width="1.4"/>
-      <path d="M225 54 Q225 53 227 53 L241 53 Q243 53 243 54 L242 68 Q242 71 238 71.5 Q234 72.5 230 71.5 Q226 71 226 68 Z" fill="#0b1c16"/>
-      <rect x="229" y="57" width="10" height="5" rx="2" fill="#f2d488" opacity=".5"/>
+    <g opacity=".85" filter="url(#tc-soft1)">
+      <line x1="240" y1="40" x2="240" y2="49" stroke="#1a3d33" stroke-width="1.6"/>
+      <path d="M229 49 Q229 47.5 232 47.5 L248 47.5 Q251 47.5 251 49 L250 66 Q250 70 245 70.5 Q240 71.5 235 70.5 Q230 70 230 66 Z" fill="#0d211b"/>
+      <rect x="234" y="53" width="12" height="6" rx="2.5" fill="#f2d488" opacity=".6"/>
     </g>
-    <path d="M64 96 L64 142" stroke="#0e241d" stroke-width="5" opacity=".95"/>
-    <path d="M56 96 L72 96 L68 106 L60 106 Z" fill="#0e241d"/>
-    <rect width="300" height="190" fill="url(#tc-cityglow)" opacity=".3"/>
+    <g opacity=".6" filter="url(#tc-soft1)">
+      <line x1="62" y1="70" x2="62" y2="77" stroke="#1a3d33" stroke-width="1.2"/>
+      <path d="M54 77 Q54 76 56 76 L68 76 Q70 76 70 77 L69.5 90 Q69.5 93 66 93.5 Q62 94.3 58 93.5 Q54.5 93 54.5 90 Z" fill="#0c1e18"/>
+      <rect x="57" y="80" width="9" height="4.5" rx="2" fill="#f2d488" opacity=".45"/>
+    </g>
+    <path d="M96 88 L96 136" stroke="#102a22" stroke-width="5" opacity=".95"/>
+    <path d="M88 88 L104 88 L100 98 L92 98 Z" fill="#102a22"/>
+    <rect width="300" height="190" fill="url(#tc-cityglow)" opacity=".22"/>
   </svg>`;
 
   const VEHICLES_CARDS = [
@@ -268,7 +282,7 @@
     vScale = Math.min(1,
       (innerWidth - 48) / 560,
       (innerHeight - ctBottom - 70) / MAX_CARD_H);
-    vScale = Math.max(vScale, 0.55);
+    vScale = Math.max(vScale, window.innerWidth <= 720 ? 0.64 : 0.55);
     vCardEls.forEach((el, i) => {
       el.style.width  = VEHICLES_CARDS[i].w * vScale + 'px';
       el.style.height = VEHICLES_CARDS[i].h * vScale + 'px';
@@ -370,7 +384,7 @@
     const focus = progress * (n - 1);
     const idx = Math.max(0, Math.min(n-1, Math.round(focus)));
     const d = VEHICLES_CARDS[idx];
-    beatLabel.textContent = `${String(idx+1).padStart(2,'0')} — ${d.name}${d.em || ''}`;
+    beatLabel.textContent = `${d.name}${d.em || ''}`;
     const beatF = progress * n;
     segFills.forEach((f, i) => {
       f.style.transform = `scaleX(${Math.min(1, Math.max(0, beatF - i))})`;
@@ -381,7 +395,7 @@
        drift up to own the frame as it fades */
     const scyIdle   = Math.min(window.innerHeight * 0.65,
                                (ctBottom + window.innerHeight - 30) / 2 + MAX_CARD_H * vScale * 0.5 * 0.2);
-    const scyActive = window.innerHeight * 0.54;
+    const scyActive = window.innerHeight * (window.innerWidth <= 720 ? 0.5 : 0.54);
     const scyTarget = progress > 0.06 ? scyActive : scyIdle;
     scySmooth = scySmooth ? lerp(scySmooth, scyTarget, 0.08) : scyTarget;
     const scy = scySmooth;

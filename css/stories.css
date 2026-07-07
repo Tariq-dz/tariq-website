@@ -215,8 +215,8 @@ body.stories-active #sec-stories-dock-wrap { opacity: 1; pointer-events: auto; }
   scale: 1.32; /* extra stage presence without retuning every data size */
 }
 @media (min-width: 901px) {
-  /* Desktop frames are wider: scenes scale further to command the frame (C7) */
-  #s-stories .zscene { scale: 1.45; }
+  /* Desktop presence without invading the caption column (C8) */
+  #s-stories .zscene { scale: 1.34; }
   border: 1px solid rgba(255, 255, 255, .07);
   box-shadow: var(--shadow-card-lg),
     0 0 64px var(--dest-glow, rgba(var(--gold-rgb), .16));

@@ -1239,7 +1239,7 @@ function initScrollScene(destId, resetScroll) {
       if (beatIdx !== activeBeat) {
         activeBeat = beatIdx;
         const card = DESTINATIONS[centerId].cards[beatIdx];
-        DOM.beatLabel.textContent = `${card.num} — ${card.beat.split('/')[0].trim()}`;
+        DOM.beatLabel.textContent = card.beat.split('/')[0].trim();
         gsap.fromTo(DOM.beatLabel, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' });
       }
 

@@ -133,7 +133,7 @@
     onUpdate: (self) => {
       const local = self.progress;
       const idx = Math.min(n - 1, Math.floor(local * n));
-      progLbl.textContent = `0${idx + 1} — ${CHAPTER_LABELS[idx]}`;
+      progLbl.textContent = CHAPTER_LABELS[idx];
       segFills.forEach((f, i) => {
         const t = Math.min(1, Math.max(0, local * n - i));
         f.style.transform = `scaleX(${t})`;

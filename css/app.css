@@ -66,6 +66,10 @@
      screen inside the dark scene, not a daylight panel punched into it */
   filter: brightness(.62) contrast(1.05) sepia(.38) saturate(1.05);
 }
+/* Crop to the populated moment: the Home capture shows its search bar +
+   mode chips, not the empty lists below (C8 — no invented facts) */
+.phone-screen img.crop-top { object-position: center top; }
+
 /* Source-aware register: captures with light-mode UI get a heavier grade
    so every screen sits at the same low-light level as splash/wallet */
 .phone-screen img.light-src {
