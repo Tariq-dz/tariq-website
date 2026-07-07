@@ -37,8 +37,8 @@ body.stories-active #sec-stories-backdrop { opacity: 1; }
   content: '';
   position: absolute; left: 0; right: 0; bottom: 0;
   height: 46vh;
-  background: radial-gradient(ellipse 70% 62% at 50% 108%,
-    rgba(var(--gold-deep-rgb), .14), rgba(var(--gold-deep-rgb), .05) 55%, transparent 78%);
+  background: radial-gradient(ellipse 74% 66% at 50% 108%,
+    rgba(var(--gold-deep-rgb), .2), rgba(var(--gold-deep-rgb), .07) 55%, transparent 80%);
   pointer-events: none;
 }
 /* Destination color wash — GSAP sweeps it in on every destination switch */
@@ -213,6 +213,10 @@ body.stories-active #sec-stories-dock-wrap { opacity: 1; pointer-events: auto; }
   overflow: hidden;
   z-index: 1;
   scale: 1.32; /* extra stage presence without retuning every data size */
+}
+@media (min-width: 901px) {
+  /* Desktop frames are wider: scenes scale further to command the frame (C7) */
+  #s-stories .zscene { scale: 1.45; }
   border: 1px solid rgba(255, 255, 255, .07);
   box-shadow: var(--shadow-card-lg),
     0 0 64px var(--dest-glow, rgba(var(--gold-rgb), .16));
@@ -409,7 +413,9 @@ body.stories-active #sec-stories-dock-wrap { opacity: 1; pointer-events: auto; }
   text-align: center;
   pointer-events: none;
   will-change: opacity;
-  padding: 0 24px;
+  /* Lifted: the intro enters the first viewport after the hero instead of
+     sitting marooned at the fold (C7) */
+  padding: 0 24px 18vh;
   gap: 20px;
 }
 .stories-intro-eyebrow {

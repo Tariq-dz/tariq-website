@@ -32,7 +32,7 @@
     radial-gradient(ellipse 62% 26% at 50% 69%, rgba(200,130,20,.38), transparent 65%),
     linear-gradient(to bottom, #000 0%, #050403 58%, #140901 70%, #000 100%); }
   #sec-stories-wrapper { height: 100vh !important; }
-  #v-stage, #v-strip, #v-prog { display: none !important; }
+  #v-stage, #v-beat { display: none !important; }
   #s-vehicles { height: auto !important; min-height: 0 !important; padding: 120px 24px; }
   #v-center-text { position: relative !important; top: auto !important; left: auto !important;
     transform: none !important; margin: 0 auto; }
@@ -187,19 +187,16 @@
      SECTION 3 — VEHICLES
 ════════════════════════════════════════ -->
 <section id="s-vehicles">
-  <div id="v-word-top">Modes</div>
-  <div id="v-word-bottom">Transit</div>
   <div id="v-stage"></div>
   <div id="v-center-text">
     <div id="v-ct-eye">03 — Modes of transit</div>
     <h2 id="v-ct-head">Your city,<br><em>every line.</em></h2>
     <p id="v-ct-sub">Nine modes. One network. One app.</p>
   </div>
-  <div id="v-strip">
-    <div id="v-strip-name"></div>
-    <div id="v-strip-count"></div>
+  <div id="v-beat" aria-hidden="true">
+    <div id="v-beat-label"></div>
+    <div id="v-beat-segs"></div>
   </div>
-  <div id="v-prog"><div id="v-prog-fill"></div></div>
   <p class="nojs-modes">Metro (Lines 1–3) · Tramway · ETUSA Bus · Private Bus · Téléphérique · Télécabine · SNTF Train · Navette Maritime · Taxi</p>
 </section>
 
@@ -252,27 +249,21 @@
       </div>
 
       <div class="app-chapter flip" data-chapter="2">
-        <div class="phone"><div class="phone-screen"><img class="light-src" src="assets/app/02_map.jpg" alt="Tariq map of Algiers: search a destination, filter by mode" loading="lazy"></div></div>
+        <div class="app-duo">
+          <div class="phone"><div class="phone-screen"><img class="light-src" src="assets/app/02_map.jpg" alt="Tariq map of Algiers: search a destination, filter by mode" loading="lazy"></div></div>
+          <div class="phone phone-echo"><div class="phone-screen"><img class="light-src" src="assets/app/06_notifications.jpg" alt="Tariq trip alerts: ETA changes, vehicle arrivals, disruptions" loading="lazy"></div></div>
+        </div>
         <div class="app-chapter-text">
-          <div class="app-chapter-tag">02 — Plan</div>
-          <h3>Search like <em>you talk</em></h3>
-          <p>Type a place. Get a route — across the whole network.</p>
+          <div class="app-chapter-tag">02 — Plan &amp; Ride</div>
+          <h3>Type a place. <em>Ride it live.</em></h3>
+          <p>Search like you talk and get a route across the whole network — then the app keeps watch: ETA changes, vehicle arrivals, disruptions, door to last stop.</p>
         </div>
       </div>
 
       <div class="app-chapter" data-chapter="3">
-        <div class="phone"><div class="phone-screen"><img class="light-src" src="assets/app/06_notifications.jpg" alt="Tariq trip alerts: ETA changes, vehicle arrivals, disruptions" loading="lazy"></div></div>
-        <div class="app-chapter-text">
-          <div class="app-chapter-tag">03 — Ride</div>
-          <h3>Follow the route <em>live</em></h3>
-          <p>ETA changes, vehicle arrivals, disruptions — the app keeps watch from your door to the last stop.</p>
-        </div>
-      </div>
-
-      <div class="app-chapter flip" data-chapter="4">
         <div class="phone"><div class="phone-screen"><img src="assets/app/04_wallet.jpg" alt="Tariq wallet in Algerian dinars with CCP and CIB top-up" loading="lazy"></div></div>
         <div class="app-chapter-text">
-          <div class="app-chapter-tag">04 — Pay</div>
+          <div class="app-chapter-tag">03 — Pay</div>
           <h3>A wallet that speaks <em>DZD</em></h3>
           <p>Your balance, your tickets, your history — in dinars, where they belong. Top up in the app — built around how Algiers already pays, CCP and Carte Dahabia included.</p>
         </div>

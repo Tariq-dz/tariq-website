@@ -417,3 +417,76 @@ Both HIGHs and all MEDIUMs addressed. Cycle 7 convenes a fresh council
 (SHIP test #3) on this state. Hard cap after cycle 8.
 
 VERDICT: ITERATE
+
+---
+
+## Cycle 7 — 2026-07-07 (SHIP test #3)
+
+### Council reports (sweep: screenshots/council-7) — NOT SHIP
+
+**Critic A — Brand Director (opus):** page holds at macro level; hero/cities/waitlist premium.
+- [HIGH] Navette & Télécabine scene art reads as flat vector cartoons beside photographic renders (5th cycle flagged).
+- [MED] Light app screens (Home/Notifications/Profile) read as a different, cheaper product vs the dark wallet.
+- [MED] Desktop story beats under-filled — bottom ~55% of each frame is void.
+
+**Critic B — Continuity Director (sonnet):**
+- [HIGH] Hard seam Stories→Modes: the blue ambient wash stops dead against flat black (both viewports).
+- [MED] Three consecutive scrollytelling sections use three wayfinding languages; Modes' ghost-words + x/09 counter is a one-off module.
+
+**Critic C — Cold Eyes (opus):**
+- [HIGH] The middle third plateaus: four app chapters repeat one identical template beat; desire stalls before the CTA.
+- [MED] Hero→stories band still reads as dead/loading space (intro marooned low).
+- [MED] Pinned-scroll transition states expose overlap bleed-through.
+
+### Ruling — chosen moves
+1. **ONE WAYFINDING + SOFT SEAM** (B-HIGH + B-MED): dissolve the Stories→Modes
+   boundary (opaque-earlier, taller seam gradient); unify all pinned sections on
+   the label + dash-segment idiom — Modes drops the ghost words and x/09 counter
+   for a 9-segment bar.
+2. **ARC MOMENTUM** (C-HIGH + A-MED + C-MED): app walkthrough 4→3 chapters with a
+   differentiated dual-phone "Plan & Ride" beat and the dark wallet as climax;
+   story scenes scaled to command the desktop frame; stories intro lifted into
+   the first viewport after the hero.
+3. **MODE ART, PAINTERLY PASS** (A-HIGH): rebuild the two scenes in silhouette +
+   atmosphere language (SVG blur/glow, no outlined shapes). CHAIR'S NOTE: true
+   photographic-tier parity for Navette/Télécabine requires commissioned renders
+   — no such assets exist in the repo and fabricating photos is out of scope;
+   same applies to A's light-screen MED (needs real dark-mode app captures).
+   Both go on the founder asset list; this pass is the attainable ceiling.
+
+### Built
+1. **ONE WAYFINDING + SOFT SEAM** — Stories→Modes boundary now dissolves through
+   a taller, opaque-earlier gradient band (20vh); the Modes ghost-words
+   ("Modes"/"Transit") and x/09 strip/progress bar are retired for the shared
+   idiom: centered "NN — MODE" label + 9 dash segments, matching Stories and
+   The App exactly.
+2. **ARC MOMENTUM** — app walkthrough compressed 4→3 with a differentiated
+   dual-phone "02 — Plan & Ride" beat (map + live alerts staged as a pair) and
+   the dark wallet as the climax; wrapper 340vh→280vh; story scenes scale 1.45
+   on desktop (command the frame), backdrop horizon strengthened, intro lifted
+   18vh so it enters the first viewport after the hero.
+3. **MODE ART, PAINTERLY PASS** — both scenes rebuilt in silhouette + atmosphere
+   language (feGaussianBlur glows, moon halo + sea glade, hull/cabin as dark
+   masses with lit windows, city-glow floors; no outlined shapes). Reads
+   night-cinematic rather than vector-toy.
+   ASSET LIST FOR FOUNDER: (a) commissioned photo-tier renders for Navette
+   Maritime + Télécabine; (b) dark-mode captures of Home/Map/Notifications/
+   Profile from the real app — these two items are the remaining ceiling on
+   A's value findings and cannot be closed from the repo's assets.
+
+### Verify
+- Full re-sweep: screenshots/council-7-post (page 11081px desktop / 10588px
+  mobile); console errors: 0 desktop, 0 mobile.
+- Checked: seam dissolves (no hard cut at frame-005); modes wayfinding matches
+  the shared idiom; dual-phone beat + wallet climax read differentiated;
+  painterly scenes read cinematic; story arrival beat fills the upper frame.
+
+### Grades (chair, post-build)
+composition A · continuity A · value A- · mobile A-
+
+### Verdict
+All three cycle-7 HIGHs addressed within available assets. Cycle 8 is the
+final council under the hard cap: SHIP if all three critics return NO MACRO
+OFFENSE; otherwise CAPPED with the honest remainder list.
+
+VERDICT: ITERATE

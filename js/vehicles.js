@@ -5,91 +5,105 @@
   const NAVETTE_ART = `<svg viewBox="0 0 300 190" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;display:block">
     <defs>
       <linearGradient id="nv-sky" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#0a1e34"/><stop offset=".62" stop-color="#071527"/><stop offset="1" stop-color="#04101e"/>
+        <stop offset="0" stop-color="#0b2038"/><stop offset=".55" stop-color="#08172a"/><stop offset="1" stop-color="#050f1c"/>
       </linearGradient>
       <linearGradient id="nv-sea" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#0a1c30"/><stop offset="1" stop-color="#030a14"/>
+        <stop offset="0" stop-color="#0b1e33"/><stop offset="1" stop-color="#03090f"/>
       </linearGradient>
-      <radialGradient id="nv-moon" cx=".78" cy=".2" r=".5">
-        <stop offset="0" stop-color="rgba(232,224,200,.34)"/><stop offset=".35" stop-color="rgba(180,200,220,.1)"/><stop offset="1" stop-color="rgba(0,0,0,0)"/>
+      <linearGradient id="nv-hullg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#16283c"/><stop offset=".18" stop-color="#0b1826"/><stop offset="1" stop-color="#04090f"/>
+      </linearGradient>
+      <radialGradient id="nv-moonhalo" cx=".76" cy=".16" r=".42">
+        <stop offset="0" stop-color="rgba(226,232,238,.5)"/><stop offset=".2" stop-color="rgba(190,208,224,.16)"/><stop offset="1" stop-color="rgba(0,0,0,0)"/>
       </radialGradient>
-      <linearGradient id="nv-hull" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#1a2c40"/><stop offset="1" stop-color="#060d16"/>
+      <linearGradient id="nv-glade" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="rgba(216,226,236,.4)"/><stop offset=".6" stop-color="rgba(190,205,220,.12)"/><stop offset="1" stop-color="rgba(0,0,0,0)"/>
       </linearGradient>
+      <filter id="nv-soft" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="2.2"/></filter>
+      <filter id="nv-soft4" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="4.5"/></filter>
+      <filter id="nv-soft1" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="0.9"/></filter>
     </defs>
-    <rect width="300" height="112" fill="url(#nv-sky)"/>
-    <rect width="300" height="190" fill="url(#nv-moon)"/>
-    <circle cx="234" cy="38" r="9" fill="#e8e4d4" opacity=".85"/>
-    <circle cx="231" cy="35" r="9" fill="#0a1e34" opacity=".55"/>
-    <g fill="white"><circle cx="30" cy="24" r="0.9" opacity=".5"/><circle cx="74" cy="48" r="0.7" opacity=".35"/><circle cx="132" cy="18" r="0.8" opacity=".45"/><circle cx="187" cy="56" r="0.6" opacity=".3"/><circle cx="268" cy="72" r="0.7" opacity=".35"/><circle cx="52" cy="76" r="0.6" opacity=".3"/></g>
-    <rect y="112" width="300" height="78" fill="url(#nv-sea)"/>
-    <g stroke="#7ab0e0" stroke-width="1">
-      <line x1="18" y1="128" x2="66" y2="128" opacity=".28"/><line x1="210" y1="124" x2="288" y2="124" opacity=".38"/>
-      <line x1="60" y1="146" x2="130" y2="146" opacity=".22"/><line x1="196" y1="160" x2="252" y2="160" opacity=".16"/>
-      <line x1="24" y1="170" x2="90" y2="170" opacity=".12"/>
+    <rect width="300" height="110" fill="url(#nv-sky)"/>
+    <rect width="300" height="190" fill="url(#nv-moonhalo)"/>
+    <circle cx="228" cy="32" r="7.5" fill="#e6ecf2" filter="url(#nv-soft1)"/>
+    <g fill="white"><circle cx="34" cy="22" r="0.8" opacity=".4"/><circle cx="86" cy="44" r="0.6" opacity=".28"/><circle cx="140" cy="16" r="0.7" opacity=".35"/><circle cx="190" cy="58" r="0.5" opacity=".22"/><circle cx="272" cy="70" r="0.6" opacity=".3"/></g>
+    <path d="M0 104 L48 96 L92 102 L120 94 L150 100 L300 92 L300 112 L0 112 Z" fill="#071322" filter="url(#nv-soft)"/>
+    <g fill="#e8c060" filter="url(#nv-soft1)" opacity=".8">
+      <circle cx="22" cy="100" r="1.1"/><circle cx="56" cy="97" r="0.9"/><circle cx="104" cy="99" r="1"/><circle cx="128" cy="95" r="0.8"/><circle cx="284" cy="93" r="1"/>
+    </g>
+    <rect y="110" width="300" height="80" fill="url(#nv-sea)"/>
+    <path d="M212 112 L244 112 L238 176 L218 176 Z" fill="url(#nv-glade)" filter="url(#nv-soft4)"/>
+    <g stroke="#8fb4d8" filter="url(#nv-soft1)">
+      <line x1="20" y1="126" x2="72" y2="126" stroke-width="1.1" opacity=".22"/>
+      <line x1="196" y1="122" x2="290" y2="122" stroke-width="1.2" opacity=".3"/>
+      <line x1="56" y1="144" x2="128" y2="144" stroke-width="1" opacity=".16"/>
+      <line x1="184" y1="158" x2="262" y2="158" stroke-width="1" opacity=".12"/>
+      <line x1="30" y1="170" x2="96" y2="170" stroke-width="1" opacity=".09"/>
     </g>
     <g>
-      <path d="M60 118 L240 118 L226 138 Q150 144 74 138 Z" fill="url(#nv-hull)"/>
-      <path d="M60 118 L240 118 L237 122 L63 122 Z" fill="#2a4058" opacity=".8"/>
-      <rect x="92" y="96" width="116" height="22" rx="4" fill="#0d1a2a"/>
-      <rect x="92" y="96" width="116" height="3" rx="1.5" fill="#3a5a7a" opacity=".7"/>
-      <g fill="#f0d488">
-        <rect x="102" y="103" width="10" height="7" rx="2" opacity=".95"/><rect x="120" y="103" width="10" height="7" rx="2" opacity=".8"/>
-        <rect x="138" y="103" width="10" height="7" rx="2" opacity=".95"/><rect x="156" y="103" width="10" height="7" rx="2" opacity=".7"/>
-        <rect x="174" y="103" width="10" height="7" rx="2" opacity=".9"/><rect x="190" y="103" width="8" height="7" rx="2" opacity=".8"/>
+      <path d="M58 116 Q60 112 66 112 L112 112 L118 100 Q120 96 126 96 L182 96 Q198 96 214 104 L236 114 Q244 117 240 122 L228 136 Q224 141 214 142 Q150 148 84 141 Q72 140 66 132 Z" fill="url(#nv-hullg)"/>
+      <path d="M58 116 Q60 112 66 112 L112 112 L118 100 Q120 96 126 96 L182 96 Q198 96 214 104 L236 114" fill="none" stroke="#4a7096" stroke-width="1" opacity=".5" filter="url(#nv-soft1)"/>
+      <g filter="url(#nv-soft1)">
+        <rect x="128" y="102" width="7" height="5" rx="2" fill="#f2d488" opacity=".9"/>
+        <rect x="141" y="102" width="7" height="5" rx="2" fill="#f2d488" opacity=".75"/>
+        <rect x="154" y="102" width="7" height="5" rx="2" fill="#f2d488" opacity=".9"/>
+        <rect x="167" y="102" width="7" height="5" rx="2" fill="#f2d488" opacity=".65"/>
+        <rect x="180" y="102" width="7" height="5" rx="2" fill="#f2d488" opacity=".85"/>
+        <rect x="90" y="118" width="6" height="4" rx="2" fill="#e8c878" opacity=".55"/>
+        <rect x="104" y="118" width="6" height="4" rx="2" fill="#e8c878" opacity=".7"/>
+        <rect x="118" y="118" width="6" height="4" rx="2" fill="#e8c878" opacity=".5"/>
+        <rect x="132" y="118" width="6" height="4" rx="2" fill="#e8c878" opacity=".68"/>
       </g>
-      <rect x="130" y="80" width="34" height="16" rx="3" fill="#122238"/>
-      <rect x="134" y="84" width="12" height="7" rx="2" fill="#f0d488" opacity=".9"/>
-      <line x1="170" y1="80" x2="170" y2="66" stroke="#2a4058" stroke-width="2"/>
-      <circle cx="170" cy="64" r="2.4" fill="#ffd878" opacity=".95"/>
+      <circle cx="124" cy="90" r="1.8" fill="#ffd878" filter="url(#nv-soft1)"/>
+      <line x1="124" y1="90" x2="124" y2="96" stroke="#1a2c40" stroke-width="1.4"/>
+      <path d="M84 148 Q150 156 216 148 L212 158 Q150 165 88 158 Z" fill="#e8c878" opacity=".08" filter="url(#nv-soft4)"/>
     </g>
-    <g>
-      <rect x="104" y="142" width="9" height="4" rx="2" fill="#c8a860" opacity=".4"/>
-      <rect x="140" y="150" width="12" height="4" rx="2" fill="#c8a860" opacity=".3"/>
-      <rect x="176" y="144" width="9" height="4" rx="2" fill="#c8a860" opacity=".35"/>
-    </g>
-    <path d="M50 138 Q40 132 30 138 M250 138 Q262 130 274 136" stroke="#5a86b0" stroke-width="1" fill="none" opacity=".4"/>
+    <path d="M46 132 Q34 126 22 132 M252 128 Q266 121 280 127" stroke="#5a86b0" stroke-width="1" fill="none" opacity=".3" filter="url(#nv-soft1)"/>
   </svg>`;
   const TELECABINE_ART = `<svg viewBox="0 0 300 190" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;display:block">
     <defs>
-      <linearGradient id="tc-sky2" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#0a2622"/><stop offset=".6" stop-color="#071a17"/><stop offset="1" stop-color="#04100e"/>
+      <linearGradient id="tc-sky3" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#0b2a24"/><stop offset=".55" stop-color="#081c18"/><stop offset="1" stop-color="#04100d"/>
       </linearGradient>
-      <linearGradient id="tc-cab" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#1c3833"/><stop offset="1" stop-color="#081412"/>
+      <linearGradient id="tc-cabg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#1a352e"/><stop offset=".2" stop-color="#0e211c"/><stop offset="1" stop-color="#060f0c"/>
       </linearGradient>
-      <radialGradient id="tc-mist" cx=".5" cy=".82" r=".65">
-        <stop offset="0" stop-color="rgba(120,200,180,.16)"/><stop offset=".55" stop-color="rgba(80,150,130,.06)"/><stop offset="1" stop-color="rgba(0,0,0,0)"/>
+      <radialGradient id="tc-cityglow" cx=".5" cy="1" r=".8">
+        <stop offset="0" stop-color="rgba(240,200,110,.2)"/><stop offset=".4" stop-color="rgba(200,160,80,.07)"/><stop offset="1" stop-color="rgba(0,0,0,0)"/>
       </radialGradient>
+      <filter id="tc-soft" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="2.2"/></filter>
+      <filter id="tc-soft1" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="0.9"/></filter>
+      <filter id="tc-soft4" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="5"/></filter>
     </defs>
-    <rect width="300" height="190" fill="url(#tc-sky2)"/>
-    <g fill="white"><circle cx="42" cy="30" r="0.8" opacity=".45"/><circle cx="108" cy="16" r="0.6" opacity=".3"/><circle cx="205" cy="26" r="0.9" opacity=".5"/><circle cx="262" cy="54" r="0.6" opacity=".3"/><circle cx="26" cy="72" r="0.7" opacity=".35"/><circle cx="286" cy="14" r="0.7" opacity=".4"/></g>
-    <rect width="300" height="190" fill="url(#tc-mist)"/>
-    <path d="M0 148 L46 122 L88 140 L132 118 L178 142 L216 126 L258 146 L300 130 L300 190 L0 190 Z" fill="#081613" opacity=".5"/>
-    <path d="M0 162 L60 140 L110 156 L168 138 L224 158 L272 144 L300 154 L300 190 L0 190 Z" fill="#050f0d"/>
-    <g fill="#f0d488">
-      <rect x="52" y="150" width="2.6" height="2.6" rx="0.6" opacity=".8"/><rect x="84" y="158" width="2.2" height="2.2" rx="0.6" opacity=".55"/>
-      <rect x="140" y="152" width="2.6" height="2.6" rx="0.6" opacity=".7"/><rect x="196" y="162" width="2.2" height="2.2" rx="0.6" opacity=".6"/>
-      <rect x="236" y="154" width="2.6" height="2.6" rx="0.6" opacity=".75"/><rect x="118" y="166" width="2" height="2" rx="0.5" opacity=".45"/>
+    <rect width="300" height="190" fill="url(#tc-sky3)"/>
+    <g fill="white"><circle cx="46" cy="26" r="0.7" opacity=".4"/><circle cx="112" cy="14" r="0.5" opacity=".26"/><circle cx="208" cy="22" r="0.8" opacity=".45"/><circle cx="266" cy="50" r="0.5" opacity=".26"/><circle cx="28" cy="68" r="0.6" opacity=".3"/></g>
+    <path d="M0 132 L52 108 L96 126 L146 104 L198 128 L242 112 L300 134 L300 190 L0 190 Z" fill="#0a1a15" filter="url(#tc-soft)"/>
+    <path d="M0 156 L64 134 L116 150 L172 132 L230 152 L278 140 L300 148 L300 190 L0 190 Z" fill="#040d0a"/>
+    <rect y="120" width="300" height="70" fill="url(#tc-cityglow)"/>
+    <g fill="#f0c878" filter="url(#tc-soft1)">
+      <circle cx="54" cy="146" r="1.2" opacity=".85"/><circle cx="88" cy="156" r="0.9" opacity=".55"/>
+      <circle cx="142" cy="148" r="1.1" opacity=".7"/><circle cx="198" cy="158" r="0.9" opacity=".6"/>
+      <circle cx="238" cy="150" r="1.2" opacity=".8"/><circle cx="120" cy="164" r="0.8" opacity=".45"/>
+      <circle cx="170" cy="168" r="0.9" opacity=".5"/><circle cx="266" cy="160" r="0.8" opacity=".5"/>
     </g>
-    <line x1="-8" y1="86" x2="308" y2="34" stroke="#4a8a7a" stroke-width="1.4" opacity=".75"/>
+    <path d="M-8 84 Q150 52 308 30" stroke="#5a9482" stroke-width="1.1" fill="none" opacity=".65" filter="url(#tc-soft1)"/>
     <g>
-      <line x1="150" y1="63" x2="150" y2="76" stroke="#2c5248" stroke-width="3"/>
-      <path d="M150 63 L142 70 L158 70 Z" fill="#2c5248"/>
-      <rect x="126" y="76" width="48" height="38" rx="9" fill="url(#tc-cab)"/>
-      <rect x="126" y="76" width="48" height="3.5" rx="1.75" fill="#4a8a7a" opacity=".9"/>
-      <rect x="133" y="84" width="34" height="15" rx="4" fill="#f0d488" opacity=".9"/>
-      <rect x="133" y="84" width="34" height="15" rx="4" fill="none" stroke="#0a1e1a" stroke-width="1" opacity=".6"/>
-      <line x1="150" y1="84" x2="150" y2="99" stroke="#0a1e1a" stroke-width="1.4" opacity=".7"/>
-      <rect x="126" y="108" width="48" height="6" rx="3" fill="#0a1a16"/>
+      <path d="M150 62 L150 74" stroke="#14302a" stroke-width="2.6"/>
+      <path d="M143 66 L157 66 L150 59 Z" fill="#14302a"/>
+      <path d="M128 74 Q128 72 132 72 L168 72 Q172 72 172 74 L170 106 Q170 112 162 113 Q150 115 138 113 Q130 112 130 106 Z" fill="url(#tc-cabg)"/>
+      <path d="M128 74 Q128 72 132 72 L168 72 Q172 72 172 74" fill="none" stroke="#4a8a74" stroke-width="1" opacity=".6" filter="url(#tc-soft1)"/>
+      <rect x="135" y="80" width="30" height="13" rx="3" fill="#f2d488" opacity=".85" filter="url(#tc-soft1)"/>
+      <path d="M135 93 L165 93" stroke="#0a1e18" stroke-width="1" opacity=".5"/>
+      <ellipse cx="150" cy="120" rx="26" ry="7" fill="#f0c878" opacity=".1" filter="url(#tc-soft4)"/>
     </g>
-    <g opacity=".8">
-      <line x1="236" y1="49" x2="236" y2="57" stroke="#2c5248" stroke-width="1.6"/>
-      <rect x="226" y="57" width="20" height="16" rx="4" fill="#0c1c18"/>
-      <rect x="229" y="60" width="14" height="6" rx="2" fill="#f0d488" opacity=".55"/>
+    <g opacity=".75" filter="url(#tc-soft1)">
+      <line x1="234" y1="46" x2="234" y2="54" stroke="#14302a" stroke-width="1.4"/>
+      <path d="M225 54 Q225 53 227 53 L241 53 Q243 53 243 54 L242 68 Q242 71 238 71.5 Q234 72.5 230 71.5 Q226 71 226 68 Z" fill="#0b1c16"/>
+      <rect x="229" y="57" width="10" height="5" rx="2" fill="#f2d488" opacity=".5"/>
     </g>
-    <line x1="42" y1="79" x2="42" y2="146" stroke="#12312a" stroke-width="4" opacity=".9"/>
-    <path d="M34 79 L50 79 L46 88 L38 88 Z" fill="#12312a" opacity=".9"/>
+    <path d="M64 96 L64 142" stroke="#0e241d" stroke-width="5" opacity=".95"/>
+    <path d="M56 96 L72 96 L68 106 L60 106 Z" fill="#0e241d"/>
+    <rect width="300" height="190" fill="url(#tc-cityglow)" opacity=".3"/>
   </svg>`;
 
   const VEHICLES_CARDS = [
@@ -169,9 +183,8 @@
   };
 
   const stage = document.getElementById('v-stage');
-  const stripName  = document.getElementById('v-strip-name');
-  const stripCount = document.getElementById('v-strip-count');
-  const progFill   = document.getElementById('v-prog-fill');
+  const beatLabel = document.getElementById('v-beat-label');
+  const beatSegs  = document.getElementById('v-beat-segs');
 
   const vCardEls = VEHICLES_CARDS.map((d) => {
     const el = document.createElement('div');
@@ -226,6 +239,16 @@
     el.appendChild(body);
     stage.appendChild(el);
     return el;
+  });
+
+  const segFills = VEHICLES_CARDS.map(() => {
+    const seg = document.createElement('div');
+    seg.className = 'v-seg';
+    const fill = document.createElement('span');
+    fill.className = 'v-seg-fill';
+    seg.appendChild(fill);
+    beatSegs.appendChild(seg);
+    return fill;
   });
 
   let vmx = 0.5, vmy = 0.5, coastVel = 0, fingerDown = false, prevDiag = 0, tiltSmooth = 0;
@@ -347,9 +370,11 @@
     const focus = progress * (n - 1);
     const idx = Math.max(0, Math.min(n-1, Math.round(focus)));
     const d = VEHICLES_CARDS[idx];
-    stripName.textContent = d.name + (d.em || '');
-    stripCount.textContent = `${String(idx+1).padStart(2,'0')} / ${String(n).padStart(2,'0')}`;
-    progFill.style.width = (progress * 100) + '%';
+    beatLabel.textContent = `${String(idx+1).padStart(2,'0')} — ${d.name}${d.em || ''}`;
+    const beatF = progress * n;
+    segFills.forEach((f, i) => {
+      f.style.transform = `scaleX(${Math.min(1, Math.max(0, beatF - i))})`;
+    });
 
     const scx = window.innerWidth / 2;
     /* Stage center: below the headline while it shows, then the cards
