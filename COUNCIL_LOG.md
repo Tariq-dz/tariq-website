@@ -555,3 +555,138 @@ painterly night scenes; zero console errors and 390px parity throughout.
 5. Rider selector as people (avatars/roles vs icons) — small design decision.
 
 VERDICT: CAPPED
+
+---
+
+## Cycle 9 — 2026-07-07 (SPECIAL: transition-focused, post-CAP)
+
+Founder reopened the loop for one boundary-only cycle. Machinery unchanged, but
+critics judged ONLY the section seams. New dedicated seam close-ups added
+(`scripts/seam-shots.js` → context + tight closeup band per seam, both viewports).
+
+### Sweep
+- Full: screenshots/council-9 (22 shots/viewport, 0 console errors).
+- Seams: screenshots/council-9/seams (6 seams × context+closeup × desktop+mobile).
+
+### Council reports (sweep: screenshots/council-9/seams)
+
+**Critic A — Brand Director (opus):** seams 1/2/4/6 hold at value level.
+- [HIGH] seam-3 modes→app: full-viewport near-black void; value collapses, reads as idle template scroll not an earned cut.
+- [MED] seam-3 exit device: modes exits on a utilitarian dashed "TAXI/NAVETTE/TÉLÉCABINE" scrubber — app-widget voice, cheapest component in its richest section.
+- [MED] seam-5 cities→close: hard rectangular card-cut → void → cold-lit CTA (module-stack join); eyebrow also drops the section number every prior seam carried.
+
+**Critic B — Continuity Director (sonnet):**
+- [HIGH] seam-2 stories→modes: starfield gradient hard-clips on a crisp line, Modes opens on flat black (seam-1 proves the smooth falloff exists).
+- [HIGH] seam-3 modes→app: reel goes to true dead black + dust; ~500px desktop, ~half-viewport mobile — a hole in the reel.
+- [MED] seam-5 (echoed seam-6): hard content edge → void → arc-glow ignites cold, section "restarts" instead of continuing the shot.
+- [MED] eyebrow/arc-dash idiom resets identically at every seam — the strongest "deck of sections" tell (structural, not color).
+
+**Critic C — Cold Eyes (opus):**
+- [HIGH] seam-3 modes→app: pagination bar (reads as finished) then a full screen of nothing — the strongest "did the page end?" moment.
+- [HIGH] every seam: identical opener (fade→gold "NN —" eyebrow→two-line serif headline→caption); predictable by seam 3, kills forward pull.
+- [MED] seam-6 close→footer: double-ending — waitlist CTA, dead band, then a second finale; dilutes the one CTA that matters.
+- [MED] seam-1 hero→stories: tall empty band on the highest-stakes first scroll.
+
+### Conflict flagged for founder
+A wants the seam-5 eyebrow NUMBER RESTORED (more cadence); B & C want the eyebrow
+template BROKEN (less uniformity). Same component, opposite directions.
+
+### RULE (chair) — 3 macro moves chosen
+1. Rebuild modes→app (seam 3): kill the void, stage a light/motion crescendo into
+   the app reveal, restyle the scrubber into editorial voice. [A-HIGH, B-HIGH, C-HIGH, A-MED]
+2. Break the copy-paste opener: no two consecutive seams share the same
+   eyebrow+headline silhouette. [C-HIGH, B-MED] — resolves the conflict toward "break".
+3. Carry light across the cuts: feather hard edges + bleed each section's glow out
+   of the content above, at seams 2/5/6. [B-HIGH, A-MED, B-MED, C-MED]
+Deferred: seam-1 first-scroll void [C-MED] — partly dissolves once move 2 lets
+content overlap that boundary.
+
+### Status: RULED — awaiting founder greenlight on scope + eyebrow conflict before BUILD.
+
+### Founder decision (2026-07-07)
+- Eyebrow conflict: BREAK the template (B+C). Keep seam-4 "— 04 — THE APP" as the single anchor; vary/inline/drop the rest. Strict numbering abandoned.
+- Scope: build all 3 moves, then re-sweep. Status: BUILDING.
+
+### BUILD (cycle 9) — all CSS + eyebrow text; no JS logic touched
+**Move 1 — modes→app void:** `.seam-vehicles-app` 12vh→8vh, now a LIT breath
+  (warm floor glow + a centered gold thread bridging the cut); `#app-intro`
+  lifted from dead-center to the top third (justify flex-start + top padding),
+  killing the ~380px empty black above the lockup. Chair note: the shared
+  progress-rail idiom (Critic A's "cheap scrubber" MED) was NOT fragmented —
+  it's a deliberate prior-council unification; the void fix removes the "exits
+  into nothing" problem A actually reacted to.
+**Move 2 — break the opener template (founder: BREAK):** four distinct opener
+  silhouettes, numbers stripped except the app anchor —
+  Stories = BARE (no rules); Modes = RULE-BELOW; App = "— 04 — THE APP —"
+  DOUBLE-RULE (anchor, kept per founder); Cities = RULE-ABOVE; Close =
+  DOUBLE-RULE (shares .app-eyebrow, non-adjacent); Footer = BARE. No two
+  consecutive openers share a silhouette.
+**Move 3 — carry light across cuts:** seam-2 starts fully transparent so the
+  tinted stories backdrop bleeds in (crisp clip line gone) + modes top-wall
+  softened .85→.5; seam-5 warm feather under the card row + close top-glow
+  lifted to the edge so it rises out of the cities cards; seam-6 warm
+  continuation glow through the close→footer cut.
+
+### VERIFY (sweep: screenshots/council-9-post + /seams)
+- Console errors: 0 desktop, 0 mobile (only Playwright WebGL readback warnings).
+- scrollHeight 11081→11074px (no layout regression); 390px parity intact.
+- Self-review (chair, all seams desktop+mobile): seam-3 void now a lit warm
+  breath w/ thread, app arrival composed (intro at top third); openers all
+  distinct silhouettes; seam-2 blue dissolves smoothly (no clip line); seam-5
+  warm-connected; seam-6 warmth carries through. Mobile seam-3 lit too.
+- Deferred (founder call): double-ending at close→footer (C-MED) — left as-is;
+  footer is an intentional whisper (cycle 5), doesn't compete with the CTA.
+  Seam-1 first-scroll void (C-MED) — untouched this cycle.
+
+### Status: BUILT + VERIFIED (chair self-review). Awaiting founder judgment on the
+post-sweep; fresh 3-critic verification council NOT yet convened (optional).
+
+### VERIFICATION COUNCIL (fresh, sweep: screenshots/council-9-final/seams) — NOT SHIP
+**Critic A — Brand (opus):** 3 MED — (1) THE APP & EARLY ACCESS share the
+  double-rule anchor silhouette (close inherits .app-eyebrow), diluting the
+  reserved hero beat; (2) close→footer still stacks two near-equal serif
+  climaxes; (3) seam-5 warm light carries on mobile but not desktop. Seams
+  1/2/3/4 "earned, continuous" to A.
+**Critic B — Continuity (sonnet):** 2 HIGH + 1 MED — (1) seam-1 hero→stories:
+  warm sunset → total blackout → cool blue nebula, the one cut with no lit
+  bridge (both viewports); (2) seam-4 app→cities desktop: app arc hard-clips,
+  brightness zeros before Cities vignette; (3) seam-4 mobile: flat black cuts
+  into Cities warm panel on a hard horizontal line. Seams 2/3/5/6 clean.
+**Critic C — Cold Eyes (opus):** 1 MED-HIGH + 1 MED, both MOBILE — (1) seam-6:
+  dead band after JOIN THE WAITLIST; scroller concludes at the CTA, never
+  reaches the closing line; (2) seam-1: first-scroll payoff still arrives late.
+  Seams 2/3/4/5 hold momentum.
+
+### RULE (chair) — cycle-9b tightening pass (all MED except seam-1/seam-4 HIGH)
+1. Seam-1: bridge the warm→cool blackout with light (warm ember carried down +
+   faint cool lead-in to the nebula); raise the stories payoff sooner (mobile).
+2. Seam-4: warm ember bridge through app→cities so brightness never zeros;
+   soften the mobile Cities panel top edge.
+3. Seam-6: demote .footer-head to brand-stamp scale (CTA is the sole climax);
+   tighten the post-CTA gap on mobile.
+4. Opener collision: split the close eyebrow off .app-eyebrow's double-rule →
+   BARE, so The App keeps the sole anchor.
+5. Seam-5: carry the warm breath into the immediate post-card gap on desktop.
+
+### VERIFY (cycle 9b — sweep: screenshots/council-9b + /seams)
+- Console errors: 0 desktop, 0 mobile. Mobile scrollHeight 10532→10378px
+  (close→footer zone tightened); desktop 11038→11065px.
+- Chair self-review, all seams both viewports:
+  · seam-1: sunset ember → gold thread → richer/earlier blue nebula → payoff;
+    the warm→cool blackout is now a lit bridge (mobile middle still a touch
+    dark — down from HIGH to minor).
+  · seam-4: warm light carries continuously app-floor → gap → Cities vignette,
+    desktop hard-clip gone; mobile hard line softened by the warm bridge.
+  · seam-6: footer headline demoted to brand-stamp; mobile CTA→tagline gap
+    pulled tight, no dead stall; warm arc carries down.
+  · opener collision resolved: close eyebrow now BARE → The App holds the sole
+    double-rule anchor. Openers: bare · rule-below · double-rule(anchor) ·
+    rule-above · bare · (footer none) — no two consecutive alike.
+  · seam-5: warm breath now carries in the post-card gap on desktop too.
+
+### Grades (chair, cycle 9)
+composition A · continuity A · value A- · mobile A-
+
+VERDICT: ITERATE — all verification-council findings addressed and chair-verified
+on the council-9b sweep. A formal fresh SHIP council (all-three NO MACRO OFFENSE
+on 9b) was NOT re-run this turn; founder to decide whether to convene it or ship.

@@ -413,22 +413,19 @@ body.stories-active #sec-stories-dock-wrap { opacity: 1; pointer-events: auto; }
   text-align: center;
   pointer-events: none;
   will-change: opacity;
-  /* Lifted: the intro enters the first viewport after the hero instead of
-     sitting marooned at the fold (C7) */
-  padding: 0 24px 18vh;
+  /* Lifted higher (cycle 9 — seam-1 first-scroll void): the intro rewards the
+     first scroll off the hero sooner instead of sitting low behind a dark band. */
+  padding: 0 24px 26vh;
   gap: 20px;
 }
+/* Opener silhouette: BARE kicker — no flanking rules, no number.
+   First of four distinct section-opener forms (transition council, cycle 9). */
 .stories-intro-eyebrow {
   font-family: var(--font-sans);
   font-size: var(--fs-micro); font-weight: 600;
-  letter-spacing: var(--ls-eyebrow); text-transform: uppercase;
+  letter-spacing: 0.42em; text-transform: uppercase;
   color: var(--gold-dim);
-  display: flex; align-items: center; gap: 14px;
-}
-.stories-intro-eyebrow::before,
-.stories-intro-eyebrow::after {
-  content: ''; width: 28px; height: 1px;
-  background: var(--gold-dim); opacity: 0.6;
+  padding-left: 0.42em; /* balance the trailing letter-spacing */
 }
 .stories-intro-head {
   font-family: var(--font-display);

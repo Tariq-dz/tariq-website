@@ -12,7 +12,9 @@
   content: '';
   position: absolute; inset: 0;
   background:
-    linear-gradient(to bottom, rgba(10, 8, 6, .85) 0%, rgba(10, 8, 6, .35) 12%, rgba(10, 8, 6, 0) 30%),
+    /* Softer top: modes no longer opens on a flat black wall; the seam-2
+       dissolve carries into a gentle darkening instead (cycle 9). */
+    linear-gradient(to bottom, rgba(10, 8, 6, .5) 0%, rgba(10, 8, 6, .22) 14%, rgba(10, 8, 6, 0) 32%),
     radial-gradient(circle at 50% 50%,
       rgba(255,255,255,.025) 0%,
       rgba(255,255,255,.01)  35%,
@@ -138,13 +140,16 @@
   display: flex; flex-direction: column; align-items: center;
   width: max-content; max-width: 92vw;
 }
+/* Opener silhouette: RULE-BELOW — label over a short centered underline.
+   Distinct from Stories (bare) above it and The App (double-rule) below it. */
 #v-ct-eye {
   font-family: var(--font-sans); font-size: var(--fs-micro); font-weight: 600;
   letter-spacing: var(--ls-eyebrow); text-transform: uppercase; color: var(--gold-dim);
   margin-bottom: 16px;
-  display: flex; align-items: center; gap: 14px;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  padding-left: var(--ls-eyebrow);
 }
-#v-ct-eye::before, #v-ct-eye::after { content: ''; width: 28px; height: 1px; background: var(--gold-dim); opacity: 0.6; }
+#v-ct-eye::after { content: ''; width: 42px; height: 1px; background: var(--gold-dim); opacity: 0.6; }
 #v-ct-head {
   font-family: var(--font-display);
   font-size: var(--fs-h2); font-weight: 600;

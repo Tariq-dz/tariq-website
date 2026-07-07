@@ -116,13 +116,17 @@
 .app-ghost .phone { box-shadow: 0 24px 60px rgba(0, 0, 0, .5); }
 
 /* ─── Section intro (chapter 0) ────────────────── */
+/* Lifted out of dead-center: the intro now enters near the top of the app
+   viewport so arriving from the modes seam lands on content, not ~380px of
+   empty black above a centered lockup (cycle 9 — the void's app-side half).
+   The ghost phones (top:50%) and floor glow fill the space below. */
 #app-intro {
   position: absolute; inset: 0;
   display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
+  align-items: center; justify-content: flex-start;
   text-align: center;
   gap: 20px;
-  padding: 0 24px;
+  padding: clamp(104px, 17vh, 200px) 24px 0;
   z-index: 3;
 }
 .app-eyebrow {
@@ -270,8 +274,10 @@
   background:
     radial-gradient(ellipse 62% 46% at 50% 108%,
       rgba(var(--gold-deep-rgb), .18), rgba(var(--gold-deep-rgb), .06) 55%, transparent 78%),
-    radial-gradient(ellipse 45% 60% at 50% 20%,
-      rgba(var(--gold-rgb), .05), transparent 65%);
+    /* Top glow lifted to the very edge so the close's warmth appears to rise
+       out of the cities cards above, not ignite cold at the CTA (cycle 9). */
+    radial-gradient(ellipse 58% 52% at 50% -5%,
+      rgba(var(--gold-rgb), .10), transparent 60%);
   pointer-events: none;
 }
 #s-close::after {
@@ -296,6 +302,16 @@
     rgba(var(--gold-rgb), .06), transparent 65%);
   pointer-events: none;
 }
+/* Close opener = BARE (no rules), so The App keeps the SOLE double-rule anchor;
+   two openers must not share the anchor silhouette (cycle 9b — seam-3/5). */
+#app-waitlist .app-eyebrow {
+  gap: 0;
+  letter-spacing: 0.42em;
+  padding-left: 0.42em;
+}
+#app-waitlist .app-eyebrow::before,
+#app-waitlist .app-eyebrow::after { display: none; }
+
 #app-waitlist h2 {
   font-family: var(--font-display);
   font-size: var(--fs-h3);
