@@ -2,6 +2,7 @@
 *.md
 !AUDIT.md
 !COHERENCE_LOG.md
+!CLAUDE.md
 docs/
 preview/
 ui_kits/
