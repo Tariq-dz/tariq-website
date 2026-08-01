@@ -35,6 +35,9 @@ prompt = (
 print(f"Calling Claude to triage issue #{ISSUE_NUMBER}...")
 result = subprocess.run(["claude", "-p", prompt], capture_output=True, text=True)
 
+print(f"Exit code: {result.returncode}")
+if result.stdout:
+    print("stdout:", result.stdout[:3000])
 if result.stderr:
     print("stderr:", result.stderr[:3000], file=sys.stderr)
 if result.returncode != 0:
