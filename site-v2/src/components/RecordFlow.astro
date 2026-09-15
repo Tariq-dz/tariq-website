@@ -1,0 +1,40 @@
+---
+// The honest diagram: tap → signed record → operator view. No fake dashboard.
+interface Props { variant?: 'compact' | 'full'; class?: string }
+const { variant = 'full', class: cls } = Astro.props;
+const nodes = [
+  { title: 'Tap on board', text: 'A card or a phone at the terminal. The fare was on screen before the tap.' },
+  { title: 'Signed record', text: 'The tap is recorded and signed on the terminal, so it cannot be quietly changed later.' },
+  { title: 'Operator view', text: 'Records are designed to reach the operator, who can see the service that ran and show it to the city.' },
+];
+---
+
+<ol class:list={['flow', `flow--${variant}`, cls]} role="list">
+  {nodes.map((n) => (
+    <li class="flow__node">
+      <span class="flow__dot" aria-hidden="true"></span>
+      <p class="flow__title">{n.title}</p>
+      {variant === 'full' && <p class="flow__text">{n.text}</p>}
+    </li>
+  ))}
+</ol>
+
+<style>
+  .flow { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-5); position: relative; }
+  .flow::before {
+    content: ''; position: absolute; left: 7px; right: calc(33.33% - 7px); top: 7px; height: 2px;
+    background: var(--c-gold); transform-origin: left center;
+  }
+  .flow__node { position: relative; display: grid; gap: var(--s-2); align-content: start; }
+  .flow__dot { width: 16px; height: 16px; border-radius: 50%; background: var(--bg, var(--c-paper)); border: 2px solid var(--c-gold); position: relative; z-index: 1; margin-bottom: var(--s-3); }
+  .flow__node:last-child .flow__dot { background: var(--c-gold); }
+  .flow__title { font-weight: 620; font-stretch: 108%; font-size: var(--fs-h3); line-height: 1.15; letter-spacing: -0.01em; }
+  .flow__text { color: var(--fg-muted); max-width: 30ch; }
+  .flow--compact .flow__title { font-size: 1rem; }
+  .flow--compact { gap: var(--s-3); }
+  @media (max-width: 719px) {
+    .flow--full { grid-template-columns: 1fr; gap: var(--s-6); padding-left: var(--s-7); }
+    .flow--full::before { left: 7px; right: auto; top: 8px; bottom: calc(100% - 3.2em); width: 2px; height: auto; }
+    .flow--full .flow__dot { position: absolute; left: calc(-1 * var(--s-7)); top: 4px; margin: 0; }
+  }
+</style>

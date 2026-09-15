@@ -1,0 +1,244 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PhoneFrame from '../components/PhoneFrame.astro';
+import LeadForm from '../components/LeadForm.astro';
+import { Image } from 'astro:assets';
+import homeStill from '../assets/app/home.png';
+import notifications from '../assets/app/notifications.png';
+import searchField from '../assets/app/search-field.png';
+import topupStill from '../assets/app/topup.png';
+
+const modes = ['Bus (ETUSA and private)', 'Metro', 'Tram', 'Train (SNTF)', 'Cable car', 'Ferry', 'Taxi'];
+---
+
+<BaseLayout
+  title="The app"
+  description="The Tariq passenger app, in development for Android: plan across modes, see departures near you, pay from a DZD wallet, keep receipts, and ask Tariq AI. Free; you pay only your fares."
+  waitlistHref="#waitlist"
+>
+  <!-- Hero -->
+  <section class="ahero" aria-labelledby="ahero-title">
+    <div class="container ahero__grid">
+      <div class="ahero__copy">
+        <h1 class="display" id="ahero-title">Plan it. Pay for it. Ride.</h1>
+        <p class="lead">The Tariq passenger app is in development, Android first. It’s free; you pay only your fares.</p>
+        <div class="ahero__cta">
+          <a class="btn btn--primary" href="#waitlist">Join the waitlist</a>
+        </div>
+        <p class="fine">App screens come from a demo recording.</p>
+      </div>
+      <div class="ahero__phones">
+        <PhoneFrame still={topupStill} label="Top-up confirmed: plus 1 000 DA, new balance 15 340 DA" class="ahero__phone ahero__phone--back" eager />
+        <PhoneFrame clip="home" label="The app home screen: nearby departures, the DZD wallet and recent trips" class="ahero__phone ahero__phone--front" eager />
+      </div>
+    </div>
+  </section>
+
+  <!-- Plan across modes -->
+  <section class="feat feat--dark section surface-slate" aria-labelledby="plan-title">
+    <div class="container feat__grid">
+      <div class="feat__copy">
+        <h2 class="h2" id="plan-title" data-reveal>One search, across modes.</h2>
+        <p class="lead" data-reveal>Choose the fastest route, the one with the fewest transfers, or the cheapest. Each option shows its time and its fare.</p>
+        <ul class="chips" role="list" data-reveal>
+          {modes.map((m) => <li>{m}</li>)}
+        </ul>
+      </div>
+      <div class="feat__art" data-reveal>
+        <PhoneFrame clip="route" label="Route results to the Casbah of Algiers, then the route on the map and each step: walk to Soummam, bus 98 towards Place des Martyrs" class="feat__phone" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Departures and map -->
+  <section class="duo section cv" style="--cv-size: 900px" aria-labelledby="near-title">
+    <div class="container">
+      <div class="duo__head">
+        <h2 class="h2" id="near-title" data-reveal>See departures near you.</h2>
+        <p class="lead" data-reveal>Nearby departures, your wallet and your recent trips, on one screen.</p>
+      </div>
+      <div class="duo__phones">
+        <figure class="duo__item" data-reveal>
+          <PhoneFrame still={homeStill} label="Home screen with nearby departures from Bab Ezzouar, Dar El Beida and El Harrach Centre, and a wallet balance" />
+          <figcaption>Nearby departures, your wallet, your recent trips.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wallet -->
+  <section class="feat feat--flip section cv" style="--cv-size: 800px" aria-labelledby="wallet-title">
+    <div class="container feat__grid">
+      <div class="feat__art" data-reveal>
+        <PhoneFrame still={topupStill} label="Top-up confirmed: plus 1 000 DA, new balance 15 340 DA" class="feat__phone" />
+      </div>
+      <div class="feat__copy">
+        <h2 class="h2" id="wallet-title" data-reveal>A wallet in dinars.</h2>
+        <p class="lead" data-reveal>Top up with EDAHABIA or CIB through Chargily Pay, then pay your fares from the balance.</p>
+        <p class="body" data-reveal>Every top-up, trip and refund stays in the wallet’s history.</p>
+        <p class="fine" data-reveal>Amounts shown come from a demo account. Fares are illustrative.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trips + notifications -->
+  <section class="bento section cv" style="--cv-size: 900px" aria-label="Trips and notifications">
+    <div class="container bento__grid">
+      <article class="bento__cell bento__cell--trips" data-reveal>
+        <div class="bento__text">
+          <h2 class="h3">Trips, receipts, ratings and complaints.</h2>
+          <p class="body">Every trip keeps its receipt. Rate the ride, or file a complaint if it went wrong.</p>
+        </div>
+        <PhoneFrame clip="trip" label="Rating a completed trip with five stars" class="bento__phone" />
+      </article>
+      <article class="bento__cell bento__cell--notes surface-graphite" data-reveal>
+        <div class="bento__text">
+          <h2 class="h3">Trip alerts, disruptions, low balance.</h2>
+          <p class="body">Switch each one on or off in the app.</p>
+        </div>
+        <PhoneFrame still={notifications} label="Notification settings: trip updates, disruptions, low balance, promotions" class="bento__phone" />
+      </article>
+    </div>
+  </section>
+
+  <!-- Tariq AI -->
+  <section class="ai section surface-graphite cv" style="--cv-size: 900px" aria-labelledby="ai-title">
+    <div class="container ai__grid">
+      <div class="ai__head">
+        <h2 class="h2" id="ai-title" data-reveal>Tariq AI. Your Algiers guide.</h2>
+        <p class="lead" data-reveal>Built into the app. Ask it to plan your day, find places near you, or file a complaint for you.</p>
+        <ul class="chips chips--dark" role="list" data-reveal>
+          <li>“Plan my day”</li><li>“Rush hour now?”</li><li>“Places near me”</li><li>“File a complaint”</li>
+        </ul>
+      </div>
+      <div class="ai__phones">
+        <figure class="ai__item" data-reveal>
+          <PhoneFrame clip="ai-dayplan" label="Tariq AI day plan for the Casbah: five places on the map, a transport budget, and four reminders being scheduled" />
+          <figcaption>A day planned, with a budget and reminders.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- English and Arabic -->
+  <section class="lang section cv" style="--cv-size: 700px" aria-labelledby="lang-title">
+    <div class="container lang__grid">
+      <div class="lang__copy">
+        <h2 class="h2" id="lang-title" data-reveal>In English and Arabic.</h2>
+        <p class="lead" data-reveal>The app works in English and <span class="ar" lang="ar">العربية</span>. Even its search field says it in both.</p>
+        <p class="lang__ar ar" lang="ar" dir="rtl" data-reveal>إلى أين؟</p>
+      </div>
+      <figure class="lang__art" data-reveal>
+        <Image src={searchField} alt="The app’s search field: “Where are you going?” with the Arabic placeholder إلى أين؟ beside it" widths={[searchField.width]} class="lang__field" style={`max-width:${searchField.width}px`} />
+        <figcaption class="fine">The app’s own search field, from the demo recording.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Waitlist -->
+  <section class="join section surface-slate cv" style="--cv-size: 600px" id="waitlist" aria-labelledby="join-title">
+    <div class="container">
+      <div class="join__panel">
+        <div class="join__head">
+          <h2 class="h2" id="join-title">Be first on the app.</h2>
+          <p class="lead">We’ll write once, when the Android app is ready to install.</p>
+        </div>
+        <LeadForm kind="waitlist" id="app-waitlist" />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* one pace for this page: sections sit closer than the site default */
+  :global(main .section) { padding-block: calc(var(--section-pad) * 0.7); }
+  .ahero { background: var(--c-paper); padding-block: clamp(40px, 6vw, 88px) var(--s-8); overflow: hidden; }
+  .ahero__grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: var(--s-7); align-items: center; }
+  .ahero__copy { display: grid; gap: var(--s-5); }
+  .ahero .display { max-width: 10ch; }
+  .ahero__phones { position: relative; aspect-ratio: 1 / 0.92; }
+  .ahero__phone { position: absolute; width: 40%; }
+  .ahero__phone--back { left: 8%; top: 0; }
+  .ahero__phone--front { right: 8%; bottom: 0; }
+  @media (max-width: 899px) {
+    .ahero__grid { grid-template-columns: 1fr; }
+    .ahero__phones { aspect-ratio: 1 / 1.3; }
+    .ahero__phone { width: 52%; }
+    .ahero__phone--back { left: 0; }
+    .ahero__phone--front { right: 0; }
+  }
+
+  .feat { background: var(--c-paper); }
+  .feat--flip { background: var(--c-paper); }
+  .feat--dark { background: var(--bg); color: var(--fg); }
+  .feat--dark .chips li { background: rgb(255 255 255 / 0.06); border-color: rgb(255 255 255 / 0.16); color: var(--c-cream); }
+  .feat__grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: var(--s-8); align-items: center; }
+  .feat__art .feat__phone { max-width: 360px; }
+  .feat__copy { display: grid; gap: var(--s-5); }
+  .feat__copy .h2 { max-width: 13ch; }
+  .feat__art { display: grid; justify-items: center; }
+  .feat__phone { width: min(360px, 80%); }
+  .feat__art--pair { grid-template-columns: 1fr 1fr; gap: var(--s-5); align-items: start; }
+  .feat__art--pair .feat__phone { width: 100%; max-width: 280px; }
+  .feat__phone--second { margin-top: 18%; }
+  @media (max-width: 899px) {
+    .feat__grid { grid-template-columns: 1fr; gap: var(--s-7); }
+    .feat--flip .feat__art { order: 2; }
+  }
+
+  .chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-2); }
+  .chips li { padding: 8px 14px; border-radius: var(--r-pill); background: var(--c-white); border: 1px solid var(--line); font-size: var(--fs-small); font-weight: 520; }
+  .chips--dark { gap: var(--s-2) var(--s-5); }
+  .chips--dark li { background: none; border: 0; padding: 0; font-size: var(--fs-lead); font-style: italic; color: var(--c-cream); }
+
+  .duo { background: var(--c-paper); }
+  .duo__head { display: grid; gap: var(--s-4); margin-bottom: var(--s-8); text-align: center; justify-items: center; }
+  .duo__head .lead { max-width: 40ch; }
+  .duo__phones { display: flex; justify-content: center; gap: clamp(20px, 5vw, 80px); }
+  .duo__item { width: min(360px, 80%); display: grid; gap: var(--s-4); }
+  .duo__item--low { margin-top: clamp(40px, 8vw, 120px); }
+  .duo__item figcaption { font-size: var(--fs-small); color: var(--fg-muted); text-align: center; }
+
+  .bento { background: var(--c-paper); }
+  .bento__grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--s-5); }
+  .bento__cell { border-radius: var(--r-panel); padding: clamp(24px, 3vw, 40px); display: grid; gap: var(--s-5); align-content: space-between; background: var(--c-white); }
+  .bento__text { display: grid; gap: var(--s-3); max-width: 36ch; }
+  .bento__cell--notes { background: var(--bg); color: var(--fg); }
+  .bento__phone { width: min(300px, 80%); justify-self: center; max-height: 380px; overflow: hidden; -webkit-mask-image: linear-gradient(#000 72%, transparent); mask-image: linear-gradient(#000 72%, transparent); }
+  @media (max-width: 899px) { .bento__grid { grid-template-columns: 1fr; } }
+
+  .ai__grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-8); align-items: center; }
+  .ai__head { display: grid; gap: var(--s-5); }
+  @media (max-width: 899px) { .ai__grid { grid-template-columns: 1fr; } }
+  .ai__head .h2 { max-width: 14ch; }
+  .ai__head .lead { max-width: 44ch; }
+  .ai__phones { display: flex; justify-content: center; gap: clamp(20px, 6vw, 96px); }
+  .ai__item { width: min(360px, 80%); display: grid; gap: var(--s-4); }
+  .ai__item--low { margin-top: clamp(40px, 8vw, 120px); }
+  .ai__item figcaption { font-size: var(--fs-small); color: var(--c-mist); text-align: center; }
+
+  .lang { background: var(--c-paper); }
+  .lang__grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--s-8); align-items: center; }
+  .lang__copy { display: grid; gap: var(--s-5); }
+  .lang__ar { font-size: clamp(2.4rem, 1.6rem + 2.6vw, 4rem); font-weight: 600; color: var(--c-gold-deep); line-height: 1.3; justify-self: start; }
+  .lang__art { display: grid; gap: var(--s-3); justify-items: start; margin: 0; }
+  .lang__field { width: 100%; height: auto; border-radius: var(--r-sm); box-shadow: 0 18px 40px -18px rgb(20 18 14 / 0.35); }
+  @media (max-width: 899px) { .lang__grid { grid-template-columns: 1fr; gap: var(--s-7); } }
+
+  .join { background: var(--bg); }
+  .join__panel { border-top: 2px solid var(--c-gold); padding-top: clamp(28px, 4vw, 56px); display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-7); align-items: start; }
+  .join__head { display: grid; gap: var(--s-4); }
+  @media (max-width: 899px) { .join__panel { grid-template-columns: 1fr; } }
+  /* A3: one full-bleed typographic band. The question the search field asks, set across the whole width behind a centred stack. */
+  .lang { position: relative; overflow: clip; }
+  .lang::before {
+    content: 'إلى أين؟'; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    font-family: 'IBM Plex Sans Arabic', sans-serif; font-weight: 600; font-size: clamp(7rem, 26vw, 24rem); line-height: 1; white-space: nowrap;
+    color: rgb(200 160 96 / 0.13); pointer-events: none; direction: rtl;
+  }
+  .lang__grid { position: relative; grid-template-columns: minmax(0, 1fr); justify-items: center; text-align: center; gap: var(--s-6); }
+  .lang__copy { justify-items: center; }
+  .lang__copy .lead { margin-inline: auto; }
+  .lang__ar { display: none; }
+  .lang__art { justify-items: center; }
+</style>

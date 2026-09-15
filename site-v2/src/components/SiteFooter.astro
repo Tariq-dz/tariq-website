@@ -1,0 +1,50 @@
+---
+import { Image } from 'astro:assets';
+import mark from '../assets/brand/mark.png';
+import { NAV, SITE, SMALL_PRINT } from '../config';
+---
+
+<footer class="site-footer surface-graphite cv" style="--cv-size: 520px">
+  <div class="container site-footer__inner">
+    <div class="site-footer__brand">
+      <Image src={mark} alt="Tariq" width={96} height={Math.round(96 * mark.height / mark.width)} class="site-footer__mark" />
+      <p class="site-footer__lockup">
+        <span class="wordmark" translate="no">Tariq</span>
+        <span class="ar" lang="ar" translate="no">طريق</span>
+      </p>
+      <p class="site-footer__line">Public transit, navigable and accountable.</p>
+    </div>
+
+    <nav class="site-footer__nav" aria-label="Footer">
+      <ul role="list">
+        <li><a href="/">Home</a></li>
+        {NAV.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+        <li><a href="/#waitlist">Join the waitlist</a></li>
+      </ul>
+    </nav>
+
+    <div class="site-footer__legal">
+      <p class="site-footer__designed">Designed in Algeria.</p>
+      <p class="small-print" data-small-print>{SMALL_PRINT}</p>
+      <p class="fine">© {SITE.year} {SITE.company}</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer { background: var(--bg); color: var(--fg); padding-block: var(--s-9) var(--s-7); }
+  .site-footer__inner { display: grid; grid-template-columns: 1.2fr 1fr 1.2fr; gap: var(--s-7); align-items: start; }
+  .site-footer__mark { width: 56px; height: auto; }
+  .site-footer__lockup { display: flex; align-items: baseline; gap: var(--s-3); margin-top: var(--s-4); font-size: 1.125rem; }
+  .site-footer__lockup .wordmark { letter-spacing: 0.3em; }
+  .site-footer__lockup .ar { font-weight: 600; font-size: 1.25rem; color: var(--c-gold); }
+  .site-footer__line { margin-top: var(--s-2); color: var(--fg-muted); }
+  .site-footer__nav ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-1); }
+  .site-footer__nav a { display: inline-flex; min-height: 40px; align-items: center; color: var(--fg); text-decoration: none; }
+  .site-footer__nav a:hover { color: var(--c-gold); }
+  .site-footer__designed { font-weight: 600; font-stretch: 108%; margin-bottom: var(--s-3); }
+  .site-footer__legal .fine { margin-top: var(--s-4); }
+  @media (max-width: 859px) {
+    .site-footer__inner { grid-template-columns: 1fr; gap: var(--s-6); }
+  }
+</style>

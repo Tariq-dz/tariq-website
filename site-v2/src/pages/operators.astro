@@ -1,0 +1,137 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+import persp from '../assets/terminal/persp-tight.png';
+import SignedRecord from '../components/SignedRecord.astro';
+import RecordFlow from '../components/RecordFlow.astro';
+import LeadForm from '../components/LeadForm.astro';
+import { SMALL_PRINT } from '../config';
+
+const tools = [
+  { title: 'Complaint triage.', text: 'Designed so riders file complaints from the app, tied to the trip they took, and operators triage them in one place.' },
+  { title: 'Disruption alerts.', text: 'Designed so operators can warn riders about line suspensions, delays and service changes.' },
+  { title: 'Refunds.', text: 'Designed to return a refund to the rider’s wallet, where it shows in the history.' },
+];
+---
+
+<BaseLayout
+  title="For operators and cities"
+  description="The Tariq terminal is designed to turn every tap into a signed record, so operators and cities can see the service that actually ran, and prove it. Installed and maintained by Tariq."
+>
+  <!-- Hero -->
+  <section class="ohero surface-slate" aria-labelledby="ohero-title">
+    <div class="container ohero__grid">
+      <div class="ohero__copy">
+        <h1 class="display" id="ohero-title">Every journey, accounted for.</h1>
+        <p class="lead">The Tariq terminal is designed to turn every tap into a signed record, so operators and cities can see the service that actually ran, and prove it.</p>
+        <div class="ohero__cta">
+          <a class="btn btn--primary" href="#contact">Talk to us</a>
+        </div>
+      </div>
+      <div class="ohero__visual">
+        <Image src={persp} alt="The Tariq terminal on its pole, seen at an angle: display, printer and gold tap ring" widths={[480, 760, 990]} sizes="(max-width: 899px) 90vw, 600px" class="ohero__render render-fade" loading="eager" fetchpriority="high" style={`max-width:${persp.width}px`} />
+        <p class="small-print ohero__fine">{SMALL_PRINT}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- What the records show -->
+  <section class="see section" aria-labelledby="see-title">
+    <div class="container see__grid">
+      <h2 class="h2" id="see-title" data-reveal>A record for every tap, signed where it happened.</h2>
+      <div class="see__body">
+        <p class="lead" data-reveal>Each record carries the line, the stops, the fare and the time of a tap. The terminal is designed to sign each record, so it can stand as proof.</p>
+        <p class="body" data-reveal>Together, the records show which trips ran and what was collected, in a form an operator can share with the city.</p>
+        <SignedRecord class="see__record" />
+      </div>
+    </div>
+    <div class="container see__flow" data-reveal>
+      <RecordFlow variant="full" />
+    </div>
+  </section>
+
+  <!-- Design intent -->
+  <section class="zero section surface-graphite" aria-labelledby="zero-title">
+    <div class="container zero__grid">
+      <h2 class="h2" id="zero-title" data-reveal>An empty bus is not a switched-off terminal.</h2>
+      <div class="zero__body">
+        <p class="lead" data-reveal>The terminal is designed to keep reporting even when nobody boards.</p>
+        <p class="lead" data-reveal>It is designed to flag when it is switched off or tampered with.</p>
+        <p class="body" data-reveal>So you can tell an empty route from a switched-off terminal.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tools -->
+  <section class="tools section" aria-labelledby="tools-title">
+    <div class="container">
+      <h2 class="h2 tools__title" id="tools-title" data-reveal>Built for the people who run the network.</h2>
+      <ol class="tools__list" role="list">
+        {tools.map((t) => (
+          <li class="tools__item" data-reveal>
+            <h3 class="h3">{t.title}</h3>
+            <p class="body">{t.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="contact section surface-slate" id="contact" aria-labelledby="contact-title">
+    <div class="container contact__grid">
+      <div class="contact__head">
+        <h2 class="h2" id="contact-title">Bring Tariq to your network.</h2>
+        <p class="lead">For transport operators, cities and the teams that run a network. Tell us who you are and what you run.</p>
+        <p class="body">The terminal is designed to be installed and maintained by Tariq, as a service.</p>
+      </div>
+      <LeadForm kind="contact" id="ops-contact" />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .ohero { padding-block: clamp(40px, 6vw, 88px) var(--s-6); overflow: hidden; }
+  .ohero__grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-7); align-items: center; }
+  .ohero__copy { display: grid; gap: var(--s-5); }
+  .ohero .display { max-width: 14ch; font-size: clamp(2.5rem, min(1.3rem + 4vw, 9vh), 4.6rem); }
+  .ohero__cta { display: flex; gap: var(--s-3); margin-top: var(--s-2); }
+  .ohero__visual { position: relative; display: grid; justify-items: center; }
+  .ohero__render { width: 100%; height: auto; }
+  .ohero__fine { margin-top: var(--s-3); text-align: center; }
+  @media (max-width: 899px) {
+    .ohero__grid { grid-template-columns: 1fr; gap: var(--s-6); }
+    .ohero__render { width: 88%; }
+  }
+
+  .see { background: var(--c-paper); }
+  .see__grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: var(--s-8); align-items: start; }
+  .see__grid .h2 { max-width: 16ch; }
+  .see__body { display: grid; gap: var(--s-5); padding-top: var(--s-2); }
+  .see__record { max-width: 380px; margin-top: var(--s-2); }
+  .see__flow { margin-top: var(--s-9); }
+  @media (max-width: 899px) { .see__grid { grid-template-columns: 1fr; gap: var(--s-5); } .see__flow { margin-top: var(--s-8); } }
+
+  .zero__grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: var(--s-8); align-items: start; }
+  .zero__grid .h2 { max-width: 14ch; }
+  .zero__body { display: grid; gap: var(--s-5); }
+  .zero__body .lead { color: var(--c-cream); }
+  @media (max-width: 899px) { .zero__grid { grid-template-columns: 1fr; gap: var(--s-6); } }
+
+  .tools { background: var(--c-paper); }
+  .tools__title { max-width: 16ch; margin-bottom: var(--s-8); }
+  .tools__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 2px solid var(--c-graphite); }
+  .tools__item { display: grid; gap: var(--s-3); align-content: start; padding: var(--s-5) var(--s-5) 0 0; }
+  .tools__item + .tools__item { padding-left: var(--s-5); border-left: 1px solid var(--line); }
+  @media (max-width: 899px) {
+    .tools__list { grid-template-columns: 1fr; }
+    .tools__item, .tools__item + .tools__item { padding: var(--s-5) 0; border-left: 0; border-bottom: 1px solid var(--line); }
+  }
+
+  .svc { background: var(--c-paper); }
+  .svc__inner { display: grid; gap: var(--s-5); max-width: 780px; }
+
+  .contact__grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-8); align-items: start; }
+  .contact__head { display: grid; gap: var(--s-4); }
+  @media (max-width: 899px) { .contact__grid { grid-template-columns: 1fr; gap: var(--s-6); } }
+</style>

@@ -1,0 +1,144 @@
+---
+// Click through the terminal's real screens: idle → destination → payment → tap → OK and ticket.
+import TerminalFace from './TerminalFace.astro';
+import { SMALL_PRINT } from '../config';
+
+const steps = [
+  { id: 'idle', label: 'Waiting', text: 'The terminal waits with the Tariq mark on screen, ready for the next rider.' },
+  { id: 'dest', label: 'Destination', text: 'Choose your destination. The fare is shown before you tap.' },
+  { id: 'pay', label: 'Payment', text: 'Pay with a card or with a phone.' },
+  { id: 'tap', label: 'Tap', text: 'One tap. Hold the card or the phone to the gold ring.' },
+  { id: 'ok', label: 'On your way', text: 'The screen turns green, and the ticket prints: your receipt for the ride.' },
+];
+---
+
+<section class="sflow section" aria-labelledby="sflow-title" data-sflow>
+  <div class="container sflow__grid">
+    <div class="sflow__copy">
+      <h2 class="h2" id="sflow-title" data-reveal>Step through a ride.</h2>
+      <p class="lead" data-reveal>These are the terminal’s own screens, in the order a rider sees them.<span class="sflow__hint"> Click through them at your own pace.</span></p>
+      <div class="sflow__progress">
+        <p class="sflow__count"><span class="num" data-sflow-count>Step 1 of {steps.length}</span><span class="sflow__count-label" data-sflow-label>{steps[0].label}</span></p>
+        <div class="sflow__rail" aria-hidden="true">
+          {steps.map((_, i) => <span class:list={['sflow__seg', { 'is-done': i === 0 }]} data-sflow-seg></span>)}
+        </div>
+      </div>
+      <ol class="sflow__steps" role="list">
+        {steps.map((s, i) => (
+          <li>
+            <button type="button" class="sflow__btn" data-sflow-step={s.id} aria-pressed={i === 0 ? 'true' : 'false'}>
+              <span class="sflow__n num" aria-hidden="true">{i + 1}</span><span class="sflow__label">{s.label}</span>
+            </button>
+          </li>
+        ))}
+      </ol>
+      <p class="sflow__text body" aria-live="polite" data-sflow-text>{steps[0].text}</p>
+      <div class="sflow__nav">
+        <button type="button" class="btn" data-sflow-next>Next step <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></button>
+        <button type="button" class="btn" data-sflow-reset hidden>Start again</button>
+      </div>
+      <ol class="sflow__track" role="list" data-sflow-track>
+        {steps.map((s, i) => (
+          <li class:list={['sflow__beat', { 'is-active': i === 0 }]} data-sflow-beat={i}>
+            <p class="sflow__beat-label"><span class="num" aria-hidden="true">{i + 1}</span>{s.label}</p>
+            <p class="sflow__beat-text">{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+    <div class="sflow__stage surface-slate">
+      <TerminalFace screens={['idle', 'dest', 'pay', 'tap', 'ok']} ticket sizes="(max-width: 899px) 88vw, 640px" />
+      <p class="small-print sflow__fine">{SMALL_PRINT}</p>
+    </div>
+  </div>
+  <script type="application/json" data-sflow-copy set:html={JSON.stringify(Object.fromEntries(steps.map((s) => [s.id, s.text])))} />
+</section>
+
+<style>
+  .sflow { background: var(--c-paper); }
+  .sflow__grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-8); align-items: center; }
+  .sflow__copy { display: grid; gap: var(--s-5); align-content: start; }
+  .sflow__steps { list-style: none; margin: var(--s-2) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-2); }
+  .sflow__btn {
+    display: inline-flex; align-items: center; gap: var(--s-2); min-height: 48px; padding: 0 var(--s-4) 0 var(--s-2);
+    border-radius: var(--r-pill); border: 1.5px solid var(--line); background: var(--c-white); color: var(--fg);
+    font-weight: 560; cursor: pointer; transition: border-color var(--dur-1) var(--ease-out), background-color var(--dur-1) var(--ease-out);
+  }
+  .sflow__btn:hover { border-color: var(--fg-muted); }
+  .sflow__btn[aria-pressed='true'] { background: var(--c-graphite); color: var(--c-cream); border-color: var(--c-graphite); }
+  .sflow__n { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--c-gold-tint); color: var(--c-gold-ink); font-size: 0.9375rem; font-weight: 640; }
+  .sflow__btn[aria-pressed='true'] .sflow__n { background: var(--c-gold); color: var(--c-graphite); }
+  .sflow__progress { display: grid; gap: var(--s-2); margin-top: var(--s-2); }
+  .sflow__count { margin: 0; display: flex; align-items: baseline; gap: var(--s-2); font-weight: 600; color: var(--fg); }
+  .sflow__count-label { color: var(--accent-text); }
+  .sflow__count-label::before { content: '·'; margin-right: var(--s-2); color: var(--fg-muted); }
+  .sflow__rail { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; max-width: 420px; }
+  .sflow__seg { height: 4px; border-radius: 2px; background: var(--line); position: relative; overflow: hidden; }
+  .sflow__seg::after { content: ''; position: absolute; inset: 0; background: var(--c-gold); transform: scaleX(0); transform-origin: left; transition: transform var(--dur-2) var(--ease-out); }
+  .sflow__seg.is-done::after { transform: scaleX(1); }
+  @media (prefers-reduced-motion: reduce) { .sflow__seg::after { transition: none; } }
+  /* narrow screens: five equal number buttons in one row; the active label is in the counter above */
+  @media (max-width: 560px) {
+    .sflow__steps { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--s-2); }
+    .sflow__btn { justify-content: center; padding: 0; min-height: 52px; border-radius: var(--r-sm); width: 100%; }
+    .sflow__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .sflow__rail { max-width: none; }
+  }
+  /* A4: desktop with motion, the step-through is driven by scroll in the home ride's grammar (sticky stage, beats scroll past) */
+  .sflow__track { display: none; list-style: none; margin: 0; padding: 0; }
+  .sflow__beat { min-height: 40vh; padding-block: 7vh; }
+  .sflow__beat:last-child { padding-bottom: 30vh; }
+  .sflow__beat-label { margin: 0; display: flex; align-items: baseline; gap: var(--s-3); font-size: var(--fs-h3); font-weight: 620; font-stretch: 108%; color: var(--c-ink-muted); transition: color var(--dur-2) var(--ease-out); }
+  .sflow__beat-label .num { color: var(--c-ink-muted); transition: color var(--dur-2) var(--ease-out); }
+  .sflow__beat-text { margin: var(--s-2) 0 0; max-width: 34ch; font-size: var(--fs-lead); color: var(--c-ink-muted); transition: color var(--dur-2) var(--ease-out); }
+  .sflow__beat.is-active .sflow__beat-label, .sflow__beat.is-active .sflow__beat-text { color: var(--c-graphite); }
+  .sflow__beat.is-active .sflow__beat-label .num { color: var(--c-gold-deep); }
+  @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+    :global(.js) .sflow__grid { align-items: start; }
+    :global(.js) .sflow__steps, :global(.js) .sflow__text, :global(.js) .sflow__nav, :global(.js) .sflow__hint { display: none; }
+    :global(.js) .sflow__track { display: block; }
+    :global(.js) .sflow__progress { position: sticky; top: calc(var(--header-h) + 16px); z-index: 1; background: var(--c-paper); padding-block: var(--s-3); }
+    :global(.js) .sflow__stage { position: sticky; top: calc(var(--header-h) + 32px); }
+  }
+  .sflow__text { min-height: 3.2em; font-size: var(--fs-lead); color: var(--fg); }
+  .sflow__nav { display: flex; gap: var(--s-3); flex-wrap: wrap; }
+  .sflow__stage { border-radius: var(--r-panel); padding: clamp(20px, 3vw, 40px); }
+  .sflow__fine { margin: var(--s-4) 0 0; }
+  @media (max-width: 899px) { .sflow__grid { grid-template-columns: 1fr; gap: var(--s-6); } .sflow__stage { order: -1; } }
+</style>
+
+<script>
+  import '../scripts/sflow-scroll';
+  document.querySelectorAll<HTMLElement>('[data-sflow]').forEach((root) => {
+    const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-sflow-step]')];
+    const face = root.querySelector<HTMLElement>('.tface');
+    const text = root.querySelector<HTMLElement>('[data-sflow-text]');
+    const next = root.querySelector<HTMLButtonElement>('[data-sflow-next]');
+    const reset = root.querySelector<HTMLButtonElement>('[data-sflow-reset]');
+    const count = root.querySelector<HTMLElement>('[data-sflow-count]');
+    const label = root.querySelector<HTMLElement>('[data-sflow-label]');
+    const segs = [...root.querySelectorAll<HTMLElement>('[data-sflow-seg]')];
+    const copy = JSON.parse(root.querySelector('[data-sflow-copy]')?.textContent || '{}') as Record<string, string>;
+    const ids = buttons.map((b) => b.dataset.sflowStep!);
+    let index = 0;
+
+    const show = (i: number) => {
+      index = i;
+      const id = ids[i];
+      buttons.forEach((b, k) => b.setAttribute('aria-pressed', String(k === i)));
+      face?.querySelectorAll<HTMLElement>('[data-screen]').forEach((img) => img.classList.toggle('is-active', img.dataset.screen === id));
+      face?.classList.toggle('is-printed', id === 'ok');
+      if (text) text.textContent = copy[id] || '';
+      if (count) count.textContent = `Step ${i + 1} of ${ids.length}`;
+      if (label) label.textContent = buttons[i].querySelector('.sflow__label')?.textContent || '';
+      segs.forEach((s, k) => s.classList.toggle('is-done', k <= i));
+      const last = i === ids.length - 1;
+      if (next) next.hidden = last;
+      if (reset) reset.hidden = !last;
+    };
+    buttons.forEach((b, i) => b.addEventListener('click', () => show(i)));
+    root.addEventListener('sflow:show', (e) => show((e as CustomEvent<number>).detail));
+    next?.addEventListener('click', () => show(Math.min(index + 1, ids.length - 1)));
+    reset?.addEventListener('click', () => { show(0); buttons[0].focus(); });
+  });
+</script>

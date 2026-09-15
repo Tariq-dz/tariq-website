@@ -1,0 +1,109 @@
+---
+// Rider waitlist or operator/city contact. Front-end only: posts JSON to FORM_ENDPOINT (src/config.ts).
+import { CITIES, FORM_ENDPOINT } from '../config';
+
+interface Props { kind: 'waitlist' | 'contact'; id: string; variant?: 'default' | 'pass' }
+const { kind, id, variant = 'default' } = Astro.props;
+const p = (name: string) => `${id}-${name}`;
+---
+
+<div class:list={['lead', `lead--${kind}`, { 'lead--pass': variant === 'pass' }]}>
+  <form class="lead__form" data-lead-form={kind} novalidate>
+    <input type="hidden" name="form" value={kind} />
+    {kind === 'contact' && (
+      <>
+        <div class="field">
+          <label for={p('name')}>Your name</label>
+          <input id={p('name')} name="name" type="text" autocomplete="name" required data-required="Tell us who we are writing back to." aria-describedby={p('name-err')} />
+          <p class="field__error" id={p('name-err')} data-error-for="name" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for={p('org')}>Organisation</label>
+          <input id={p('org')} name="organisation" type="text" autocomplete="organization" required data-required="Tell us which organisation you are with." aria-describedby={p('org-err')} />
+          <p class="field__error" id={p('org-err')} data-error-for="organisation" aria-live="polite"></p>
+        </div>
+      </>
+    )}
+    <div class="field">
+      <label for={p('email')}>{kind === 'contact' ? 'Work email' : 'Email'}</label>
+      <input id={p('email')} name="email" type="email" autocomplete="email" inputmode="email" spellcheck="false" required data-required="Enter your email so we can reach you." aria-describedby={p('email-err')} />
+      <p class="field__error" id={p('email-err')} data-error-for="email" aria-live="polite"></p>
+    </div>
+    {variant === 'pass' ? (
+      <input type="hidden" name="city" value={CITIES[0].en} data-city-input />
+    ) : (
+    <div class="field">
+      <label for={p('city')}>City</label>
+      <div class="select">
+        <select id={p('city')} name="city">
+          {CITIES.map((c) => <option value={c.en}>{c.en}</option>)}
+          <option value="other">Another city</option>
+        </select>
+      </div>
+    </div>
+    )}
+    {kind === 'contact' && (
+      <div class="field field--wide">
+        <label for={p('msg')}>What would you like to talk about? <span class="field__opt">Optional</span></label>
+        <textarea id={p('msg')} name="message" rows="4"></textarea>
+      </div>
+    )}
+    <div class="lead__actions">
+      <button class="btn btn--primary" type="submit">{kind === 'contact' ? 'Send message' : 'Join the waitlist'}</button>
+      {FORM_ENDPOINT
+        ? kind === 'contact' && <p class="fine">We only use your details to reply.</p>
+        : <p class="fine">This form doesn’t send anything yet.</p>}
+    </div>
+  </form>
+  <div class="lead__status" data-form-status role="status" tabindex="-1" hidden>
+    <p class="lead__status-title h3" data-status-title></p>
+    <p class="body" data-status-body></p>
+  </div>
+</div>
+
+<style>
+  .lead__form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4) var(--s-5); }
+  .lead--waitlist .lead__form { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); }
+  .field { display: grid; gap: var(--s-2); align-content: start; }
+  .field--wide, .lead__actions { grid-column: 1 / -1; }
+  .field label { font-size: var(--fs-small); font-weight: 560; color: var(--fg); }
+  .field__opt { font-weight: 420; color: var(--fg-muted); margin-left: var(--s-1); }
+  .field input, .field select, .field textarea {
+    width: 100%; min-height: 52px; padding: var(--s-3) var(--s-4);
+    background: var(--field-bg); color: var(--fg);
+    border: 1.5px solid var(--field-border); border-radius: var(--r-sm);
+    font-size: 1.0625rem; transition: border-color var(--dur-1) var(--ease-out), box-shadow var(--dur-1) var(--ease-out);
+  }
+  .field textarea { resize: vertical; min-height: 120px; }
+  .select { position: relative; }
+  .field select { appearance: none; padding-right: var(--s-8); cursor: pointer; }
+  .field select option { color: var(--c-graphite); background: var(--c-white); }
+  /* chevron in the brand accent, drawn with a mask so it takes the surface's focus colour */
+  .select::after {
+    content: ''; position: absolute; right: 18px; top: 50%; width: 12px; height: 8px; transform: translateY(-50%); pointer-events: none;
+    background: var(--focus);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+  .field input:hover, .field select:hover, .field textarea:hover { border-color: var(--fg-muted); }
+  .field input:focus-visible, .field select:focus-visible, .field textarea:focus-visible { outline: none; border-color: var(--focus); box-shadow: 0 0 0 1px var(--focus), 0 0 0 5px var(--focus-halo); }
+  .field [aria-invalid='true'] { border-color: var(--c-error); }
+  .surface-slate .field [aria-invalid='true'], .surface-graphite .field [aria-invalid='true'] { border-color: #e8938a; }
+  .field__error { font-size: var(--fs-small); color: var(--c-error); min-height: 0; }
+  .field__error:empty { display: none; }
+  .surface-slate .field__error, .surface-graphite .field__error { color: #f0a59d; }
+  .lead__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-5); margin-top: var(--s-2); }
+  .lead__actions .fine { margin: 0; }
+  .lead__status { padding: var(--s-6); border-radius: var(--r-panel); background: var(--raised); border: 1px solid var(--line); }
+  .lead__status:focus-visible { outline: 2.5px solid var(--focus); outline-offset: 3px; }
+  .lead__status .body { margin-top: var(--s-2); }
+  /* pass variant: one field on the back of the Tariq pass; the city comes from the slider */
+  .lead--pass .lead__form, .lead--pass.lead--waitlist .lead__form { grid-template-columns: minmax(0, 1fr); gap: var(--s-3); }
+  .lead--pass .field input { min-height: 48px; font-size: 1rem; }
+  .lead--pass .lead__actions { margin-top: 0; gap: var(--s-2) var(--s-4); }
+  .lead--pass .lead__status { padding: var(--s-4); }
+  @media (max-width: 640px) {
+    .lead__form, .lead--waitlist .lead__form { grid-template-columns: minmax(0, 1fr); }
+    .lead__actions .btn { width: 100%; }
+  }
+</style>

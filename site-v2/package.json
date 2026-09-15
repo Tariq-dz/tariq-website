@@ -1,0 +1,25 @@
+{
+  "name": "tariq-site-v2",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1 --port 4321",
+    "build": "astro build && node scripts/claims-check.mjs",
+    "preview": "astro preview --port 4322",
+    "media": "bash scripts/prepare-media.sh",
+    "shoot": "node scripts/shoot.mjs",
+    "claims": "node scripts/claims-check.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/mona-sans": "^5.3.0",
+    "@fontsource/ibm-plex-sans-arabic": "^5.3.0",
+    "astro": "^5.18.2",
+    "gsap": "^3.15.0"
+  },
+  "devDependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "playwright-core": "^1.63.0",
+    "sharp": "^0.35.4"
+  }
+}

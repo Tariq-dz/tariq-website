@@ -1,0 +1,8 @@
+# site-v2: re-include files the parent .gitignore excludes
+!package.json
+!package-lock.json
+!*.md
+node_modules/
+dist/
+.shots/
+.astro/

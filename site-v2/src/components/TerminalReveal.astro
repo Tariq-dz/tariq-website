@@ -1,0 +1,78 @@
+---
+// Signature moment 2: the terminal reveal. ≥1024 px with motion: a pinned slate stage whose angles and
+// approved lines are scrubbed by scroll (src/scripts/terminal-reveal.ts). Otherwise: a stacked sequence.
+import { Image } from 'astro:assets';
+import persp from '../assets/terminal/persp-tight.png';
+import face from '../assets/terminal/face.png';
+import reload from '../assets/terminal/reload-tight.png';
+import { SMALL_PRINT } from '../config';
+
+const frames = [
+  { img: persp, alt: 'The Tariq terminal on a pole, seen at an angle: display, printer and gold tap ring', title: 'Meet the Tariq terminal.', line: 'A vehicle-mounted NFC terminal, designed in Algeria.' },
+  { img: face, alt: 'The terminal face on: a display, a printer and a gold tap ring', title: 'Everything it needs. Nothing it doesn’t.', line: 'A display, a tap target and a ticket. Nothing else on its face.', wide: true },
+  { img: reload, alt: 'The terminal with its printer open and a paper roll being loaded', title: 'Reloads without a single tool.', line: 'The paper sits outside the sealed bay, so a reload never opens it.' },
+];
+---
+
+<section class="treveal surface-slate" data-treveal data-terminal-media aria-label="Meet the Tariq terminal">
+  <div class="treveal__pin" data-treveal-pin>
+    <div class="treveal__lines">
+      {frames.map((f, i) => (
+        <div class="treveal__line" data-line={i}>
+          {i === 0 ? <h1 class="display">{f.title}</h1> : <p class="h2">{f.title}</p>}
+          <p class="lead">{f.line}</p>
+        </div>
+      ))}
+    </div>
+    <div class="treveal__frames">
+      {frames.map((f, i) => (
+        <Image src={f.img} alt={f.alt} widths={f.wide ? [480, 767] : [600, 900]} sizes={f.wide ? '(min-width: 1024px) 60vw, 100vw' : '(min-width: 1024px) min(62vh, 640px), 100vw'} class:list={['treveal__frame', f.wide ? 'treveal__frame--wide render-fade-rect' : 'render-fade']} style={`max-width:${f.img.width}px;max-height:${f.img.height}px`} data-frame={i} loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined} />
+      ))}
+    </div>
+    <p class="small-print treveal__fine">{SMALL_PRINT}</p>
+  </div>
+</section>
+
+<style>
+  .treveal { position: relative; }
+  .treveal__pin { position: relative; }
+  /* stacked default (mobile, reduced motion, no JS): each line followed by its frame */
+  .treveal__lines { display: contents; }
+  .treveal__frames { display: contents; }
+  .treveal__pin { display: flex; flex-direction: column; padding: var(--s-8) var(--gutter) var(--s-7); gap: 0; }
+  .treveal__line { text-align: center; max-width: 30ch; margin-inline: auto; display: grid; gap: var(--s-3); }
+  .treveal__line .lead { margin-inline: auto; text-wrap: balance; }
+  .treveal__frame { width: min(100%, 600px); height: auto; margin: var(--s-5) auto var(--s-7); align-self: center; }
+  .treveal__frame--wide { width: min(100%, 900px); }
+  .treveal__fine { text-align: center; margin-inline: auto; }
+  /* interleave: line 0, frame 0, line 1, frame 1 ... */
+  .treveal__line[data-line='0'] { order: 0; } .treveal__frame[data-frame='0'] { order: 1; }
+  .treveal__line[data-line='1'] { order: 2; } .treveal__frame[data-frame='1'] { order: 3; }
+  .treveal__line[data-line='2'] { order: 4; } .treveal__frame[data-frame='2'] { order: 5; }
+  .treveal__fine { order: 10; }
+  .treveal .display { font-size: clamp(2.5rem, 1.6rem + 3.6vw, 4.75rem); }
+
+  @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+    :global(.js) .treveal__pin {
+      display: block; height: calc(100dvh - var(--header-h)); min-height: 620px; padding: 0; overflow: hidden;
+    }
+    :global(.js) .treveal__lines { display: block; position: absolute; left: 0; right: 0; top: clamp(20px, 5vh, 56px); z-index: 2; }
+    :global(.js) .treveal .display, :global(.js) .treveal .h2 { font-size: clamp(2rem, min(1.2rem + 2.8vw, 6.4vh), 4.25rem); }
+    :global(.js) .treveal .lead { font-size: clamp(1.0625rem, min(0.9rem + 0.6vw, 2.6vh), 1.5rem); }
+    :global(.js) .treveal__line { position: absolute; left: 50%; top: 0; width: min(92vw, 880px); max-width: none; transform: translateX(-50%); }
+    :global(.js) .treveal__line + .treveal__line { opacity: 0; }
+    /* frames live below the lines block so text and render never collide, at any viewport height */
+    :global(.js) .treveal__frames { display: block; position: absolute; left: 0; right: 0; top: clamp(150px, 24vh, 250px); bottom: 28px; }
+    :global(.js) .treveal__frame {
+      position: absolute; left: 50%; top: 52%; margin: 0; width: auto; height: 116%; max-height: 780px; max-width: 86vw; object-fit: contain;
+      transform: translate(-50%, -50%);
+    }
+    :global(.js) .treveal__frame + .treveal__frame { opacity: 0; }
+    :global(.js) .treveal__frame--wide { height: 92%; width: auto; max-height: 700px; }
+    :global(.js) .treveal__fine { position: absolute; left: 0; right: 0; bottom: 14px; z-index: 2; }
+  }
+</style>
+
+<script>
+  import '../scripts/terminal-reveal';
+</script>
