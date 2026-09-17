@@ -18,10 +18,12 @@ export const SITE = {
 /** Required next to anything showing terminal renders, terminal screens or the film. */
 export const SMALL_PRINT = 'Renders of a design in development. Example fares.';
 
+const BASE = import.meta.env.BASE_URL;
+
 export const NAV = [
-  { href: '/app', label: 'The app' },
-  { href: '/terminal', label: 'The terminal' },
-  { href: '/operators', label: 'For operators' },
+  { href: `${BASE}app`, label: 'The app' },
+  { href: `${BASE}terminal`, label: 'The terminal' },
+  { href: `${BASE}operators`, label: 'For operators' },
 ];
 
 
