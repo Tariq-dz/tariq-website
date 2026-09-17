@@ -52,12 +52,6 @@ const CONFIG = {
   APPROACH_PX : 2600,    // px before card where it starts fading in
   EXIT_PX     : 900,     // px after camera passes card before it's invisible
 
-  /* Section panels — RETIRED (council 2): they reprised beats 4–5's art
-     and message, reading as the same Pivot shown three times. Windows
-     pushed past 1.0 so they never fire; markup/build kept for rollback. */
-  P1_IN  : 2.0, P1_OUT : 2.1,
-  P2_IN  : 2.2, P2_OUT : 2.3,
-
   /* Dock */
   ICON    : 68,
   GAP     : 14,
@@ -85,7 +79,7 @@ const PILL_W = CONFIG.ICON + CONFIG.LABEL_W;
 const ROW_W  = CONFIG.CTR * STEP + PILL_W + CONFIG.GAP + (CONFIG.NUM - CONFIG.CTR - 1) * STEP;
 
 /* Destructure frequently-used values for brevity in hot paths */
-const { CAM_MAX_Z, Z_END, APPROACH_PX, EXIT_PX, P1_IN, P1_OUT, P2_IN, P2_OUT } = CONFIG;
+const { CAM_MAX_Z, Z_END, APPROACH_PX, EXIT_PX } = CONFIG;
 
 /* ══════════════════════════════════════════════════════
    DATA — 5 Destinations × 5 Story Cards + 2 Panels
@@ -739,7 +733,7 @@ DESTINATIONS.forEach(dest => {
   pill.addEventListener('mouseleave', () => {
     dockTip.classList.remove('show');
     if (dest.id === centerId) return;
-    gsap.to(pill, { scale:1,    duration:0.4,  ease:'power3.out',          overwrite:'auto' });
+    gsap.to(pill, { scale:1,    duration:0.4,  ease:'expo.out',          overwrite:'auto' });
   });
 });
 
@@ -776,7 +770,7 @@ function applyPillStyles(withTrans) {
         clipPath: 'inset(0 0% 0 0)',
         duration: 0.4,
         delay: 0.28,
-        ease: 'power3.out',
+        ease: 'expo.out',
         onStart() { lbl.style.opacity = '1'; },
         onComplete() { lbl.style.clipPath = 'none'; },
       });
@@ -858,15 +852,9 @@ function handleDockClick(itemId) {
 /* ── DOM ref cache — queried once, reused every frame ── */
 const wrapperEl = document.getElementById('sec-stories-wrapper');
 const DOM = {
-  silhouette : document.getElementById('sec-stories-silhouette'),
-  scrollHint : document.getElementById('sec-stories-scroll-hint'),
   progWrap   : document.getElementById('sec-stories-prog-wrap'),
   progSegs   : document.getElementById('sec-stories-prog-segs'),
   beatLabel  : document.getElementById('sec-stories-beat-label'),
-  tint       : document.getElementById('sec-stories-tint'),
-  backdrop   : document.getElementById('sec-stories-backdrop'),
-  spA        : document.getElementById('sp-a'),
-  spB        : document.getElementById('sp-b'),
   intro      : document.getElementById('stories-intro'),
 };
 
@@ -874,9 +862,9 @@ const DOM = {
 const segFills = [];
 for (let i = 0; i < 5; i++) {
   const seg  = document.createElement('div');
-  seg.className = 'beat-seg';
+  seg.className = 'wf-seg';
   const fill = document.createElement('div');
-  fill.className = 'beat-seg-fill';
+  fill.className = 'wf-fill';
   seg.appendChild(fill);
   DOM.progSegs.appendChild(seg);
   segFills.push(fill);
@@ -890,27 +878,9 @@ if (!REDUCED) window.addEventListener('mousemove', e => {
   swayYT = (e.clientY / window.innerHeight - 0.5) * 2;
 }, { passive: true });
 
-/* ── Atmospheric dust — slow gold motes rising through the scene ── */
-(function buildDust() {
-  if (REDUCED) return;
-  for (let i = 0; i < 24; i++) {
-    const d = document.createElement('span');
-    d.className = 'stories-dust';
-    const s = (Math.random() * 1.8 + 1.2).toFixed(1);
-    d.style.cssText =
-      `left:${(Math.random() * 100).toFixed(1)}%;` +
-      `top:${(55 + Math.random() * 45).toFixed(1)}%;` +
-      `width:${s}px;height:${s}px;` +
-      `animation-duration:${(16 + Math.random() * 20).toFixed(1)}s;` +
-      `animation-delay:${(-Math.random() * 36).toFixed(1)}s;`;
-    DOM.backdrop.appendChild(d);
-  }
-})();
 
 /* ── quickSetters — bypass full GSAP tween on per-frame mutations ── */
 const QS = {
-  silOpacity   : gsap.quickSetter(DOM.silhouette,  'opacity'),
-  hintOpacity  : gsap.quickSetter(DOM.scrollHint,  'opacity'),
   progWrapOp   : gsap.quickSetter(DOM.progWrap,    'opacity'),
 };
 /* Card quickSetters rebuilt per scene in buildCards() */
@@ -923,37 +893,10 @@ let targetCamZ = 0;
 let currentCamZ= 0;
 let prevTime   = 0;    /* rAF timestamp for frame-rate-independent lerp */
 let cardEls    = [];
-let p1shown    = false;
-let p2shown    = false;
 
 /** Clamps value to [0,1]. Used in every opacity calculation. */
 function clamp01(v) { return Math.max(0, Math.min(1, v)); }
 
-/**
- * Word-splits a panel headline for the stagger entrance while
- * PRESERVING <br> line breaks and <em> italic styling.
- * (The old textContent-based split dropped both, rendering
- * "On time.Every time." with no space and no italics.)
- */
-function splitHeadline(el) {
-  /* Always split from the pristine source (set by applyPanel) — re-splitting
-     already-wrapped markup would lose the <em> information. */
-  const src = el.dataset.src || el.innerHTML;
-  const lines = src.split(/<br\s*\/?>/i).map(line => {
-    const tmp = document.createElement('div');
-    tmp.innerHTML = line;
-    const words = [];
-    tmp.childNodes.forEach(node => {
-      const isEm = node.nodeType === 1 && node.tagName === 'EM';
-      (node.textContent || '').trim().split(/\s+/).filter(Boolean)
-        .forEach(w => words.push({ w, isEm }));
-    });
-    return words.map(({ w, isEm }) =>
-      `<span style="display:inline-block;overflow:hidden"><span class="wrd">${isEm ? `<em>${w}</em>` : w}</span></span>`
-    ).join(' ');
-  });
-  el.innerHTML = lines.join('<br>');
-}
 
 function buildCards(destId) {
   const camera = document.getElementById('sec-stories-camera');
@@ -972,7 +915,7 @@ function buildCards(destId) {
     const zDepths = [-500, -2000, -4000, -6500, -9000];
     el.style.cssText = `${card.pos};transform:translateZ(${zDepths[i]}px);`;
     el.style.setProperty('--dest-glow', hexToRgba(dest.color, 0.20));
-    el.style.setProperty('--dest-accent', dest.color);
+    el.style.setProperty('--chapter-accent', dest.color);
 
     /* Ghost numeral — floats BEHIND the scene card */
     const ghost = document.createElement('div');
@@ -996,9 +939,9 @@ function buildCards(destId) {
     const cap = document.createElement('div');
     cap.className = 'zcaption';
     cap.innerHTML = `
-      <div class="zcap-line zcap-eyebrow"><span class="zcap-rule"></span>${dest.person} — ${dest.label} · ${card.beat.split('/')[0].trim()}</div>
-      <div class="zcap-line zcap-title">${titleHtml}</div>
-      <div class="zcap-line zcap-body">${card.body}</div>`;
+      <div class="zcap-line zcap-eyebrow eyebrow eyebrow--start">${dest.person} — ${dest.label} · ${card.beat.split('/')[0].trim()}</div>
+      <div class="zcap-line zcap-title chapter-subtitle">${titleHtml}</div>
+      <div class="zcap-line zcap-body chapter-body">${card.body}</div>`;
 
     el.appendChild(ghost);
     el.appendChild(scene);
@@ -1048,8 +991,6 @@ function buildCards(destId) {
   cardOpSetters = cardEls.map(el => gsap.quickSetter(el, 'opacity'));
 }
 
-/* Dark warm tints per destination — replaces original sand bg values */
-const DEST_PANEL_BG = ['#201408','#28180a','#041828','#082010','#0a0a28'];
 
 /** '#c94444' + 0.2 → 'rgba(201,68,68,0.2)' */
 function hexToRgba(hex, a) {
@@ -1057,39 +998,6 @@ function hexToRgba(hex, a) {
   return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
 }
 
-function buildPanels(destId) {
-  const dest   = DESTINATIONS[destId];
-  const panelBg = DEST_PANEL_BG[destId] || '#0a0806';
-  /* Backdrop stays warm night (#0a0806 from CSS) for every destination —
-     it must blend with hero black above and vehicles black below.
-     Destination tint applies to the panel cards only. */
-
-  const applyPanel = (prefix, pan, card) => {
-    const art = document.getElementById(`${prefix}art`);
-    art.style.background = pan.artBg;
-    /* The panel reprises its beat's line-art scene — no more empty card */
-    art.innerHTML        = card ? card.svg : '';
-    document.getElementById(`${prefix}icon`).innerHTML        = '';
-    /* Same eyebrow grammar as the z-beat captions: rule + DEST · BEAT */
-    const tagEl = document.getElementById(`${prefix}tag`);
-    tagEl.innerHTML = `<span class="s-panel-rule"></span>${dest.label} · ${pan.tag}`;
-    tagEl.style.setProperty('--dest-accent', dest.color);
-    const hEl = document.getElementById(`${prefix}h`);
-    hEl.innerHTML   = pan.h;
-    hEl.dataset.src = pan.h;
-    document.getElementById(`${prefix}p`).textContent         = pan.p;
-    const cardEl = document.getElementById(`${prefix.replace('-','')}-card`);
-    cardEl.style.background = panelBg;
-    cardEl.style.setProperty('--dest-glow', hexToRgba(dest.color, 0.22));
-  };
-
-  /* Panels A/B narrate beats 4 and 5 — reuse those beats' artwork */
-  applyPanel('spa-', dest.panels[0], dest.cards[3]);
-  applyPanel('spb-', dest.panels[1], dest.cards[4]);
-
-  gsap.set('#sp-a', { opacity:0, pointerEvents:'none' });
-  gsap.set('#sp-b', { opacity:0, pointerEvents:'none' });
-}
 
 /**
  * initScrollScene — orchestrates a full scene restart for destId.
@@ -1106,36 +1014,14 @@ function initScrollScene(destId, resetScroll) {
 
   if (resetScroll) scrollToStoriesTop();
   targetCamZ = 0; currentCamZ = 0; prevTime = 0;
-  p1shown = false; p2shown = false;
   activeBeat = -1; /* forces the beat label to repopulate for the new destination */
 
   gsap.set('#sec-stories-camera', { z:0 });
-  QS.silOpacity(1);
-  gsap.set([DOM.spA, DOM.spB], { opacity:0, pointerEvents:'none' });
 
   buildCards(destId);
-  buildPanels(destId);
 
-  /* ── Color sweep: the destination's hue washes over the night backdrop,
-        blooming from the horizon when a new destination takes the stage ── */
-  const c = DESTINATIONS[destId].color;
-  DOM.tint.style.background = `
-    radial-gradient(ellipse 95% 75% at 50% 30%, ${hexToRgba(c, 0.20)}, ${hexToRgba(c, 0.06)} 48%, transparent 74%)`;
-  gsap.fromTo(DOM.tint,
-    { opacity: 0, scale: 1.25, transformOrigin: '50% 100%' },
-    { opacity: 1, scale: 1, duration: 1.6, ease: 'expo.out', overwrite: 'auto' });
-
-  /* Ring atmosphere — slow breathing pulse (Pillar 3) */
-  if (!REDUCED) gsap.utils.toArray('#sec-stories-rings ellipse').forEach((el, i) => {
-    gsap.to(el, {
-      opacity: 0.07,
-      duration: 6,
-      ease: 'sine.inOut',
-      repeat: -1,
-      yoyo: true,
-      delay: i * 0.8,
-    });
-  });
+  /* The rider's colour enters through the one scene layer (js/scene.js) */
+  if (window.TariqScene) TariqScene.setAccent('stories', DESTINATIONS[destId].color);
 
   /* ── ScrollTrigger — one instance drives everything ── */
   stInst = ScrollTrigger.create({
@@ -1212,19 +1098,10 @@ function initScrollScene(destId, resetScroll) {
         }
       });
 
-      /* ─ Silhouette: parallax + opacity ─ */
-      const silOp = pr < 0.02 ? 1 : clamp01(1 - (pr - 0.02) / 0.06);
-      QS.silOpacity(silOp);
-      /* Subtle upward parallax: silhouette drifts -18px as camera travels */
-      DOM.silhouette.style.setProperty('--sil-y', `${pr * -18}px`);
-
-      /* ─ Scroll hint opacity — only once the sticky stage is engaged,
-         so the hint never floats over the intro during section entry ─ */
-      const engaged = wrapperEl.getBoundingClientRect().top <= 4;
-      QS.hintOpacity(engaged ? (pr < 0.03 ? 1 : clamp01(1 - (pr - 0.03) / 0.04)) : 0);
 
       /* ─ Beat progress: 5 segments fill one per story moment ─ */
-      QS.progWrapOp(pr > 0.03 ? 1 : 0);
+      /* Sections are transparent over the one scene, so fixed chrome must hide itself on exit */
+      QS.progWrapOp(pr > 0.03 && pr < 0.965 ? 1 : 0);
       const beatF = clamp01(pr / Z_END) * 5;
       for (let i = 0; i < 5; i++) {
         segFills[i].style.transform = `scaleX(${clamp01(beatF - i)})`;
@@ -1234,62 +1111,22 @@ function initScrollScene(destId, resetScroll) {
          visible caption. Panels A/B reprise beats 4 and 5 after it. */
       let beatIdx = activeBeat < 0 ? 0 : activeBeat;
       if (focalOp > 0.35)   beatIdx = focalIdx;
-      else if (pr >= P2_IN) beatIdx = 4;
-      else if (pr >= P1_IN) beatIdx = 3;
       if (beatIdx !== activeBeat) {
         activeBeat = beatIdx;
         const card = DESTINATIONS[centerId].cards[beatIdx];
         DOM.beatLabel.textContent = card.beat.split('/')[0].trim();
-        gsap.fromTo(DOM.beatLabel, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' });
+        gsap.fromTo(DOM.beatLabel, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.5, ease: 'expo.out' });
       }
 
       /* ─ Stories intro: fade out as scroll begins ─ */
-      if (DOM.intro) DOM.intro.style.opacity = String(clamp01(1 - pr / 0.05));
+      if (DOM.intro) {
+        const t = clamp01(pr / 0.05);            /* recede: the shared pinned-head exit */
+        DOM.intro.style.opacity = String(1 - t);
+        DOM.intro.style.transform = `translateY(${-40 * t}px)`;
+      }
 
       /* ─ Dock: center → top (never back) ─ */
       if (pr > 0.01 && !dockAtTop) setDockPos(true, true);
-
-      /* ─ Section panels fade in/out ─ */
-      if (pr >= P1_IN && pr < P1_OUT) {
-        const t = clamp01((pr - P1_IN) / 0.04);
-        gsap.set('#sp-a', { opacity: t, pointerEvents: t > 0.5 ? 'auto' : 'none' });
-        if (!p1shown && t > 0.1) {
-          p1shown = true;
-          /* Panel card: scale from 0.88 + drift */
-          gsap.fromTo('#spa-card', { scale:0.88, y:30 }, { scale:1, y:0, duration:0.9, ease:'expo.out' });
-          /* Heading: word-split stagger (keeps <br> + <em>) */
-          splitHeadline(document.getElementById('spa-h'));
-          gsap.from('#spa-h .wrd', { y:40, opacity:0, stagger:0.06, ease:'power4.out', duration:0.9 });
-          /* Body: blur-to-sharp */
-          gsap.from('#spa-p', { filter:'blur(6px)', opacity:0, duration:0.8, delay:0.3, ease:'power3.out' });
-        }
-      } else {
-        const out = pr >= P1_OUT ? clamp01(1 - (pr - P1_OUT) / 0.03) : 0;
-        gsap.set('#sp-a', { opacity: pr >= P1_IN ? out : 0, pointerEvents:'none' });
-        if (pr < P1_IN) p1shown = false;
-      }
-      if (pr >= P2_IN && pr < P2_OUT) {
-        const t = clamp01((pr - P2_IN) / 0.04);
-        gsap.set('#sp-b', { opacity: t, y: 0, scale: 1, pointerEvents: t > 0.5 ? 'auto' : 'none' });
-        if (!p2shown && t > 0.1) {
-          p2shown = true;
-          gsap.fromTo('#spb-card', { scale:0.88, y:30 }, { scale:1, y:0, duration:0.9, ease:'expo.out' });
-          splitHeadline(document.getElementById('spb-h'));
-          gsap.from('#spb-h .wrd', { y:40, opacity:0, stagger:0.06, ease:'power4.out', duration:0.9 });
-          gsap.from('#spb-p', { filter:'blur(6px)', opacity:0, duration:0.8, delay:0.3, ease:'power3.out' });
-        }
-      } else {
-        /* Seam gesture (stories → vehicles): the last panel recedes upward
-           and shrinks as it dissolves into the coming blackness */
-        const out = pr >= P2_OUT ? clamp01(1 - (pr - P2_OUT) / 0.05) : 0;
-        gsap.set('#sp-b', {
-          opacity: pr >= P2_IN ? out : 0,
-          y: pr >= P2_OUT ? (1 - out) * -90 : 0,
-          scale: pr >= P2_OUT ? 1 - (1 - out) * 0.06 : 1,
-          pointerEvents: 'none',
-        });
-        if (pr < P2_IN) p2shown = false;
-      }
 
       /* ─ Exit: fade the fixed chrome (dock / hint / progress) before the
          vehicles seam so nothing from stories ghosts over the next section ─ */

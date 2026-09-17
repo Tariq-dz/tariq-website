@@ -16,7 +16,7 @@ export const SITE = {
 };
 
 /** Required next to anything showing terminal renders, terminal screens or the film. */
-export const SMALL_PRINT = 'Concept renders of a design in development. Fares are illustrative.';
+export const SMALL_PRINT = 'Renders of a design in development. Example fares.';
 
 export const NAV = [
   { href: '/app', label: 'The app' },

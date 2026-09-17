@@ -54,6 +54,17 @@ Clip crop for all app video: 434×888 at x 53, y 30 of the 540×960 recording (r
 | `src/assets/app/home.png` | demo video | 0:16.0 | greeting and avatar painted out |
 | `src/assets/app/map.png` | demo video | 0:20.4 | |
 | `src/assets/app/ai-welcome.png` | demo video | 0:36.6 | |
+| `public/media/clips/ai-story.{mp4,webm,webp}` | the seven `ai-*` clips below, joined | 26.1 s total | **What the Tariq AI section actually plays.** One continuous flow; the section's background becomes the place on the phone at 5.7 s (Jardin), 10.7 s (Maqam Echahid) and 17.5 s (the Casbah). A single unbroken cut of the source was impossible — it would cross the Chargily window (email, full name) — so the segments are joined instead. Carries a pause control: at 26 s it is past the 5-second WCAG 2.2.2 exemption |
+| `public/media/clips/ai-open.{mp4,webm,webp}` | demo video | 0:35.5 +1.5 | input to `ai-story`: the assistant opens, four chips, "Rush hour now?" tapped. **Starts at 35.5 because the profile screen — display name and wallet balance — is on screen through 35.3 and clean only from 35.4** |
+| `public/media/clips/ai-rush.*` | same | 0:37.0 +4.2 | beat 2: avoid buses 1, 22 and 26 · departures · Metro M1 beside Bus 26 |
+| `public/media/clips/ai-jardin.*` | same | 0:44.4 +5.0 | beat 3: Jardin d'Essai, **Overview → Tips → Getting There tapped** |
+| `public/media/clips/ai-martyrs.*` | same | 0:50.4 +4.4 | beat 4: Maqam Echahid, **Overview → Tips → Getting There tapped**. Ends at 54.8, before the assistant returns to its welcome |
+| `public/media/clips/ai-day.*` | same | 1:31.0 +2.4 | beat 5: the ask, the Your Day timeline, the budget, four reminders |
+| `public/media/clips/ai-casbah.*` | same | 1:33.3 +3.6 | beat 6: the Casbah, **Overview → Tips → Getting There tapped** |
+| `public/media/clips/ai-nav.*` | same | 1:47.4 +5.0 | beat 7: the route on the map, every stop, alight at Place des Martyrs, the fare |
+| `src/assets/app/places/jardin.jpg` | Wikimedia Commons, `Botanical_Garden_of_Hamma._Algiers,_Algeria.jpg` (4608×3456) | 16:9 crop, master 2400×1350 | **CC BY-SA 4.0, Boumediene15**, cropped. Credited on the page. The same asset `places.go` uses, which is what makes the doubling honest |
+| `src/assets/app/places/martyrs.jpg` | Wikimedia Commons, `Martyrs_Memorial._Algiers,_Algeria.jpg` (4608×3456) | 16:9 crop, master 2400×1350 | **CC BY-SA 3.0, Boumediene15**, cropped. Credited on the page |
+| `src/assets/app/places/casbah.jpg` | `tariq-app/La-casbah-dAlger.jpg` (1200×800) | 16:9 crop, 1200×675 (native cap) | **No licence record — founder ruling to ship and settle later (D-102).** Exif stripped, no author, matches no Commons file. Uncredited because there is nobody to credit. Also the only photograph below native at desktop width |
 | `src/assets/app/topup.png` | demo video | 1:10.6 | top-up confirmed; the wallet screens after it show an "Unlock higher limits … 50,000 DA" banner and are not used |
 | `src/assets/app/notifications.png` | `tariq-app/design/screenshots/current/06_notifications.png` | rows 100–2130 | padded to 434:888 with the screen's own background |
 | `src/assets/app/search-field.png` | `src/assets/app/home.png` (the redacted home still) | 414×65 at 10,55 | the real search field with its Arabic placeholder, below the painted-out greeting and avatar; shown at no more than native size |

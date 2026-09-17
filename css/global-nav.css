@@ -1,19 +1,17 @@
 /* ═══════════════════════════════════════════
    GLOBAL NAV — persistent mark + scroll hairline
-   Both elements live outside all sections at body root.
+   Both live at body root, above every chapter.
 ═══════════════════════════════════════════ */
-
-/* ─── Tariq wordmark (top-left, fades in after hero) ─ */
 #tariq-mark {
   position: fixed; top: 20px; left: 24px;
-  z-index: 1000;
+  z-index: var(--z-nav);
   font-family: var(--font-display);
   font-style: italic; font-size: 18px; font-weight: 300;
   letter-spacing: 0.06em;
   color: rgba(var(--gold-rgb), .82);
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--dur-xslow) ease, color .45s ease;
+  transition: opacity var(--dur-xslow) var(--ease-out);
   text-decoration: none;
   cursor: none;
 }
@@ -21,23 +19,18 @@
   opacity: 1;
   pointer-events: auto;
 }
-/* Over the light sand of the cities section gold has no contrast:
-   borrow the section's own ink color while it sits under the mark. */
-#tariq-mark.on-light {
-  color: rgba(26, 18, 6, .8);
-}
 
-/* ─── Scroll progress hairline (1px gold, top of viewport) ─ */
+/* Scroll progress hairline: transform-only (driven by js/scene.js) */
 #scroll-hairline {
   position: fixed; top: 0; left: 0;
-  z-index: 1001;
-  height: 1px; width: 0%;
-  background: linear-gradient(
-    90deg,
+  z-index: calc(var(--z-nav) + 1);
+  width: 100%; height: 1px;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: linear-gradient(90deg,
     rgba(var(--gold-rgb), .9) 0%,
     rgba(var(--gold-bright-rgb), .65) 60%,
-    rgba(var(--gold-rgb), .4) 100%
-  );
+    rgba(var(--gold-rgb), .4) 100%);
   pointer-events: none;
-  will-change: width;
+  will-change: transform;
 }

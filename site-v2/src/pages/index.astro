@@ -19,7 +19,7 @@ const heroFacePreload = await getImage({ src: heroFace, widths: [480, 767] });
 
 <BaseLayout
   title="Tariq"
-  description="Tariq is a passenger app to plan and pay for public transit, and an on-board terminal that puts every tap on the record. Designed in Algeria."
+  description="Tariq is the digital layer that makes public transit navigable for riders and accountable for operators: a rider app, an on-board terminal, and a signed record of every tap."
   waitlistHref="#waitlist"
 >
   <link slot="head" rel="preload" as="image" imagesrcset={heroFacePreload.srcSet.attribute} imagesizes={HERO_FACE_SIZES} fetchpriority="high" />
@@ -28,7 +28,7 @@ const heroFacePreload = await getImage({ src: heroFace, widths: [480, 767] });
     <div class="container hero__grid">
       <div class="hero__copy">
         <h1 class="display" id="hero-title"><span class="line">Plan in the app.</span> <span class="line">Tap on board.</span></h1>
-        <p class="lead">Tariq is a rider app and an <span class="nowrap">on-board</span> terminal for public transit, designed in Algeria.</p>
+        <p class="lead">Tariq is the digital layer that makes public transit navigable for riders and accountable for operators.</p>
         <div class="hero__cta">
           <a class="btn btn--primary" href="#waitlist">Join the waitlist</a>
           <a class="btn" href="/operators">For operators</a>
@@ -36,10 +36,22 @@ const heroFacePreload = await getImage({ src: heroFace, widths: [480, 767] });
       </div>
       <div class="hero__visual">
         <TerminalFace screens={['dest']} ticket ticketShown eager class="hero__face" sizes="(max-width: 899px) 92vw, 560px" />
-        <PhoneFrame clip="home" label="The Tariq app home screen: nearby departures, a DZD wallet balance and recent trips" class="hero__phone" eager />
+        <PhoneFrame clip="home" label="The Tariq app home screen: nearby departures, a wallet balance and recent trips" class="hero__phone" eager />
       </div>
     </div>
-    <div class="container"><p class="small-print hero__fine">{SMALL_PRINT} App screens come from a demo recording.</p></div>
+    <div class="container"><p class="small-print hero__fine">{SMALL_PRINT}</p></div>
+  </section>
+
+  <!-- 2 · Framing: the two problems, then the one system that answers them (POSITIONING_PLAN change 2).
+       Restores the section D-29 removed, at a smaller type scale so the page does not grow the way it did then. -->
+  <section class="frame" aria-labelledby="frame-title">
+    <div class="container">
+      <div class="frame__grid">
+        <p class="frame__line" data-reveal><span class="frame__who">For riders</span><span>Plan any trip across every mode, and pay for it from one balance.</span></p>
+        <p class="frame__line" data-reveal><span class="frame__who">For operators</span><span>See the service that ran, and show it to the city.</span></p>
+      </div>
+      <h2 class="frame__lead" id="frame-title" data-reveal>A rider app, an <span class="nowrap">on-board</span> terminal, and the record that connects them.</h2>
+    </div>
   </section>
 
   <!-- 3 · The app -->
@@ -50,19 +62,18 @@ const heroFacePreload = await getImage({ src: heroFace, widths: [480, 767] });
         <ul class="app__list" role="list">
           <li data-reveal>
             <h3 class="app__item-title">Plan across modes</h3>
-            <p class="body">Fastest, fewest transfers or cheapest, with the fare before you leave.</p>
+            <p class="body">Fastest, fewest transfers or cheapest. You see the fare before you go.</p>
           </li>
           <li data-reveal>
-            <h3 class="app__item-title">Pay from a wallet in dinars</h3>
-            <p class="body">Top up with EDAHABIA or CIB through Chargily Pay. The app is free; you pay only your fares.</p>
+            <h3 class="app__item-title">Pay from one balance</h3>
+            <p class="body">Top up with your bank card. The app is free; you pay only your fares.</p>
           </li>
           <li data-reveal>
             <h3 class="app__item-title">Ask Tariq AI</h3>
-            <p class="body">Your Algiers guide: places near you, a plan for your day with reminders, and help filing a complaint.</p>
+            <p class="body">Your city guide: places near you, a plan for your day with reminders, and help filing a complaint.</p>
           </li>
         </ul>
         <a class="link-arrow" href="/app" data-reveal>See the app <Fragment set:html={arrow} /></a>
-        <p class="fine" data-reveal>App screens come from a demo recording.</p>
       </div>
       <div class="app__phones" data-reveal>
         <PhoneFrame still={topupStill} label="A wallet top-up confirmed: plus 1 000 DA, new balance 15 340 DA" class="app__phone app__phone--back" />
@@ -84,7 +95,7 @@ const heroFacePreload = await getImage({ src: heroFace, widths: [480, 767] });
         <TerminalFace screens={['idle']} ticket ticketShown class="term__face" sizes="(max-width: 899px) 92vw, 640px" />
       </div>
       <div class="term__copy">
-        <h2 class="h2" id="term-title" data-reveal>Designed for the way Algeria moves.</h2>
+        <h2 class="h2" id="term-title" data-reveal>Designed for the way cities move.</h2>
         <p class="lead" data-reveal>The Tariq terminal: one tap, a ticket and a signed record.</p>
         <div class="term__cta" data-reveal>
           <button class="btn btn--primary" type="button" data-lightbox-open="film">
@@ -133,13 +144,16 @@ const heroFacePreload = await getImage({ src: heroFace, widths: [480, 767] });
   }
 
   /* 2 · framing */
-  .frame { background: var(--c-paper); padding-block: calc(var(--section-pad) * 0.85); }
+  /* No bottom padding: the app section that follows is also paper and brings its own top padding,
+     so the pair keeps one section gap instead of stacking two (the /terminal .details idiom). */
+  .frame { background: var(--c-paper); padding-block: calc(var(--section-pad) * 0.85) 0; }
   .frame__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-6) var(--s-8); }
-  .frame__line { font-size: var(--fs-h2); font-weight: 620; font-stretch: 112%; letter-spacing: -0.022em; line-height: 1.06; display: grid; gap: var(--s-3); text-wrap: balance; padding-top: var(--s-4); border-top: 2px solid var(--c-graphite); }
+  /* Statements sit at lead scale, not h2: the closing line below is the one that carries the weight. */
+  .frame__line { font-size: var(--fs-lead); font-weight: 560; font-stretch: 104%; letter-spacing: -0.01em; line-height: 1.3; display: grid; gap: var(--s-3); text-wrap: balance; padding-top: var(--s-4); border-top: 2px solid var(--c-graphite); }
   .frame__line + .frame__line { border-top-color: var(--c-gold); }
   .frame__who { font-size: var(--fs-small); font-weight: 600; font-stretch: 100%; letter-spacing: 0; color: var(--c-gold-deep); }
   @media (max-width: 719px) { .frame__grid { grid-template-columns: 1fr; } }
-  .frame__lead { margin-top: var(--s-7); font-size: var(--fs-h3); font-weight: 560; font-stretch: 104%; line-height: 1.3; color: var(--c-graphite); }
+  .frame__lead { margin-top: var(--s-7); max-width: 24ch; font-size: var(--fs-h2); font-weight: 620; font-stretch: 112%; letter-spacing: -0.022em; line-height: 1.04; text-wrap: balance; color: var(--c-graphite); }
 
   /* 3 · app */
   .app { background: var(--c-paper); }

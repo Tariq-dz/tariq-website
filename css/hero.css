@@ -1,17 +1,22 @@
 /* ═══════════════════════════════════════════
-   SECTION 1 — HERO
+   HERO — the exception chapter: the spark on the horizon.
+   Its WebGL horizon is the origin of the scene's light; the canvas
+   masks to transparent at its foot so the one scene continues beneath
+   it (no fade slab, no seam).
 ═══════════════════════════════════════════ */
 #s-hero {
   position: relative;
-  width: 100%; height: 100vh;
+  z-index: var(--z-hero);
+  width: 100%;
+  height: 100vh; height: 100svh;
   overflow: hidden;
-  background: #000;
-  z-index: 10;
 }
 #hero-canvas {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   display: block;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 84%, transparent 100%);
+          mask-image: linear-gradient(to bottom, #000 0%, #000 84%, transparent 100%);
 }
 .hero-logo-wrap {
   position: absolute; inset: 0; z-index: 10;
@@ -22,33 +27,33 @@
 #hero-logo {
   width: min(300px, 42vw); height: auto;
   will-change: filter, transform;
-  transition: filter var(--dur-med) ease, transform var(--dur-med) ease;
+  transition: filter var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out);
 }
 .hero-text {
   position: absolute; inset: 0; z-index: 11;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
+  padding: 0 var(--gutter) 18vh;
+  text-align: center;
   pointer-events: none;
-  padding-bottom: 18vh; gap: 0;
 }
 .hero-name {
   font-family: var(--font-display);
   font-weight: 300;
   font-size: var(--fs-hero);
   letter-spacing: 0.22em;
+  padding-left: 0.22em;
   line-height: 1;
   background: linear-gradient(180deg, #ffffff 0%, var(--gold-mid) 60%, var(--gold-deep) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: heroFadeUp var(--dur-grand) var(--ease-out) 0.3s both;
-  filter: drop-shadow(0 0 30px rgba(var(--gold-deep-rgb),0.4));
+  filter: drop-shadow(0 0 30px rgba(var(--gold-deep-rgb), .4));
 }
 .hero-divider {
   width: 80px; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(var(--gold-deep-rgb),0.7), transparent);
-  margin: 18px 0 16px;
-  animation: heroFadeUp var(--dur-grand) var(--ease-out) 0.5s both;
+  background: linear-gradient(90deg, transparent, rgba(var(--gold-deep-rgb), .7), transparent);
+  margin: var(--space-4) 0;
 }
 .hero-sub {
   font-family: var(--font-sans);
@@ -57,60 +62,38 @@
   letter-spacing: var(--ls-eyebrow);
   text-transform: uppercase;
   color: var(--text-3);
-  animation: heroFadeUp var(--dur-grand) var(--ease-out) 0.7s both;
 }
-/* Concrete proposition — the one plain sentence under the mood line */
 .hero-prop {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 400;
-  font-size: clamp(15px, 1.5vw, 20px);
-  color: rgba(var(--gold-rgb), .85);
-  margin-top: 22px;
-  animation: heroFadeUp var(--dur-grand) var(--ease-out) 0.9s both;
+  margin-top: var(--space-5);
+  max-width: 34ch;
 }
 #hero-cta {
   position: absolute;
   left: 0; right: 0;
-  top: 72%; margin: 0 auto;
+  top: 72%;
+  margin: 0 auto;
   width: fit-content;
   z-index: 12;
-  font-family: var(--font-sans);
-  font-size: var(--fs-cta); font-weight: 400;
-  letter-spacing: var(--ls-eyebrow); text-transform: uppercase;
-  color: rgba(var(--gold-rgb),0.9);
-  border: 1px solid rgba(var(--gold-deep-rgb),0.45);
-  padding: 13px 36px; border-radius: 2px;
-  text-decoration: none; background: transparent;
-  cursor: none;
-  transition: all var(--dur-med) ease;
-  animation: heroFadeUp var(--dur-grand) var(--ease-out) 1.0s both;
   pointer-events: all;
 }
-#hero-cta:hover {
-  background: rgba(var(--gold-deep-rgb),0.1);
-  border-color: rgba(245,220,80,0.9);
-  color: var(--gold-bright);
-  box-shadow: 0 0 30px rgba(var(--gold-deep-rgb),0.35);
+
+/* The one orchestrated page-load moment: the hero's own rise */
+.hero-name, .hero-divider, .hero-sub, .hero-prop, #hero-cta {
+  animation: heroRise var(--dur-grand) var(--ease-out) both;
 }
-@keyframes heroFadeUp {
-  from { opacity: 0; transform: translateY(28px); }
-  to   { opacity: 1; transform: translateY(0); }
+.hero-divider { animation-delay: .5s; }
+.hero-name    { animation-delay: .3s; }
+.hero-sub     { animation-delay: .7s; }
+.hero-prop    { animation-delay: .9s; }
+#hero-cta     { animation-delay: 1.05s; }
+@keyframes heroRise {
+  from { opacity: 0; translate: 0 28px; }
+  to   { opacity: 1; translate: 0 0; }
 }
-.hero-fade {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  height: 180px; pointer-events: none;
-  background: linear-gradient(to bottom, transparent, var(--night));
-  z-index: 9;
-}
+
 @media (max-width: 480px) {
   .hero-name { font-size: clamp(2.4rem, 11vw, 4rem); }
-  #hero-cta {
-    top: auto; bottom: 10vh;
-    left: 50%; transform: translateX(-50%);
-    right: auto; margin: 0;
-    animation: none; opacity: 1;
-  }
+  #hero-cta { top: auto; bottom: 12vh; }
 }
 
 /* ─── WebGL fallback: gradient sunrise, never a white void ─── */
@@ -121,5 +104,5 @@
   background:
     radial-gradient(ellipse 62% 26% at 50% 69%, rgba(200, 130, 20, .38), transparent 65%),
     radial-gradient(ellipse 30% 10% at 50% 68%, rgba(255, 200, 90, .30), transparent 70%),
-    linear-gradient(to bottom, #000 0%, #050403 58%, #140901 70%, #000 100%);
+    linear-gradient(to bottom, #000 0%, #050403 58%, #140901 70%, transparent 100%);
 }

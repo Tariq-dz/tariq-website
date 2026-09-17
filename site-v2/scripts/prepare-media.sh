@@ -43,7 +43,21 @@ home|14.2|4.6|yes|1.8
 ai-dayplan|98.1|3.0|no|0.5
 route|108.9|4.0|no|1.2
 trip|115.9|2.6|no|1.4
+ai-open|35.5|1.5|no|0.3
+ai-rush|37.0|4.2|no|1.6
+ai-jardin|44.4|5.0|no|2.0
+ai-martyrs|50.4|4.4|no|2.2
+ai-day|91.0|2.4|no|0.4
+ai-casbah|93.3|3.6|no|1.5
+ai-nav|107.4|5.0|no|3.6
 "
+# The seven ai-* clips drive the Tariq AI section on /app (D-102). They follow the recording's own order:
+# open -> rush hour -> Jardin -> Maqam Echahid -> the day laid out -> Casbah -> navigation, and each place
+# clip shows its Overview / Tips / Getting There tabs being tapped.
+# Boundaries verified frame by frame, not estimated: the profile screen showing a display name and wallet
+# balance is on screen until 35.3 and clean from 35.4, so ai-open starts at 35.5; ai-martyrs ends at 54.8,
+# before the assistant returns to its welcome. The Chargily window (63.5-72.5, email + full name) is nowhere
+# near any range. Every clip is <= 5.0 s, so each plays once per view with no control (WCAG 2.2.2, D-31).
 
 # name | source time (s) | redact?
 STILL_TABLE="

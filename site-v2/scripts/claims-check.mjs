@@ -59,7 +59,7 @@ const RAW_BANNED = [
   [/\btel:\+?\d/i, 'a tel: link'],
 ];
 
-const SMALL_PRINT = 'Concept renders of a design in development. Fares are illustrative.';
+const SMALL_PRINT = 'Renders of a design in development. Example fares.';
 // Anything that shows a terminal render, terminal screen or the film.
 const TERMINAL_MEDIA = /(\/terminal\/|\/screens\/|terminal-film|data-terminal-media|\/(persp|front|side|rear|service|reload|bottom|face|idle|dest|pay|tap|ok|ticket|ticket40)(-tight)?\.[\w-]+\.(webp|avif|png|jpe?g))/;
 

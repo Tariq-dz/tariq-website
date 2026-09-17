@@ -1457,3 +1457,878 @@ sat over the bright middle of the image and read poorly on phones). Alt text: "I
 **Honesty note:** SITE_V2_PROMPT and D-67 said "real photos only"; this is the founder's call to use an illustration, so it is described as one rather than passed off as a photo.
 **Checks:** cards-layout (both widths), probe-cities (desktop, reduced, mobile) and anchor-check pass with the image. Home Lighthouse 96/100/100/100, LCP 2,517 ms, CLS 0: the LCP
 element is the hero phone image (81 % render delay) and the two image-sizing flags are hero phone screens, both unrelated to this lazy, below-the-fold card image.
+
+## D-91 · The category line moves from the footer to the hero (positioning run, 2026-09-16)
+**Why:** the incubator note was that the site shows product surfaces and leaves the category to be inferred. The audit found the
+approved company line was already shipped, but only in the footer and the `<title>` — the two lowest-attention places on the site.
+The hero sublead answered "what is Tariq" with a product inventory ("a rider app and an on-board terminal"), so a reader could
+give no other answer than "a transit app".
+**Change:** hero sublead is now "Tariq is the digital layer that makes public transit navigable for riders and accountable for
+operators." The home meta description leads with the same idea. `<title>` unchanged (it already carried the line).
+**Justification:** the hero visual already shows the phone and the terminal, so the words stop duplicating the picture.
+"Designed in Algeria." dropped from this line only; it remains in the footer and the /terminal reveal.
+**Checked:** the sublead runs 3 lines and both CTAs still sit in the first viewport at 1440x900 and 390x844.
+
+## D-92 · The framing block returns to home, smaller than the one D-29 cut
+**Why:** home demonstrated features with no problem or category stated above them.
+**Change:** a block between the hero and the app section, reusing the `.frame*` CSS left dead when D-29 removed its section:
+"For riders / An unfamiliar trip takes local knowledge the rider may not have." and "For operators / Cash fares leave no receipt
+for the rider and no record for the operator.", closing on "A rider app, an on-board terminal, and the record that connects them."
+**Sources:** business plan v2.3 §2.2 (passenger blindness), §2.1 (no receipt for the passenger, no record for the operator), §3
+(the modules compound when combined).
+**Two deliberate departures from POSITIONING_PLAN:**
+1. `.frame__line` was `--fs-h2` (60 px). Restoring at that scale would have repeated the page-length problem D-29 cut it for, on
+   the longest page. Statements are now `--fs-lead`; the closing line took `--fs-h2`, so the weight lands on the payload.
+2. The planned closing line repeated D-91's new hero sublead almost verbatim, two screens apart. Replaced with the "three
+   surfaces are one system" line, which was otherwise unaddressed. Each line now does one job and none repeats another.
+**Operator framing:** "no receipt for the rider and no record for the operator" casts the operator as also missing something,
+not as a culprit. /operators ends in a contact form; the page must not open by accusing its own prospects. The plan's harsher
+material (fare leakage, overloading, departure refusal) is deliberately omitted for the same reason.
+
+## D-93 · A problem statement above the feature stack on /app and /operators
+**/app:** "Getting somewhere new should not take local knowledge. That is the job this app does." in a paper band under the hero.
+Seven feature sections previously sat under no value proposition; the page opened on a feature label. One line frames all of them,
+rather than rewriting seven leads and risking a more accurate but worse page.
+**/operators:** "Today a cash fare leaves no receipt for the rider, no record for the operator, and nothing for the city to audit."
+placed inside the existing section directly above "A record for every tap, signed where it happened.", so it adds no second set of
+section padding. "The city" is the site's existing vocabulary; *wilaya* and *Treasury* avoided as governmental references.
+**Known limit:** this sits *below* the /operators hero, so that page still opens on its answer ("Every journey, accounted for.")
+and the problem precedes the second answer, not the first. A partial fix, recorded as such.
+
+## D-94 · Complaint proof promoted; terminal gains standards and the offline queue
+**/operators** `Complaint triage.` now reads "Designed so a complaint arrives tied to the record of the trip it is about, and
+reaches the operator as a specific, checkable event rather than an anonymous report." The audit found this the cheapest proof of
+the accountability claim (plan §3, Module 3, "the anonymous grievance disappears"), previously compressed into item 1 of 3.
+Net new "designed to" on /operators: **zero**, which was the constraint after a cycle-7 critic flagged ~11 uses there.
+**/terminal** gains "Open NFC standards (ISO/IEC 14443)" on Contactless NFC and a new `Offline queue` item (plan §3 Module 2, §7.3).
+Both are credibility-building and safe: a published standard number is not a performance claim, and the queue is design intent.
+The Inside group goes 2 -> 3 items, making the three columns 3/3/3 instead of 3/2/3.
+
+## D-95 · Two defects I introduced and then fixed
+1. **Dead band on home.** `.frame` contributed ~92 px of bottom padding and the following paper section its own ~108 px, roughly
+   double the site's rhythm. Fixed with `padding-block: … 0`, the idiom already used by /terminal's `.details` and `.close`.
+2. **Gold running text on paper.** The /operators problem line was first set in `--c-gold-deep` at h3 scale. DESIGN.md states gold
+   is never body text on paper, and every existing gold-on-paper use is a *small label*. A four-line sentence in gold had no
+   precedent and, under a freeze, amounts to a new use of the accent. Reset to graphite with a gold rule above, which also makes
+   it consistent with the /app problem line. Contrast was never the issue (4.8:1); the design rule was.
+
+## D-96 · Web Interface Guidelines audit fixes
+- `/app` band was a `<section aria-label="What the app is for">`, i.e. a region landmark holding one sentence and no heading, with
+  ARIA used where semantics suffice. Now a plain `<div>`.
+- "on-board" in the new home h2 could break across lines; the hero copy it replaced protected it with `.nowrap`. Restored.
+- "ISO/IEC 14443" now uses a real U+00A0 (written ` ` in the source string, verified as U+00A0 in the built HTML, with no
+  escape leaking) so the standard never splits from its number in the narrow spec column.
+**Not applied:** the guidelines mandate Title Case for headings. DESIGN.md freezes this site to sentence case and bans all-caps
+eyebrows; the frozen system wins, as it does for `ui-ux-pro-max` palette output.
+
+## D-97 · Contrast: two documented ratios do not match the tokens (pre-existing, founder decision)
+Computed from `tokens.css`, which this run did not touch, so these are the Phase 0 values and **not a regression**:
+
+| pair | measured | DESIGN.md says |
+|---|---|---|
+| gold on graphite | **6.08:1** | 7:1 |
+| gold-deep on paper | **4.56:1** | 4.8:1 |
+| cream on slate | 9.54:1 | 9.6:1 ✓ |
+| gold-ink on gold-tint | 5.65:1 | 5.7:1 ✓ |
+
+Both outliers still pass WCAG AA for their actual use (graphite-on-gold buttons and 15 px gold-deep labels each need 4.5:1),
+but gold-deep clears it by 0.06. The new `.frame__who` labels re-activate that pattern on home; it was already shipping on
+/terminal (`.details__group-title`) and /404 (`.nf__code`), so it is not a new risk class. **DESIGN.md's numbers should be
+corrected, or the tokens nudged, at the founder's discretion.** Not changed here: tokens are frozen (§4.1).
+
+## D-98 · Phase 0 vs Phase 4 measurement
+All checks green on the final build: `claims-check` 5/5; shoot **0 problems** across 20 page x viewport x motion combinations
+(0 console errors, 0 page errors, 0 failed requests, 0 HTTP errors, 0 horizontal overflow); `cards-layout` desktop and mobile;
+`probe-cities` desktop, reduced and mobile; `anchor-check` 84 px desktop / 83 px mobile.
+
+| metric | Phase 0 | Phase 4 |
+|---|---|---|
+| Home Lighthouse (median) | 97 / 100 / 100 / 100 (3 runs) | **98 / 100 / 100 / 100** (4 runs) |
+| LCP | 2,218 ms | 2,266 ms (budget 2.5 s) |
+| CLS | 0 | 0 |
+| TBT | 156 ms | 72 ms |
+| JS, gzipped | 55,013 B | **55,013 B** (this run added no JS) |
+| Home HTML, gzipped | 19,100 B | 19,324 B |
+
+Lighthouse runs varied 89–99 on this 3.8 GB machine; the low readings carried TBT 374 ms against 14–82 ms elsewhere, i.e.
+contention, not the page (HANDOFF documents the same). Medians reported.
+
+**Page height is the run's real cost:** home +439 px (+6.8%), /operators +197 (+5.0%), /app +205 (+3.2%), /terminal mobile +142;
+/terminal desktop and /404 unchanged. D-29 removed the original framing section for length; this one is smaller, but home is
+still the longest page and it grew.
+
+**Nothing was staged and nothing was committed** (§4.7). Changes are confined to `site-v2/`: four `.astro` files plus the new
+markdown deliverables. `tariq-hub`, `tariq-app`, `tariq-hardware` and `tariq-social` were read only, verified by mtime.
+
+## D-99 · Founder decisions, and a maturity pass verified against the code (2026-09-16)
+The founder answered four questions raised by D-91 to D-98.
+
+| Question | Ruling | Effect |
+|---|---|---|
+| Zero-cost hardware (§6.2 required his confirmation) | **Ship it, no numbers** | Applied, see below |
+| App/backend maturity: may I read `tariq-app` / `tariq-hardware`? | **Read both** | Read-only; findings below |
+| The "ticketing digitises the fare" sentence | **Positive half only** | No change; the plan's sentence stays unpublished |
+| Tariq AI scope | **Separate workstream, leave it** | No change. Recorded so a later run does not "helpfully" widen it |
+
+### What the code actually says
+Read-only, with the founder's permission. This is the first time the site's claims have been
+checked against the product rather than against the documents, and it cuts **both ways**.
+
+**Built and deployed — the operator tooling is real, not design intent.**
+`backend/internal/operator/handler.go` (352 lines) registers role-gated routes under `/operator`
+(`main.go:208`): `ListComplaints`, `UpdateComplaint`, `RefundComplaint` (credits `wallet_ledger`),
+`CreateDisruption`, `ListDisruptions`, `DeleteDisruption`. `backend/fly.toml` deploys app
+`tariq-backend` with `release_command = "/app/migrate.sh"`, and `AUDIT_SESSION_LOG.md` Session 22
+records a production deploy with the critical path device-verified on a real phone (login,
+top-up, wallet credit). The complaint is stored against `trip_ref`, so "tied to the trip" is literal.
+
+**Not built — the hardware.** `tariq-hardware/docs/STATUS.md` (updated 2026-09-12) says it plainly:
+*"Nothing here is measured on hardware. It is a design, not a prototype"* and *"Firmware —
+buildable on a laptop, no hardware"*, with the incubator's reader, cards, dev board and scope still
+awaited. **The business plan's "one functional hardware prototype" overstates what exists**, and the
+site's required small print ("Concept renders of a design in development") is correct. It stays, and
+so does every "designed to" attached to the terminal or the signed record.
+
+**Not launched — the app.** Code-complete, 36 screen files, 387 strings at EN/AR parity, running
+against the deployed backend. But `STATUS.md` lists the Play listing as a draft, SARL incorporation
+unfiled, and an ANPDP declaration required before any production user signs in. `/app` keeps
+"in development, Android first". No change.
+
+**The nuance, recorded deliberately:** `dashboard/` is a real Next.js 14 app (login, complaints,
+disruptions) wired to those endpoints through `lib/api.ts`, but it has **no deploy config, appears in
+no CI workflow, and its API rewrite defaults to `http://localhost:8080`**. The operator *endpoints*
+are deployed; the operator *UI* is a local tool. The copy below claims capability only and never a
+hosted dashboard or any install base.
+
+### Changes applied
+1. **`/operators` contact note** gains the commercial half the founder approved: "…installed and
+   maintained by Tariq, as a service, **with no upfront invoice to the operator**." No DZD, no fee,
+   no payback period, per §6.1.
+2. **The three operator tool cards move from design intent to present tense**, because the software
+   behind them is built and deployed, and because the site *already* uses present tense for built
+   but unlaunched rider features ("Every trip keeps its receipt"):
+   - "A complaint arrives tied to the trip it is about, so the operator sees a specific, checkable
+     event rather than an anonymous report." (was "Designed so a complaint arrives tied to the
+     **record**…" — corrected to "trip", because the built complaint links to `trip_ref`; the
+     signed record comes from a terminal that does not exist)
+   - "Operators publish line suspensions, delays and service changes, and riders get them in the app."
+   - "A refund goes back to the rider's wallet, where it shows in the history."
+
+**"designed to" on `/operators` fell from 9 to 6**, and every survivor is a terminal or signed-record
+claim: the hero, "sign each record", "records are designed to reach the operator", "keep reporting",
+"flag when switched off", and install-and-maintain. Design-intent language now survives **only** where
+the hardware repo says the thing is a design and not a prototype. This also answers the cycle-7
+critic who flagged the phrase as over-used on this page.
+
+**This is not §6.3 being overridden.** That rule says never resolve a maturity conflict by picking the
+more impressive document. Here the conflict was settled by ground truth in the code, which the founder
+authorised obtaining — and it moved the hardware claim *down* as well as the software claim up.
+
+### Verification
+`claims-check` 5/5 (the new commercial line clears the banned list); shoot **0 problems** across 20
+combinations; `cards-layout` desktop and mobile; `probe-cities` all; `anchor-check` 84 px / 83 px.
+`/operators` desktop **3,977 → 4,147 px (+170)** and mobile **5,085 → 5,289 (+204)** — desktop is
+*lower* than the 4,174 measured before this pass, because the present-tense copy is shorter than the
+design-intent copy it replaced. JS unchanged at 55,013 B gzipped. Home Lighthouse was measured before
+this pass (median 98/100/100/100, LCP 2,266 ms, CLS 0, TBT 72 ms) and only `operators.astro` changed
+since, so it still describes the current home page.
+
+**Still nothing staged and nothing committed.** Other repos verified untouched by mtime.
+
+## D-100 · Commercial tone pass: the site stopped sounding like the business plan (founder, 2026-09-16)
+**Founder's verdict on D-93's copy:** *"it seem a pitch rather a professional website for company… we are not build a pitch
+deck or a technical document."* He named two lines: `/operators`' "Today a cash fare leaves no receipt for the rider, no record
+for the operator, and nothing for the city to audit", and `/app`'s "Amounts shown come from a demo account. Fares are
+illustrative." He asked that comparable companies be looked at rather than guessed at.
+
+**He was right, and the error is diagnosable.** I read the business plan for its *positioning* and then reproduced its
+*analytical register* on public pages. The plan argues a case to an investor; a website states what the company does.
+
+### What the comparable companies actually do
+Five sites read: **Masabi** and **Littlepay** and **Optibus** (sell to transit operators), **Citymapper** and **Transit**
+(rider-facing). The decisive finding, from Optibus: *"Rather than stating transit industry pain points explicitly, the copy
+frames positive outcomes… **The approach assumes the reader already knows their pain.**"* Littlepay's headings open on verbs
+(Reduce, Unify, Enjoy). Transit is second person, 8–12 words, and carries — verbatim from the analysis — *"Disclaimers/Caveats:
+Notably absent."* Masabi carries none either. Telling an operator that cash leaves no record is both condescending and
+deck-shaped: they run the buses.
+
+### Founder rulings (AskUserQuestion)
+1. **Disclaimers: "cut them and soften the enforced one."**
+2. **Scope: "full commercial rewrite pass."**
+3. Follow-up: **keep `/app`'s previous section copy**, but **change the `/app` hero** and **change the `/operators` "designed to"**
+   — overruling my own "I'd leave them" on both.
+
+### Changes
+**Register (my error, reversed):**
+- `/operators`' problem line **deleted**, not rewritten. The heading below it, "A record for every tap, signed where it
+  happened", was already the outcome statement; a problem lecture above it was the deck move. **This reverses D-93 on that page.**
+- Home's two framing statements turned from problems into outcomes: "Plan any trip across every mode, and pay for it from one
+  balance." / "See the service that ran, and show it to the city."
+- `/app` hero: "The Tariq passenger app is in development, Android first" → **"Android first. Free to use, you pay only your fares."**
+- `/app` section copy left alone at the founder's instruction; my rewrite of its framing line was **reverted**.
+
+**Disclaimer layer cut:** "App screens come from a demo recording" (×3), "…from the demo recording", "Amounts shown come from a
+demo account. Fares are illustrative.", "The film is a draft at 854 by 480." (a build spec that should never have been public),
+and the stale "Fares are illustrative" in `SignedRecord`'s screen-reader caption.
+
+**The build gate was changed, deliberately and in lockstep.** `SMALL_PRINT` went from *"Concept renders of a design in
+development. Fares are illustrative."* to **"Renders of a design in development. Example fares."** in **both** `src/config.ts`
+and `scripts/claims-check.mjs`. The check still fails the build wherever terminal media appears without it. Nothing executable
+referenced the old wording (verified); the only other hits were this log and POSITIONING_PROMPT.md, neither of which runs.
+
+**Design-intent language, now honest rather than habitual.** `/operators` went from 9 "designed to" to 2 in source (3 in shipped
+HTML, because Astro emits the description twice). Shipped totals: **home 0, `/app` 0, `/operators` 3, `/terminal` 1.** It now
+survives only where `tariq-hardware/docs/STATUS.md` says the thing is a design and not a prototype, and nowhere a rider reads.
+`/operators` reads "The terminal keeps reporting even when nobody boards. It flags when it is switched off or tampered with.",
+with one "designed to" kept in the hero as the frame. **I am not claiming the terminal is built.**
+
+**Three redundancies found by reading the whole site end to end, which is what the founder actually asked for:**
+- `/operators` restated its own heading ("An empty bus is not a switched-off terminal" … "So you can tell an empty route from a
+  switched-off terminal"). Cut.
+- `/terminal` still said "designed to be delivered as a service" while `/operators` now said it plainly. Two pages, one offer,
+  two registers. Aligned to "Delivered as a service: Tariq installs the terminal on board and maintains it."
+- `/app`'s lead and the caption beneath it say the same thing twice. **Left alone and referred to the founder**, because he asked
+  that page's previous copy be kept.
+
+**DESIGN.md corrected**, since it documents the site as built: its hero description quoted a subline that had not been on the
+site for some time, and its D-29 note still said the framing section was removed. Both fixed.
+
+### Two tooling bugs of mine, recorded rather than quietly fixed
+1. **`pkill -f "astro preview"` matched its own shell** (the pattern appears in the command line), so a chain killed itself at
+   exit 144 *after* all checks had passed. Later chains kill by PID or `^`-anchored pattern.
+2. **A trailing `&` backgrounded an entire `&&` list**, not just the preview: the build ran in the background, `$!` captured a
+   subshell, and the shoot ran against the *previous* chain's still-live preview serving a stale `dist/`. That run reported
+   47 failures — 23 failed requests and 24 console errors on `/ desktop`, with the signature ERR_CONNECTION_RESET →
+   ERR_EMPTY_RESPONSE → ERR_CONNECTION_REFUSED across JS, WebP and even `/favicon-32.png`. **No page copy can make a favicon get
+   connection-refused**; it was two `astro preview` processes contending for port 4322. Diagnosed, the run discarded, and the
+   cycle re-run cleanly with the background start on its own statement. It did not reproduce.
+
+### Verification
+`claims-check` **5/5 with the new gate string**; shoot **20/20, 0 problems**, zero console/page/request/HTTP errors and zero
+horizontal overflow; `cards-layout` desktop and mobile; `probe-cities` all; `anchor-check` 84 px / 83 px.
+
+**Page height, against the Phase 0 baseline — the cuts paid for the additions:**
+
+| page | desktop | mobile |
+|---|---|---|
+| `/operators` | 3,977 → **3,949 (−28)** | 5,085 → **5,035 (−50)** |
+| `/app` | 6,503 → 6,708 (+205) | 7,841 → **7,847 (+6)** |
+| `/` | 6,468 → 6,885 (+417) | 8,683 → 9,078 (+395) |
+| `/terminal` | 7,289 → 7,289 (0) | 5,573 → 5,715 (+142) |
+| `/404` | unchanged | unchanged |
+
+`/operators` is now **shorter than before this entire run began**. Nothing staged, nothing committed.
+
+## D-101 · Two founder cuts: the duplicated caption and the payment vendor (2026-09-16)
+Both asked for directly after reading the site end to end.
+
+**1 · `/app` duplicate caption cut.** The "See departures near you." lead read "Nearby departures, your wallet and your recent
+trips, on one screen." and the figure caption directly beneath it read "Nearby departures, your wallet, your recent trips." The
+same sentence twice, one under the other. D-100 had flagged it and left it alone because the founder had said to keep that
+page's previous copy; asked directly, he said cut it.
+Removing it orphaned `.duo__item figcaption` (its only caption was that one), so **the dead rule went with it** rather than
+being left behind. The page's other two captions stay — "A day planned, with a budget and reminders." and "The app's own
+search field." both add information rather than repeating their heading.
+
+**2 · The payment vendor is off the site.** "Top up with EDAHABIA or CIB **through Chargily Pay**" on `/` and `/app` becomes:
+- `/` "Top up with EDAHABIA or CIB. The app is free; you pay only your fares."
+- `/app` "Top up with EDAHABIA or CIB, then pay your fares from the balance."
+
+Naming the payment processor is an implementation detail, and it is consistent with what the comparable sites read in D-100 do:
+none of Masabi, Littlepay, Optibus, Citymapper or Transit names its payment vendor on a marketing page. The card schemes stay,
+because those are what a rider actually recognises and holds. **"Chargily" now returns 0 in both shipped pages.**
+The one remaining mention anywhere is `HANDOFF.md`, which records that the demo footage was checked frame by frame for "no
+phone, email, OTP, name or Chargily page" — a privacy-review record of the video, not site copy, so it stays.
+
+### Verification
+`claims-check` 5/5; shoot **20/20, 0 problems** (zero console, page, request and HTTP errors, zero horizontal overflow);
+`cards-layout` desktop and mobile; `probe-cities` all; `anchor-check` 84 px / 83 px. Nothing staged.
+
+**Page height against the Phase 0 baseline — three of the four content pages now finish at or below where they started:**
+
+| page | desktop | mobile |
+|---|---|---|
+| `/operators` | 3,977 → **3,949 (−28)** | 5,085 → **5,035 (−50)** |
+| `/app` | 6,503 → 6,669 (+166) | 7,841 → **7,756 (−85)** |
+| `/terminal` | 7,289 → **7,289 (0)** | 5,573 → 5,715 (+142) |
+| `/` | 6,468 → 6,885 (+417) | 8,683 → 9,052 (+369) |
+| `/404` | unchanged | unchanged |
+
+Home is the only page carrying real growth, and all of it is the framing block that states the category and the two audiences.
+
+## D-102 · The Tariq AI section rebuilt as one immersive scroll moment (founder, 2026-09-17)
+
+**Founder's brief:** keep the phone playing, but have the whole section change with it — "when the video reaches Jardin
+d'Essai, the same place fills the background… that doubling makes the viewer live the experience" — carried by one
+continuous story that offers alternatives the way the assistant does ("you might want somewhere calm… **or**…").
+It must stay **one section**: `/app` compact, "more screens, not more page."
+
+### What shipped
+`src/components/AiImmersion.astro` + `src/scripts/ai-immersion.ts`, replacing the old `.ai` block (heading, lead, four
+chips, one `ai-dayplan` clip) and its orphaned CSS (`.ai__*`, and `.chips--dark`, whose only caller was that block).
+
+Six beats. At ≥1024 px with motion and JS they stack into a pinned stage driven by **one scroll-scrubbed timeline**;
+otherwise they are a **horizontal scroll-snap strip**, one card per beat.
+
+| beat | phone | ground |
+|---|---|---|
+| It knows Algiers. | the welcome state | graphite |
+| When, not just where. | rush-hour advice, Metro M1 beside Bus 26 | graphite |
+| You might want somewhere calm. | the Jardin d'Essai card | **Jardin d'Essai, full bleed** |
+| Or somewhere that explains the city. | the Maqam Echahid card | **Maqam Echahid, full bleed** |
+| Then it lays out the day. | the "Your Day" timeline | **the Casbah, full bleed** |
+| A whole day, planned. | map, budget, four reminders | graphite |
+
+### Three decisions worth recording
+
+**1 · The photographs bloom in the middle; they are not wallpaper.** There is no rush-hour photograph and none was
+invented (§3.2). The founder's own beat sheet already asked for beat 1 "restrained" and beat 6 "back to the site's own
+ground", so the photographic run is beats 3–5. The section therefore opens and closes on the surface the rest of the
+page lives on, and needs exactly the three photographs that exist.
+
+**2 · A stacked mobile fallback was rejected.** Stacking six beats makes the section *longer* on a phone — the opposite
+of the brief. The snap strip keeps all six beats at about one card's height and uses the pattern the cities marquee
+already ships for touch. **`/app` mobile finished 213 px shorter than before this run.**
+
+**3 · The phone is constant by construction, not by timing.** Each beat is a self-contained card carrying its own
+`PhoneFrame`; the cards stack into one cell on desktop and lay out as a row on mobile, so one DOM serves both. Only the
+ground, the line and the screen image are animated — never the card, never the bezel. `PhoneFrame.astro` was not
+touched. Ground and screen are tweened at the same position with the same duration on the same timeline, so they cannot
+drift: **measured `max|ground − screen| = 0.000` at all six beats**, with min-opacity 1.000 at each hold.
+
+### Founder rulings (AskUserQuestion, 2026-09-17)
+1. **The Casbah photograph: "just use it, these details we can take care of them later."** It has **no licence record** —
+   Exif stripped to a stub, no author, matches no file on Commons — and at 1200×800 it is the one photograph below
+   native at desktop width, and visibly softer than the other two. Shipped as instructed. It appears in **no credit
+   line**, because there is nobody to credit and inventing one would be worse than the gap. **Open TODO:** a licensed
+   replacement is ready (`Alger Kasbah02.jpg`, CC BY-SA 3.0, Paebi, 3382×2174) and the swap is one import.
+2. **Demo-data claims stay visible** — the star ratings, the departures panel's LIVE badge, "about 3× faster right now".
+   A deliberate departure from `HANDOFF.md`'s "place cards with star ratings are not used". They are pixels in a
+   screenshot, so `claims-check` does not see them. **No copy or alt text in this section repeats any of those claims.**
+
+### Licences, verified individually against the Commons API
+Jardin d'Essai (`Botanical_Garden_of_Hamma`) **CC BY-SA 4.0**, Maqam Echahid (`Martyrs_Memorial`) **CC BY-SA 3.0**, both
+by **Boumediene15**, both `AttributionRequired: true`. Both are the same assets
+`tariq-app/backend/internal/ai/knowledge/places.go` serves, which is what makes the doubling honest rather than
+decorative. The crop is an adaptation, so the credit names the author, links the licence and says it was cropped.
+The site had nowhere to put photo credit; a `.fine` line at the foot of the stage was designed for it.
+
+### Four defects I introduced and found
+1. **Every beat rendered as an empty bezel.** I made `.aim__phone` transparent for beats 1–5 to avoid overdraw, but
+   `PhoneFrame`'s `.phone__screen` carries an opaque background of its own and is never animated — so the topmost
+   card's screen box permanently occluded whichever image was active. **Invisible to every automated check**: the
+   shoot passed 0 problems, Lighthouse scored 100, and the DOM diagnostic reported the active image at opacity 1,
+   complete, correctly sized. Only looking at it caught it.
+2. **The scrim was anchored to the wrong end on mobile.** It was solved for text in the *bottom* band, which is true of
+   the pinned stage and false of the strip, where the card stacks text at the top. Shipping on the offline model alone
+   would have shipped an **AA failure on every phone**.
+3. **The payoff beat had the thinnest dwell in the section** — the reader reached "a whole day, planned" as the stage
+   let go. Given an extra hold, paid for out of the transitions rather than out of the page.
+4. **My own contrast probe was measuring the text against itself.** Sampling the brightest pixel inside a text block's
+   box samples the glyphs; for cream that returns ~1.00:1. The probe now records each box, **hides the text**, and
+   samples the untouched ground behind it.
+
+Two tooling mistakes cost time and are recorded so they are not repeated: ffmpeg's `fps` filter drifts drawn timestamps
+off true source time in both directions (beat 5's frame is on screen for ~2 frames at 1:31.53 and two attempts landed on
+the wrong one — the reliable method is `select='gte(t,91.52)'` with `-vsync 0`, never `-ss` seeking plus `fps`); and a
+probe written into the scratchpad cannot resolve `playwright-core`, which is why `.shots/tools/` exists.
+
+### Verification
+
+| metric | before (Phase 0) | after |
+|---|---|---|
+| `/app` Lighthouse, median of 3 | 98 / 100 / 100 / 100 | **100 / 100 / 100 / 100** |
+| LCP | 1,767 ms | 1,889 ms |
+| CLS | 0.000 | **0.000** |
+| TBT | 0 ms | 3 ms |
+| `/app` weight at 1440, excl. video | — | **161 KB on arrival, 703 KB after walking the page** (budget 1,536) |
+| `/app` weight at 390, excl. video | — | **140 KB on arrival, 506 KB after walking** |
+| text contrast over photographs | — | **12/12 clear AA, measured in-browser against the real ground** |
+| ground↔screen drift | — | **0.000 at all six beats** |
+| claims-check | 5/5 | **5/5** |
+| shoot, 20 combinations | 0 problems | **0 problems** |
+| cards-layout / probe-cities / anchor-check | pass | **pass** |
+
+**Page height.** `/app` desktop 6,669 → **10,166 (+3,497)**: that is the pinned stage's scroll length, and it is the
+cost of "more screens, not more page" — the reader experiences one screen at a time, but the document is genuinely
+longer. Desktop with reduced motion 6,669 → 6,772 (+103). **Mobile 7,756 → 7,543 (−213).** Every other page is
+unchanged: `/` 6,885, `/terminal` 7,289, `/operators` 3,949, `/404` unchanged.
+
+New tools: `.shots/tools/probe-aim.mjs`, `contrast-aim.mjs`, `shoot-aim.mjs`, `aim-holds.mjs`, `weight-app.mjs`.
+**Nothing was staged and nothing was committed.**
+
+### Does the doubling land, or is it a slideshow?
+Scrolled as a first-time visitor in Chrome at 1440. **It lands, and the reason is specific:** the ground and the phone
+change on the same scroll pixel, so the place does not look like a backdrop behind a screenshot — it looks like the
+screen opened out into the room. The strongest moment is the one the founder named: "you might want somewhere calm"
+over the garden, then **"or"** over the monument. It works because the Jardin d'Essai photograph *shows Maqam Echahid on
+the hill behind the garden* — so "on the hill above the garden" is not a figure of speech, and the two alternatives are
+visibly the same afternoon.
+
+**Where it is weakest, honestly:** the last beat still releases the pin while the reader is reading it, so the section
+hands off to the next while the payoff is on screen. And the Casbah beat is the softest frame in the run, because that
+photograph is 1200 px wide and the others are 4608. Replacing it fixes both the licence gap and the only visible
+quality drop in the section.
+
+### D-102, second verification pass: two more defects, found by testing what I had only claimed
+
+**5 · The mobile strip was not operable by keyboard.** It scrolls sideways and its cards contain nothing focusable,
+so a keyboard user reached beat 1 and could not get to beats 2–6. It *appeared* fine in Chrome, which ships
+keyboard-focusable scroll containers; Firefox and Safari do not guarantee that, and the element reported
+`tabIndex=-1`. Fixed with an explicit `tabindex="0"` and `aria-label="Tariq AI, six screens"`. Now reachable and
+labelled at both widths. **This was a §3.6 requirement I had not tested** — "keyboard users must be able to pass
+through it" — and contrast and reduced-motion passing told me nothing about it.
+
+**6 · In the strip, the beats without a photograph stopped reading as cards.** Their ground was `--c-graphite`,
+the same colour as the section behind them, so the strip looked like two loose text blocks followed by three
+panels. The plain ground is now `--c-slate-deep`, the system's existing recessed-panel tone, **in the strip layout
+only**; the pinned stage still uses full-bleed graphite, where the ground has nothing to sit on.
+
+**Scroll trap, measured:** six PageDowns carry the reader 5,071 → 9,266 (the page maximum). The stage never holds.
+
+**The crossfade, measured properly at last.** The first attempt read the stage geometry *after* a test had already
+scrolled to the bottom — a pinned element reports a different top once pinned or released, so the sample landed
+past the end of the pin and returned a single ground at opacity 1. Trivially zero drift, proving nothing. Measured
+from a page at rest, mid-transition between beats 3 and 4:
+
+```
+grounds [0, 0, 0.37, 0.63, 0, 0]   screens [0, 0, 0.37, 0.63, 0, 0]   drift 0.000
+2 grounds part-way through the fade — genuinely crossfading, not a cut
+```
+
+**This is the measurement §5 actually asked for.** Drift of zero *at the holds* says the beats agree at rest; drift
+of zero *during* the fade is what makes the doubling hold together, and the two part-way grounds prove it is a real
+crossfade rather than a hard swap.
+
+**One false alarm, recorded so the tool is not trusted blindly.** A 390 capture showed the section heading missing.
+It was my capture settling 900 ms after a lazy layout shift, not a reveal failure: probed four ways (390 and 1440 ×
+jump-and-settle and human scroll), the heading and lead are `opacity: 1` with `is-in` set every time.
+
+**Final state:** claims-check 5/5 · full-site shoot 20/20, 0 problems · contrast 12/12 AA · keyboard, scroll-trap
+and crossfade checks pass · `/app` Lighthouse median **100 / 100 / 100 / 100**, LCP 1,884 ms, CLS 0.000, TBT 13 ms.
+Added tools: `.shots/tools/a11y-aim.mjs`, `reveal-aim.mjs`, `shoot-reduced.mjs`.
+**Nothing staged, nothing committed.**
+
+### D-102, third pass: four faults found by sweeping the section instead of sampling its holds (2026-09-17)
+
+The founder reported "a lot of errors". Every automated check was green, so the fault was in how I had been
+looking: six discrete hold frames at one width. Sweeping *through* the section — 16–20 positions at 1440×900,
+1440×700, 1280×800, 1024×768 and 390 — showed four real faults at once.
+
+1. **The credit line credited nothing.** Measured at all four widths: on beats 0 and 5 the line named two
+   photographers while no photograph was on screen. It now fades in with the first photograph and out with the
+   last, driven by the same timeline.
+2. **The head sat outside the pin.** Its ~200 px pushed the stage down, so the phone scrolled through the viewport
+   half-cut before the pin engaged. Moved inside the pin and faded out once beat 1 arrives, so the section pins as
+   one unit and the opening beat keeps its heading.
+3. **Mobile collapsed to one beat.** The card was 335 px of a 390 px viewport, leaving a 35 px sliver that read as
+   an edge rather than as "five more of these, sideways". Cards are now `min(76vw, 380px)`.
+4. **Most of the scroll was spent mid-crossfade.** A 0.3 hold against a 0.7 fade left only ~28% of the section on a
+   settled, legible beat. Now 0.5 against 0.5 (~43%).
+
+**One thing that looks like a fault and is not.** The probe still flags the phone as "cut off" at 8–9 of 16
+positions per width. Every one of those is `pin=relative` with the phone entering from below (top 882 → 772 → 662
+→ 552 in a 900 px viewport): a tall section scrolling into view, which is how any pinned section behaves. The
+threshold was wrong, not the page — recorded so the number is not mistaken for a regression later.
+
+**Two probes of mine were measuring nothing.** `diag-aim.mjs` computed the pin's position once at `scrollY=0` and
+then scrolled to absolute targets; lazy images below shift the layout in between, so it sampled positions hundreds
+of pixels from the section and its clipping numbers were meaningless. It also *printed* "head sits OUTSIDE the
+pin" as a hardcoded string rather than testing containment. `clip-aim.mjs` replaces it and steps relatively,
+re-measuring real rects at every step.
+
+**After:** contrast 16/16 AA · keyboard, scroll-trap and crossfade checks pass · full-site shoot 20/20, 0 problems
+· `/app` Lighthouse median 100/100/100/100, LCP 1,894 ms, CLS 0.000, TBT 28 ms. Nothing staged.
+
+### D-102, fourth pass: the app screens were too small to read (2026-09-17)
+
+Sweeping the section had fixed how it was composed, but not the thing it exists to do. Measured, the app stills
+rendered at **60–64% of their native 434 px on desktop and 24% on mobile**, which put the product's own 13 px UI
+text at **8.3 px** and **3.1 px**. The departures table, the place cards and the Your Day timeline were all
+unreadable. The section proved an app existed without showing what it does — and no automated check covers that,
+because nothing is broken, it is just small.
+
+**Founder ruling (2026-09-17): make the phone bigger**, in preference to zooming into a detail of each screen or
+adding a separate enlarged callout.
+
+| viewport | screen scale before → after | app body text |
+|---|---|---|
+| 1440×900 | 64% → **82%** | 8.3 px → **10.7 px** |
+| 1280×800 | 61% → **72%** | 8.0 px → **9.3 px** |
+| 1024×768 | 60% → **69%** | 7.8 px → **9.0 px** |
+| 390 strip | 24% → **52%** | 3.1 px → **6.8 px** |
+
+**Stated plainly: this improves it, it does not solve it.** A whole 434×888 screen cannot exceed about 90% inside a
+viewport-height stage, and on a phone card it cannot get close. Desktop is now readable-with-effort at 1440 and
+still hard at 1024; mobile is still too small to read. Closing it properly needs the zoom-into-the-detail approach,
+which the founder declined for now.
+
+**The first attempt undershot and I nearly shipped it.** `height: min(100%, 94vh)` looked right but the card uses
+`align-items: end`, so its grid row is content-sized and the percentage was indeterminate — it resolved to ~688 px
+at *every* desktop width, giving a flat 74%. The giveaway was the screen measuring identically at 1440, 1280 and
+1024. Sizing from the stage (`calc(100dvh - header - s-8)`) fixed it.
+
+**A regression I introduced, caught by a number that made no sense.** To buy the phone height I cut the card's
+bottom padding from 64 px to 24 px, which dropped the line block onto the credit — two pieces of cream text on top
+of each other. Contrast reported **1.43:1**, impossible for text on a ground, and the explanation was that the
+probe hides `[data-line]` before sampling but not `.aim__credit`: it was measuring cream against cream. The sweep
+then showed it plainly, the body line struck through by the credit. Fixed by lifting the line clear
+(`padding-bottom: clamp(56px, 9vh, 104px)`), which costs no phone height because the phone is sized from `dvh`.
+
+**Two more of my probes were lying.** `collide-aim.mjs` compared the phone against the head's *container*, which
+spans the full width by design, so it reported a collision at every width while the sweeps showed the text nowhere
+near the phone; it now measures the head's text. Its off-screen check also flagged the phone whenever the section
+was merely scrolling into view, so it is now gated on the stage actually having reached the header.
+
+**A claim of mine that no longer holds.** `/app` mobile was reported earlier in D-102 as **213 px shorter** than
+baseline. The larger phone and taller cards have spent that: mobile is now **7,760** against a 7,756 baseline
+(**+4**), and desktop is **9,907**. The section is no longer shorter than what it replaced on a phone.
+
+**After:** contrast **16/16** AA (better than before the regression: titles 4.18–5.03, bodies 5.54–6.01 at 1440) ·
+head/credit/line overlaps **0** at every width · keyboard, scroll-trap and crossfade checks pass · full-site shoot
+**20/20, 0 problems** · `/app` Lighthouse median **100/100/100/100**, LCP 1,896 ms, CLS 0.000, TBT 18 ms ·
+claims-check 5/5 · nothing staged.
+
+### D-102, fifth pass: the phone plays the recording, and the story follows it (founder, 2026-09-17)
+
+**Founder's direction:** put video in the phone frame, show the taps — in particular each place card's
+**Overview / Tips / Getting There** tabs — and build the story as it happens in the recording, "from opening
+Tariq AI to navigation after the Casbah".
+
+**Seven beats, cut in the recording's own order.** The section no longer shows stills:
+
+| beat | clip | source | the phone shows |
+|---|---|---|---|
+| 1 | `ai-open` | 35.5 s +1.5 | Tariq AI opens, four chips, "Rush hour now?" tapped |
+| 2 | `ai-rush` | 37.0 s +4.2 | avoid buses 1, 22, 26 · departures · Metro M1 beside Bus 26 |
+| 3 | `ai-jardin` | 44.4 s +5.0 | Jardin d'Essai: **Overview → Tips → Getting There** |
+| 4 | `ai-martyrs` | 50.4 s +4.4 | Maqam Echahid: **Overview → Tips → Getting There** |
+| 5 | `ai-day` | 91.0 s +2.4 | the ask, the Your Day timeline, the budget, four reminders |
+| 6 | `ai-casbah` | 93.3 s +3.6 | the Casbah: **Overview → Tips → Getting There** |
+| 7 | `ai-nav` | 107.4 s +5.0 | the route on the map, every stop, alight at Place des Martyrs, the fare |
+
+The recording does contain a full navigation sequence after the Casbah — route search, options, the route drawn
+across the bay, turn-by-turn stops, fare breakdown, Complete Trip — so beat 7 is real footage, not a stand-in.
+All seven are registered in `scripts/prepare-media.sh`'s `CLIP_TABLE`, so they rebuild from source rather than
+existing as ad-hoc cuts. The six stills they replace were deleted.
+
+**Video does not break the doubling.** Clips cannot be scrubbed by scroll, so the ground and the phone still
+crossfade on the one scroll-linked timeline and each clip plays once when its beat takes the stage, as `ride.ts`
+drives its video. Measured mid-crossfade with seven beats: grounds `[0,0,0.17,0.83,0,0,0]`, screens
+`[0,0,0.17,0.83,0,0,0]`, **drift 0**. Every clip is ≤ 5.0 s, so each plays once per view with no control
+(WCAG 2.2.2, D-31), and nothing plays under reduced motion.
+
+**Two playback problems solved before they shipped.** `PhoneFrame` with a clip renders a poster *and* a video, so
+a beat has two `.phone__media`; the old guard compared counts and would have bailed silently, killing the whole
+effect. And `autoplay` had to be false — the site-wide handler would otherwise start all seven at once on the
+pinned stage, where every clip is technically in view. The strip gets its own small observer instead, so a phone
+plays only the card being looked at and never downloads GSAP.
+
+**A privacy near-miss.** The first cut of `ai-open` started at 35.2 s, which opens on the **Profile screen showing
+a display name and a wallet balance**. Verified frame by frame: personal data is on screen through 35.3 and clean
+from 35.4, so the clip starts at 35.5. `ai-martyrs` ends at 54.8, before the assistant returns to its welcome. The
+Chargily window (63.5–72.5, email and full name) is nowhere near any range. `ai-open` was also trimmed so it ends
+*on the tap* rather than running into beat 2's answer, which had made the phone look static across the crossfade.
+
+**Two of my own probes reported faults that were not there** — the same failure mode as earlier passes, recorded
+so the numbers are not misread later:
+- `a11y-aim.mjs` compared the 7 grounds against the flat list of 14 media index-by-index, pairing beat 2's ground
+  with beat 1's video, and reported **drift 0.829**. Paired per beat, the true drift is **0**.
+- The page height was read as **14,443** from `shoot`, which measures mid-sweep before the `content-visibility`
+  sections settle. Measured properly: **11,976 at rest, 10,555 once settled**, with exactly **one** pin spacer of
+  4,720 px — the expected `6 × 900 × 0.72 + 832`. There was no duplicate pin, which is what the number implied.
+
+**After:** every beat plays its clip (verified with autoplay permitted in headless) · contrast **14/14** AA ·
+drift **0** · no collisions · keyboard, scroll-trap and crossfade checks pass · claims-check 5/5 · `/app`
+Lighthouse median **100/100/100/100**, LCP 1,887 ms, CLS 0.000, TBT 4 ms · video 1.9 MB (lazy, excluded from the
+budget per §3.4) and 164 KB of posters, which do count · nothing staged.
+
+**Still true, and still open:** the app's own UI text renders at ~10.5 px at 1440 and ~6.8 px on a phone, so the
+screens remain hard to read at small widths — improved, not solved, and closing it needs the zoom-into-the-detail
+approach the founder declined. The Casbah photograph still has no licence record.
+
+### D-102, sixth pass: the video tells it, not the scroll (founder, 2026-09-17)
+
+**Founder's direction:** "coupling the scrolling telling with the video flow may be hard, so remove the scrolling
+telling and maintain the normal video flow as in the demo — just when the images of places like Jardin d'Essai
+appear, the background changes to it to create the immersion."
+
+**What shipped.** The phone plays the recording straight through as one continuous **26.1 s** flow, and the section
+behind it becomes whatever place is on the phone. The video's `currentTime` is the only source of truth: the
+ground, the line and the credit are all read from it, so the place filling the section **cannot** drift from the
+place on the phone — there is nothing to keep in sync, only one number to read.
+
+| at | ground | line |
+|---|---|---|
+| 0.0 s | graphite | It knows Algiers. |
+| 1.5 s | graphite | When, not just where. |
+| **5.7 s** | **Jardin d'Essai** | You might want somewhere calm. |
+| **10.7 s** | **Maqam Echahid** | Or somewhere that explains the city. |
+| 15.1 s | graphite | Then ask for the whole day. |
+| **17.5 s** | **the Casbah** | Every stop, checked the same way. |
+| 21.1 s | graphite | Then go. |
+
+Verified at eleven sampled timestamps: the right ground, the right line and the credit only while a photograph is
+on screen. `requestAnimationFrame` reads the clock, not `timeupdate` — the latter fires about four times a second
+and would let the background lag the phone by up to 250 ms, which is exactly the drift that kills the effect.
+
+**What this removed:** the pin, the scrub, the seven-beat stage, the mobile strip fallback, and **GSAP from `/app`
+entirely**. Desktop and reduced motion are now the same layout. `/app` desktop went **10,555 → 7,015**, which is
+346 px over the pre-existing baseline; the pinned version had added nearly 4,000.
+
+**A single unbroken cut was impossible.** The span from the AI opening to navigation crosses the Chargily window
+(email and full name) and the wallet/manual-plan material, so the seven segments are joined into
+`public/media/clips/ai-story.*` — one file that plays through without stopping. The per-segment clips stay in
+`prepare-media.sh` as its inputs.
+
+**It has a pause control.** At 26.1 s the clip is well past the 5-second WCAG 2.2.2 exemption the site's other
+clips rely on (D-31), so this one carries a real Pause / Play / Replay button. Under reduced motion nothing
+autoplays: the poster stands and the control offers Play. Without JavaScript every line shows in order as a
+stacked list.
+
+**A decision the founder left to me.** Asked whether to size the phone to be read or to make the stage fit one
+screen, he said to do what I thought right. Capping the phone to fit put the app's own text at **8.9 px** — below
+where it was *before* he asked for it to be enlarged, and small enough that the tab taps, the whole reason for
+showing video, are invisible. I restored the readable size: **86 % of native, ~11.2 px** at 1440, 87 % at 1280,
+85 % at 1024. The stage is then a little taller than one viewport, which is ordinary — content passing under the
+sticky header while scrolling is how every other section on this site behaves. Mobile remains 59 % / 7.7 px.
+
+**The scrim needed deepening for the new layout.** Its mid-band was 0.58–0.62 and the body line sits in it:
+Maqam Echahid measured 3.61:1 and the Casbah 3.66:1 against the 4.5 body requirement. Deepening the middle to
+0.70–0.72 clears all three without touching the ends, so the sky and the ground still read as photograph. Now
+**12/12 pass**: titles 5.10–5.32, bodies 5.09–6.33 at 1440; 6.13–7.98 at 390.
+
+**Two more of my own instruments lied, and both are fixed.**
+- The contrast probe sampled the title's box, which reaches under the **sticky header** — and the header carries
+  the cream TARIQ wordmark, the same luminance as cream text. Every title read a constant **1.05:1** regardless of
+  which photograph was behind it. A value identical across three different images was the tell. The sample is now
+  clipped to below the header.
+- My captures used `scrollIntoView({block:'center'})`, which parked the section mid-pass so every title looked
+  sliced off. Reading the section the way a reader arrives at it (`block:'start'`), the title sits at y=71 —
+  clear of the 68 px header. I nearly redesigned the layout to fix a screenshot.
+
+**The probe library was purged.** Fourteen tools assumed a pinned seven-beat stage that no longer exists
+(`aim-holds`, `play-aim`, `collide-aim`, `sweep-aim`, `a11y-aim`, `probe-aim`, `mobilefit-aim` and others). Stale
+probes returning confident wrong readings caused three false alarms in this session, so they are gone rather than
+left to mislead. What remains and is current: `story-aim.mjs`, `contrast-aim.mjs`, `legible-aim.mjs`,
+`boxes-aim.mjs`, `shot-story.mjs`.
+
+**After:** ground follows the video at all eleven checks · contrast **12/12** AA · legibility 85–87 % on desktop ·
+control and reduced motion verified · claims-check 5/5 · full-site shoot **0 problems** · `/app` Lighthouse median
+**99/100/100/100**, LCP 1,815 ms, CLS 0.000, TBT 102 ms (26 ms on an earlier run of the same build — video decode
+plus this machine's documented variance) · nothing staged.
+
+**Still open:** mobile shows the app at 59 % of native (~7.7 px), so the phone reads as shape rather than content
+on a small screen. The Casbah photograph still has no licence record.
+
+### D-102, seventh pass: the whole section fits on one screen (founder, 2026-09-17)
+
+**Founder:** "the section is very big, I could not even see the whole section at once, I need to scroll up and
+down to do that."
+
+**He was right and my previous call was wrong.** In the sixth pass I chose legibility over fitting and argued the
+taller section was acceptable. It was not: the doubling cannot land if you have to scroll to take it in, which is
+the point of the section.
+
+**It did not have to be a trade.** The phone is 434×888 — its *height* overflows the viewport, not its scale. So
+the screen stays at 400 px wide (**86 % of native, ~11.2 px text**, the taps legible) and its height is capped
+with a faded bottom, cropping only the "Ask Tariq anything…" input bar; the place cards, the tabs and the taps all
+sit above it. This is the same masked-crop pattern `.bento__phone` already uses on this page. The rest came from
+chrome: the control and credit now overlay the stage instead of stacking below it (they stand ~60 px tall against
+96 px of reserved padding), the heading steps back on desktop, and paddings were trimmed.
+
+| viewport | section | usable | phone screen |
+|---|---|---|---|
+| 1440×900 | 811 | 832 | 86 % · 11.2 px |
+| 1536×864 | 775 | 796 | 86 % · 11.2 px |
+| 1280×800 | 708 | 732 | 87 % · 11.3 px |
+| 1024×768 | 669 | 700 | 87 % · 11.3 px |
+| 390×844 | 762 | 776 | 57 % · 7.5 px |
+
+Measured directly rather than by proxy: with the section top parked at the header, **every part — heading, title,
+body, phone, control, credit — sits 24 px below the header and 30–47 px above the fold, at all five sizes.**
+
+**Mobile paid for it.** Stacked, the section ran 236 px past one screen, so the phone is capped harder there and
+the type is tighter: 59 % → **57 %** of native. On a screen where the app text was already too small to read, that
+is the honest price of seeing the whole moment at once.
+
+**Two more probes of mine gave false readings, and both are gone.** `titlefit-aim` reported beat titles under the
+sticky header at 1536, 1280 and 1024 — it called `scrollIntoView` while the page sets `scroll-behavior: smooth`,
+so it measured mid-flight. `shot-story` scrolled to the *stage*, which sits below the heading and pushes the
+titles up under the header, so its captures showed titles sliced off that are not sliced off in use. **I twice
+started redesigning the layout to fix a screenshot.** The replacement, `seen-aim.mjs`, settles the layout, scrolls
+instantly, and asserts the founder's actual complaint: is all of it on screen at once.
+
+**After:** whole section visible at once at every size · contrast **12/12** AA · legibility 86–87 % desktop ·
+ground follows the video at all eleven checks · control and reduced motion verified · claims-check 5/5 ·
+full-site shoot **0 problems** · `/app` Lighthouse median **99/100/100/100**, LCP 1,821 ms, CLS 0.000, TBT 8 ms ·
+nothing staged.
+
+**Still open:** the app's own text is ~7.5 px on a phone, so there the screen reads as shape rather than content.
+The Casbah photograph still has no licence record.
+
+### D-102, eighth pass: shaped like the wallet section (founder, 2026-09-17)
+
+**Founder:** "I did not like how you cut the Tariq AI section. I asked you to make its size and the phone frame
+like the wallet section — not so big we cannot see the whole section, and not the ugly small piece you did. Do not
+overload yourself with the readability, these details are not important."
+
+**What was wrong.** Chasing "fit one screen" I had capped the phone's height and faded its bottom out. At the
+founder's 1366×768 window that collapsed it to **330 px tall** — small and visibly cut — while the wallet section
+beside it shows a phone at 360×707. I had optimised a number and lost the thing the section is for.
+
+**What it is now.** `.aim__phone` is exactly `.feat__phone`: `width: min(360px, 80%)`, no height cap, no mask.
+The section is an ordinary `.section` on `.feat__grid`'s two columns with the same gap, the heading and the
+changing beat text together in the copy column the way `.feat__copy` holds its h2 and lead, and the control and
+credit overlaid rather than stacked. **Measured: the section is 858 px — the wallet section is 858 px. Zero
+difference**, same padding, same 707 px row, same phone.
+
+| | wallet | Tariq AI |
+|---|---|---|
+| section | 858 px | **858 px** |
+| grid row | 707 | **707** |
+| phone | 360 × 707 | **360 × 707** |
+
+The full-bleed ground that becomes whatever place the phone is showing is the only thing that differs, which is
+the point of the section.
+
+**Three failures of mine worth recording.**
+1. **A patch silently half-applied.** One `python` block asserted against a string its own earlier replacement had
+   already rewritten, threw `AssertionError`, and left the heading as a separate row — 157 px of the 317 px the
+   section ran over. The build still passed, so only measuring the parts caught it. Patches that edit the same
+   region twice need to assert against what they actually expect to find.
+2. **My capture tool misled me three times.** `shot-story.mjs` scrolled to `[data-aim-stage]`, which I had moved
+   onto `.aim__grid` — the row *below* the heading — so every capture parked the heading off-screen and showed
+   titles "cut off" that were not cut off. I twice began redesigning the layout to fix a screenshot. It now
+   scrolls to the section.
+3. **I kept enforcing a target the founder had replaced.** `seen-aim.mjs` asserts "the whole section fits one
+   screen", which was my own over-correction. The wallet section does not fit one screen either — it overflows by
+   26 px at 1440×900 and 271 px at 1366×648. Reporting that as a failure after being told to match the wallet was
+   me re-litigating a settled decision.
+
+**Readability, for the record and not chased:** the app screen lands at 76 % of native (~9.9 px) at 1440, 59 % on
+a phone. The founder has explicitly deprioritised this.
+
+**After:** phone identical to `.feat__phone` at every size · section height identical to the wallet section ·
+contrast **12/12** AA · the ground still follows the video at all eleven checks · control and reduced motion
+verified · claims-check 5/5 · shoot **0 problems** · nothing staged.
+
+### D-102, ninth pass: the text reorganised (founder, 2026-09-17)
+
+**Founder, looking at it live:** "I think you should reposition and reorganise the text in the section."
+
+**The problem was four blocks competing.** The copy column stacked a section heading, a section lead, the beat
+title and the beat line — two large headings on top of each other. Worse, the lead and beat 1 said nearly the same
+sentence: *"Ask it about a place, a stop, or the time to go"* against *"Open it and ask — a place, a stop, or the
+hour to go."* The section was arguing with itself.
+
+**Now three, with one hierarchy.** The lead is deleted — beat 1 already carries it, in the beat where it belongs.
+The section identity becomes a quiet 15 px line, `Tariq AI · your Algiers guide`, pinned to the top of the column.
+The beat title steps up to 44 px at 1440 and is the only large text, so it leads. The column is
+`grid-template-rows: auto 1fr` with the beat text centred in what remains, instead of everything centred together
+and floating in the middle.
+
+**The dark boxes behind the text in the founder's screenshot are not ours.** Checked before changing anything:
+every text element computes `background: rgba(0,0,0,0)`, no `text-shadow`, no `filter`, no `mix-blend-mode`. It is
+selection or local rendering. Worth the check — "fixing" a phantom would have made real things worse.
+
+**A regression I made and caught.** Demoting the identity line to a `<p>` removed the section from `/app`'s
+heading outline entirely: the page went "Trip alerts…" straight to "In English and Arabic.", so anyone navigating
+by heading skipped the whole section. `aria-label` names a region but does not restore it to the outline. It is an
+`h2` again, styled quiet, and the outline reads correctly with `aria-labelledby` pointing at it. **Visual
+hierarchy is not a reason to leave a section out of the document structure.**
+
+**A second stale probe.** `height-aim.mjs` and `phones-app.mjs` both identified sections by their `h2` text, so
+changing the heading made one return nothing and the other label the section `(hero)`. Both now find it by
+`[data-aim]`. That is the third and fourth tool this session broken by an assumption about the markup; probes
+should key off a stable hook, not copy.
+
+**After:** section **858 px — 0 px from the wallet section** · phone 360 × 707, identical to `.feat__phone` ·
+heading outline restored · contrast **12/12** AA · ground still follows the video · control and reduced motion
+verified · claims-check 5/5 · full-site shoot **0 problems** · nothing staged.
+
+### D-102, tenth pass: selectable text, and written like the rest of the page (founder, 2026-09-17)
+
+**Founder:** "do you think this be in a professional website… look how you wrote in other sections… and also I
+could not select this text."
+
+**Both were real and both were mine.**
+
+**1 · The text could not be selected.** The seven beat blocks share one grid cell and the inactive six were hidden
+with `opacity: 0`. Opacity does not remove an element from hit-testing, so six invisible blocks sat on top of the
+visible words and swallowed the cursor. Hit-tested before the fix: a click on the visible text at (201,156)
+resolved to **line 6** while **line 2** was on screen. With `pointer-events: none` on inactive lines and `auto` on
+`.is-on`, the same point resolves to line 2. `.shots/tools/select-aim.mjs` now guards this.
+
+**2 · The heading was not written like the rest of the page.** I had demoted it to `Tariq AI · your Algiers guide`
+— a 15 px middot label, which `DESIGN.md` rules out and which no other section uses. Every sibling carries a real
+sentence-case `h2`: "A wallet in dinars.", "One search, across modes." It is an `h2` at the site's own 60 px
+again, reading **"Tariq AI. Your Algiers guide."**, with the changing beat text demoted to lead + body. The column
+is now h2 + lead + body — the same shape as `.feat__copy` — so there is one heading instead of two competing, and
+no stranded label above a void.
+
+**A borderline I closed rather than banked.** The beat lead rendered at **23.998 px**, one thousandth under WCAG's
+24 px large-text threshold, so it was being graded at 3:1 when it should have been 4.5:1. Lifted to 26 px, and the
+probe now grades anything within a pixel of the threshold at the stricter rule. All twelve measurements pass at
+4.5:1 with no rounding luck.
+
+**A claim of mine to correct.** I reported the h2 as clipped by the sticky header, from a contact sheet. Measured
+at a reader's scroll position it clears by **302 px**; the wallet section's h2 clears by 323 px. Nearly identical.
+That is the **fourth** time `shot-story.mjs`'s tiled output has made a vertical layout look broken when it was not
+— tall frames tiled 2×2 crop, and I keep reading the crop as the page. Vertical judgements go through a measuring
+probe, never that sheet.
+
+**After:** text selectable (hit-tested) · heading matches the page's own pattern and outline · section **858 px,
+0 px from the wallet section** · phone 360 × 707, identical to `.feat__phone` · contrast **12/12** AA under the
+strict rule · ground still follows the video · control and reduced motion verified · claims-check 5/5 · full-site
+shoot **0 problems** · nothing staged.
+
+## D-103 · The site stops being about one city (founder, 2026-09-17)
+
+**Founder:** "remove everything that is constrained on Algiers and the Algerian city — for example Algiers guide to
+city guide, the dinar to local currency — because we start in Algerian cities but we want to expand our coverage
+to other cities as shown on the home page." Scope: the whole site. Assets (images, video) left exactly as they are.
+
+**The risk, and how it was handled.** Generalising copy can quietly turn an honest statement into a broader claim
+than the product supports: "a wallet in dinars" is a fact, "a wallet in your local currency" is a promise of
+multi-currency the app cannot keep. So the framing generalised and the **capabilities were restated as outcomes**
+rather than widened. `claims-check` bans `live in algiers` but nothing stops a broader geographic claim, so this
+was judgement, not a gate.
+
+| where | was | now |
+|---|---|---|
+| `/app`, `/` | Tariq AI. Your **Algiers** guide. | Tariq AI. Your **city** guide. |
+| `/app` beat 1 | It knows **Algiers**. | It knows **your city**. |
+| `/app` | **A wallet in dinars.** | **One balance, every fare.** |
+| `/`, `/app` | Top up with **EDAHABIA or CIB** | Top up with **your bank card** |
+| `/` | Pay from a wallet **in dinars** | Pay from **one balance** |
+| `/` hero + meta | public transit **in Algeria** navigable | public transit navigable |
+| `/` | Designed for the way **Algeria** moves. | Designed for the way **cities** move. |
+| `/app` meta | pay from a **DZD** wallet | pay from one balance |
+| `/app` chips | Bus (**ETUSA** and private), Train (**SNTF**) | Bus (public and private), Train |
+| ModesStrip | ETUSA and private lines · SNTF | public and private lines · national rail |
+| `/app` AI beats | named Jardin d'Essai, Maqam Echahid, the Casbah, Grande Poste | describe the same thing without naming the city |
+
+**Replaced, never deleted.** The founder's caution — *"some text is well organised and removing part makes their
+places empty, which is not visually good"* — drove the method. Every removal carries a substitute of similar
+weight: `ModesStrip`'s sub-labels would have left visible holes under "Bus" and "Train" if emptied, so they became
+"public and private lines" and "national rail". Verified after: every mode chip still carries text (199 px down to
+60 px), no empty sub-label, and all page heights unchanged.
+
+**Alt text stays literal — founder's ruling.** The clips show "Casbah of Algiers · 75 minutes · 40 DA" and
+"Bab Ezzouar, Dar El Beida, El Harrach Centre" on screen. Alt text that denied it would describe less than the
+picture, so a sighted viewer and a screen-reader user would get different pages. Marketing copy is generic;
+descriptions of what is visibly on a screen are accurate. **This is the site's honesty rule applied to
+accessibility, and the two point the same way.**
+
+**Kept on purpose, and why:**
+- **The cities marquee** (Algiers, Oran's "Algeria's second city…", "Join the waitlist for Algiers") — this *is*
+  the expansion story, told honestly through Live / Coming soon / Planned badges.
+- **"Designed in Algeria."** (footer, `/terminal`) — where the company builds, not a limit on where it runs. It is
+  a differentiator; erasing it would delete the company's origin rather than a geographic constraint.
+- **`40 DA` on the example ticket** (`SignedRecord`) — a drawn depiction of a ticket, already tagged "Example".
+  A generic figure would show a fare no ticket ever carried.
+- **`/operators`** — inventoried and already city-agnostic throughout ("Bring Tariq to your network").
+
+**After:** claims-check 5/5 · full-site shoot **20/20, 0 problems** · every page height unchanged, so no gap opened
+where copy was replaced · nothing staged.

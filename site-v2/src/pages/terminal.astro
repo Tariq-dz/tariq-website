@@ -11,12 +11,14 @@ const arrow = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4
 const details = [
   { group: 'On its face', items: [
     { name: '7″ display', note: 'Non-touch. Destinations and the fare are shown before the tap.' },
-    { name: 'Contactless NFC', note: 'A card or a phone, at the gold ring.' },
+    // U+00A0 between the standard's name and number so the pair never splits across lines in the narrow column
+    { name: 'Contactless NFC', note: 'A card or a phone, at the gold ring. Open NFC standards (ISO/IEC 14443).' },
     { name: 'Thermal printer', note: 'A ticket on every tap.' },
   ] },
   { group: 'Inside', items: [
     { name: 'Cellular and GNSS', note: 'Mobile network and satellite positioning, built in.' },
     { name: 'Sealed electronics bay', note: 'Opened only by a technician.' },
+    { name: 'Offline queue', note: 'Designed to hold every tap when the network drops, and send them when it returns.' },
   ] },
   { group: 'On the vehicle', items: [
     { name: 'One sealed connector', note: 'One connection. Nothing exposed. Recessed into the bottom edge.' },
@@ -74,7 +76,7 @@ const details = [
   <section class="close section surface-slate" aria-labelledby="close-title">
     <div class="container close__inner">
       <h2 class="h2" id="close-title" data-reveal>Installed and maintained by Tariq.</h2>
-      <p class="lead" data-reveal>The terminal is designed to be delivered as a service: Tariq installs it on board and maintains it.</p>
+      <p class="lead" data-reveal>Delivered as a service: Tariq installs the terminal on board and maintains it.</p>
       <div class="close__cta" data-reveal>
         <a class="btn btn--primary" href="/operators#contact">Talk to us</a>
         <a class="link-arrow" href="/operators#see-title">See the signed record <Fragment set:html={arrow} /></a>

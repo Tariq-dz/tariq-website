@@ -121,15 +121,15 @@
   </svg>`;
 
   const VEHICLES_CARDS = [
-    { key:'metro',   tag:'Underground',      name:'Metro',   em:null,         badge:'Fastest',    w:476, h:357, bg:'linear-gradient(145deg,#090e1a 0%,#0d1528 45%,#060a14 100%)', accent:'rgba(80,120,220,.30)' },
-    { key:'tram',    tag:'Street Level',     name:'Tram',    em:'way',        badge:'Electric',   w:520, h:390, bg:'linear-gradient(145deg,#0a1408 0%,#0f1e0a 45%,#070f06 100%)', accent:'rgba(80,180,80,.28)'  },
-    { key:'etusa',   tag:'City Bus',         name:'ETUSA',   em:' Bus',       badge:'Network',    w:480, h:360, bg:'linear-gradient(145deg,#181006 0%,#231808 45%,#120c04 100%)', accent:'rgba(220,160,40,.28)' },
-    { key:'privbus', tag:'Private Operator', name:'Private', em:' Bus',       badge:'Coverage',   w:446, h:335, bg:'linear-gradient(145deg,#0e1018 0%,#141620 45%,#0a0c14 100%)', accent:'rgba(160,160,200,.22)'},
-    { key:'teleph',  tag:'Aerial',           name:'Télé',    em:'phérique',   badge:'Aerial',     w:400, h:300, bg:'linear-gradient(145deg,#071020 0%,#0a1830 45%,#050c18 100%)', accent:'rgba(60,160,240,.30)' },
-    { key:'sntf',    tag:'Commuter Rail',    name:'SNTF',    em:' Train',     badge:'Long Range', w:520, h:390, bg:'linear-gradient(145deg,#1a0a08 0%,#281008 45%,#120606 100%)', accent:'rgba(200,60,40,.30)'  },
-    { key:'taxi',    tag:'On Demand',        name:'Taxi',    em:null,         badge:'On Demand',  w:446, h:335, bg:'linear-gradient(145deg,#1a1008 0%,#261604 45%,#140c04 100%)', accent:'rgba(220,180,30,.30)' },
-    { key:null,      tag:'Maritime',         name:'Navette', em:' Maritime',  badge:'Ferry',      w:476, h:357, bg:'linear-gradient(145deg,#040e1c 0%,#061422 45%,#030a16 100%)', accent:'rgba(40,120,220,.30)', art: NAVETTE_ART },
-    { key:null,      tag:'Gondola',          name:'Télé',    em:'cabine',     badge:'Cable Line',    w:416, h:312, bg:'linear-gradient(145deg,#071414 0%,#0a1c18 45%,#050e10 100%)', accent:'rgba(40,180,160,.26)', art: TELECABINE_ART },
+    { key:'metro',   tag:'Underground',      name:'Metro',   em:null,         badge:'Fastest',    w:476, h:357, bg:'linear-gradient(145deg,#090e1a 0%,#0d1528 45%,#060a14 100%)', accent:'rgba(80,120,220,.30)', hue:'#5078dc' },
+    { key:'tram',    tag:'Street Level',     name:'Tram',    em:'way',        badge:'Electric',   w:520, h:390, bg:'linear-gradient(145deg,#0a1408 0%,#0f1e0a 45%,#070f06 100%)', accent:'rgba(80,180,80,.28)', hue:'#50b450'  },
+    { key:'etusa',   tag:'City Bus',         name:'ETUSA',   em:' Bus',       badge:'Network',    w:480, h:360, bg:'linear-gradient(145deg,#181006 0%,#231808 45%,#120c04 100%)', accent:'rgba(220,160,40,.28)', hue:'#dca028' },
+    { key:'privbus', tag:'Private Operator', name:'Private', em:' Bus',       badge:'Coverage',   w:446, h:335, bg:'linear-gradient(145deg,#0e1018 0%,#141620 45%,#0a0c14 100%)', accent:'rgba(160,160,200,.22)', hue:'#a0a0c8'},
+    { key:'teleph',  tag:'Aerial',           name:'Télé',    em:'phérique',   badge:'Aerial',     w:400, h:300, bg:'linear-gradient(145deg,#071020 0%,#0a1830 45%,#050c18 100%)', accent:'rgba(60,160,240,.30)', hue:'#3ca0f0' },
+    { key:'sntf',    tag:'Commuter Rail',    name:'SNTF',    em:' Train',     badge:'Long Range', w:520, h:390, bg:'linear-gradient(145deg,#1a0a08 0%,#281008 45%,#120606 100%)', accent:'rgba(200,60,40,.30)', hue:'#c83c28'  },
+    { key:'taxi',    tag:'On Demand',        name:'Taxi',    em:null,         badge:'On Demand',  w:446, h:335, bg:'linear-gradient(145deg,#1a1008 0%,#261604 45%,#140c04 100%)', accent:'rgba(220,180,30,.30)', hue:'#dcb41e' },
+    { key:null,      tag:'Maritime',         name:'Navette', em:' Maritime',  badge:'Ferry',      w:476, h:357, bg:'linear-gradient(145deg,#040e1c 0%,#061422 45%,#030a16 100%)', accent:'rgba(40,120,220,.30)', hue:'#2878dc', art: NAVETTE_ART },
+    { key:null,      tag:'Gondola',          name:'Télé',    em:'cabine',     badge:'Cable Line',    w:416, h:312, bg:'linear-gradient(145deg,#071414 0%,#0a1c18 45%,#050e10 100%)', accent:'rgba(40,180,160,.26)', hue:'#28b4a0', art: TELECABINE_ART },
   ];
 
   /* Gold line glyphs (1.5px stroke register, no fill) — replaces the emoji
@@ -257,9 +257,9 @@
 
   const segFills = VEHICLES_CARDS.map(() => {
     const seg = document.createElement('div');
-    seg.className = 'v-seg';
+    seg.className = 'wf-seg';
     const fill = document.createElement('span');
-    fill.className = 'v-seg-fill';
+    fill.className = 'wf-fill';
     seg.appendChild(fill);
     beatSegs.appendChild(seg);
     return fill;
@@ -281,7 +281,7 @@
     if (!(ctBottom > 0 && ctBottom < innerHeight)) ctBottom = innerHeight * 0.38;
     vScale = Math.min(1,
       (innerWidth - 48) / 560,
-      (innerHeight - ctBottom - 70) / MAX_CARD_H);
+      (innerHeight - ctBottom - 120) / MAX_CARD_H);
     vScale = Math.max(vScale, window.innerWidth <= 720 ? 0.64 : 0.55);
     vCardEls.forEach((el, i) => {
       el.style.width  = VEHICLES_CARDS[i].w * vScale + 'px';
@@ -309,6 +309,7 @@
   function vclamp(v) { return Math.min(1, Math.max(0, v)); }
 
   let vehiclesActive = false;
+  let focusIdx = -1;
   let scrubMode = false;
   const section = document.getElementById('s-vehicles');
 
@@ -329,6 +330,7 @@
         /* Headline hands the stage to the rail as scrubbing begins */
         const fade = self.progress < 0.04 ? 1 : Math.max(0, 1 - (self.progress - 0.04) / 0.08);
         centerText.style.opacity = fade;
+        centerText.style.transform = `translateY(${-40 * (1 - fade)}px)`; /* recede */
       },
     });
   }
@@ -384,7 +386,12 @@
     const focus = progress * (n - 1);
     const idx = Math.max(0, Math.min(n-1, Math.round(focus)));
     const d = VEHICLES_CARDS[idx];
-    beatLabel.textContent = `${d.name}${d.em || ''}`;
+    if (idx !== focusIdx) {
+      focusIdx = idx;
+      beatLabel.textContent = `${d.name}${d.em || ''}`;
+      /* The focused mode's own colour tints the one scene layer */
+      if (window.TariqScene) TariqScene.setAccent('vehicles', d.hue);
+    }
     const beatF = progress * n;
     segFills.forEach((f, i) => {
       f.style.transform = `scaleX(${Math.min(1, Math.max(0, beatF - i))})`;
@@ -393,10 +400,11 @@
     const scx = window.innerWidth / 2;
     /* Stage center: below the headline while it shows, then the cards
        drift up to own the frame as it fades */
-    const scyIdle   = Math.min(window.innerHeight * 0.65,
-                               (ctBottom + window.innerHeight - 30) / 2 + MAX_CARD_H * vScale * 0.5 * 0.2);
+    /* Idle: the focused card sits fully below the shared chapter head */
+    const cardHalf  = MAX_CARD_H * vScale * 0.5;
+    const scyIdle   = Math.min(window.innerHeight - cardHalf - 64, ctBottom + cardHalf + 28);
     const scyActive = window.innerHeight * (window.innerWidth <= 720 ? 0.5 : 0.54);
-    const scyTarget = progress > 0.06 ? scyActive : scyIdle;
+    const scyTarget = progress > 0.1 ? scyActive : scyIdle; /* after the head has receded */
     scySmooth = scySmooth ? lerp(scySmooth, scyTarget, 0.08) : scyTarget;
     const scy = scySmooth;
     const sx = window.innerWidth * SX_FACTOR * (0.4 + 0.6 * vScale);

@@ -10,6 +10,7 @@ body {
   background: var(--night);
   cursor: none;
   overflow-x: hidden;
+  overflow-x: clip;
 }
 @media (pointer: coarse) { body { cursor: auto; } }
 
@@ -17,7 +18,7 @@ body {
    GLOBAL GOLD CURSOR
 ═══════════════════════════════════════════ */
 #cursor {
-  position: fixed; z-index: 99999;
+  position: fixed; z-index: 99999; /* above every layer, incl. the stories dock */
   width: 7px; height: 7px;
   border-radius: 50%;
   background: var(--gold);
@@ -31,10 +32,6 @@ body {
 body.cursor-light #cursor {
   background: #fff8d0;
   box-shadow: 0 0 10px 4px rgba(255,210,50,0.9);
-}
-body.cursor-dark #cursor {
-  background: var(--bronze);
-  box-shadow: 0 0 8px 3px rgba(122,80,32,0.5);
 }
 body.cursor-expanded #cursor { width: 44px; height: 44px; opacity: .4; }
 

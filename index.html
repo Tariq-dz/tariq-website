@@ -17,39 +17,57 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/system.css">
 <link rel="stylesheet" href="css/global-nav.css">
 <link rel="stylesheet" href="css/hero.css">
 <link rel="stylesheet" href="css/stories.css">
 <link rel="stylesheet" href="css/vehicles.css">
 <link rel="stylesheet" href="css/app.css">
 <link rel="stylesheet" href="css/cities.css">
-<link rel="stylesheet" href="css/transitions.css">
+<link rel="stylesheet" href="css/close.css">
 <noscript>
 <style>
-  /* No-JS: every section's content stays reachable in static flow */
+  /* No-JS: every chapter's content stays reachable in static flow */
   #hero-canvas { display: none; }
   #s-hero { background:
     radial-gradient(ellipse 62% 26% at 50% 69%, rgba(200,130,20,.38), transparent 65%),
-    linear-gradient(to bottom, #000 0%, #050403 58%, #140901 70%, #000 100%); }
+    linear-gradient(to bottom, #000 0%, #050403 58%, #140901 70%, transparent 100%); }
+  .scene-horizon { opacity: .6 !important; }
   #sec-stories-wrapper { height: 100vh !important; }
   #v-stage, #v-beat { display: none !important; }
-  #s-vehicles { height: auto !important; min-height: 0 !important; padding: 120px 24px; }
-  #v-center-text { position: relative !important; top: auto !important; left: auto !important;
-    transform: none !important; margin: 0 auto; }
+  #s-vehicles { height: auto !important; min-height: 0 !important; padding: 120px 0; }
+  #v-center-text { position: relative !important; top: auto !important; }
   .nojs-modes { display: block !important; }
   #app-wrapper { height: auto !important; }
   #app-sticky { position: relative !important; height: auto !important; overflow: visible !important; }
-  #app-intro { position: relative !important; inset: auto !important; padding: 90px 24px 30px; }
+  #app-intro { position: relative !important; top: auto !important; padding-top: 90px; }
   .app-chapter, .app-chapter.flip { position: relative !important; inset: auto !important;
     opacity: 1 !important; flex-direction: column !important; gap: 28px; padding: 48px 24px; }
   .app-chapter .phone { height: min(64vh, 480px) !important; }
   .app-chapter-text, .app-chapter.flip .app-chapter-text { text-align: center !important; align-items: center !important; }
   .app-ghost, #app-prog, #cursor { display: none !important; }
-  .footer-inner { opacity: 1 !important; transform: none !important; }
 </style>
 </noscript>
 </head>
 <body>
+
+<!-- ════════════════════════════════════════
+     THE SCENE — one continuous night behind every chapter (css/system.css,
+     js/scene.js). It replaces every per-section backdrop and seam.
+════════════════════════════════════════ -->
+<div id="scene" aria-hidden="true">
+  <div class="scene-stars"></div>
+  <div class="scene-tint"></div>
+  <div class="scene-horizon"></div>
+  <svg class="scene-rings" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice">
+    <ellipse cx="720" cy="940" rx="300"  ry="170" fill="none" stroke="rgba(200,160,80,.16)" stroke-width="1"/>
+    <ellipse cx="720" cy="940" rx="540"  ry="300" fill="none" stroke="rgba(200,160,80,.12)" stroke-width="1"/>
+    <ellipse cx="720" cy="940" rx="820"  ry="450" fill="none" stroke="rgba(200,160,80,.08)" stroke-width="1"/>
+    <ellipse cx="720" cy="940" rx="1140" ry="620" fill="none" stroke="rgba(200,160,80,.06)" stroke-width="1"/>
+  </svg>
+  <div class="scene-dust"></div>
+  <div class="scene-vignette"></div>
+</div>
 
 <!-- Scroll progress hairline -->
 <div id="scroll-hairline"></div>
@@ -63,7 +81,7 @@
 <!-- ════════════════════════════════════════
      SECTION 1 — HERO
 ════════════════════════════════════════ -->
-<section id="s-hero">
+<section id="s-hero" class="chapter" data-chapter="hero" data-light="0" data-tint="0" data-accent="#c8a060">
   <canvas id="hero-canvas"></canvas>
   <div class="hero-logo-wrap">
     <img id="hero-logo" src="assets/logo.png" alt="Tariq"/>
@@ -72,44 +90,17 @@
     <h1 class="hero-name">Tariq</h1>
     <div class="hero-divider"></div>
     <p class="hero-sub">One tap. Every line. Every city.</p>
-    <p class="hero-prop">Nine modes of transit in Algiers — plan, ride and pay in one free app.</p>
+    <p class="hero-prop chapter-note">Nine modes of transit in Algiers — plan, ride and pay in one free app.</p>
   </div>
-  <a id="hero-cta" href="#s-stories">Explore Tariq</a>
-  <div class="hero-fade"></div>
+  <a id="hero-cta" class="btn-ghost" href="#s-stories">Explore Tariq</a>
 </section>
-
-<!-- Seam: hero → stories (gold thread grows downward on scroll) -->
-<div class="seam seam-hero-stories" aria-hidden="true">
-  <div class="seam-overlay"></div>
-  <div class="seam-thread"></div>
-</div>
 
 <!-- ════════════════════════════════════════
      SECTION 2 — PASSENGER STORIES (v2)
 ════════════════════════════════════════ -->
-<section id="s-stories">
+<section id="s-stories" class="chapter" data-chapter="stories" data-light=".3" data-tint="1" data-accent="#c8a060">
 
-  <!-- Fixed backdrop -->
-  <div id="sec-stories-backdrop">
-    <!-- Per-destination color wash — crossfades on destination switch -->
-    <div id="sec-stories-tint"></div>
-    <svg id="sec-stories-rings" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
-      <ellipse cx="720" cy="920" rx="160"  ry="100" fill="none" stroke="rgba(200,160,80,.10)" stroke-width="1"/>
-      <ellipse cx="720" cy="920" rx="300"  ry="188" fill="none" stroke="rgba(200,160,80,.09)" stroke-width="1"/>
-      <ellipse cx="720" cy="920" rx="448"  ry="282" fill="none" stroke="rgba(200,160,80,.08)" stroke-width="1"/>
-      <ellipse cx="720" cy="920" rx="610"  ry="384" fill="none" stroke="rgba(200,160,80,.07)" stroke-width="1"/>
-      <ellipse cx="720" cy="920" rx="788"  ry="496" fill="none" stroke="rgba(200,160,80,.05)" stroke-width="1"/>
-      <ellipse cx="720" cy="920" rx="985"  ry="620" fill="none" stroke="rgba(200,160,80,.04)" stroke-width="1"/>
-      <ellipse cx="720" cy="920" rx="1210" ry="762" fill="none" stroke="rgba(200,160,80,.03)" stroke-width="1"/>
-    </svg>
-    <svg id="sec-stories-silhouette" viewBox="0 0 220 280" fill="none">
-      <ellipse cx="110" cy="60"  rx="36" ry="42" fill="rgba(200,160,80,.07)"/>
-      <rect    x="97"   y="97"   width="26" height="22" rx="4" fill="rgba(200,160,80,.07)"/>
-      <path    d="M58 118 Q36 140 32 260 L32 280 L188 280 L188 260 Q184 140 162 118 Q140 100 110 100 Q80 100 58 118Z" fill="rgba(200,160,80,.07)"/>
-    </svg>
-  </div>
-
-  <!-- Fixed dock -->
+  <!-- Rider dock (fixed while the chapter is on stage) -->
   <div id="sec-stories-dock-wrap">
     <div id="sec-stories-dock-row"></div>
     <div id="sec-stories-dock-hint">
@@ -121,106 +112,53 @@
     </div>
   </div>
 
-  <!-- Scroll hint -->
-  <div id="sec-stories-scroll-hint">
-    <span>Scroll</span>
-    <div class="hint-line"></div>
+  <!-- Wayfinder: one segment per story moment -->
+  <div id="sec-stories-prog-wrap" class="wayfinder" aria-hidden="true">
+    <div id="sec-stories-beat-label" class="wayfinder-label"></div>
+    <div id="sec-stories-prog-segs" class="wayfinder-segs"></div>
   </div>
 
-  <!-- Beat progress — 5 segments, one per story moment -->
-  <div id="sec-stories-prog-wrap">
-    <div id="sec-stories-beat-label"></div>
-    <div id="sec-stories-prog-segs"></div>
-  </div>
-
-  <!-- 3-D scroll scene -->
+  <!-- 3-D scroll stage -->
   <div id="sec-stories-wrapper">
     <div id="sec-stories-sticky">
       <div id="sec-stories-scene">
         <div id="sec-stories-camera">
-          <!-- Cards injected by JS per active destination -->
+          <!-- Moments injected by JS per active rider -->
         </div>
       </div>
 
-      <!-- Section panel A: post-Z beat 4 -->
-      <div class="s-panel" id="sp-a">
-        <div class="s-panel-card" id="spa-card">
-          <div id="spa-art" style="position:absolute;inset:0"></div>
-          <div class="s-panel-icon" id="spa-icon"></div>
-        </div>
-        <div class="s-panel-text">
-          <span class="s-panel-tag" id="spa-tag"></span>
-          <h2  class="s-panel-h"   id="spa-h"></h2>
-          <p   class="s-panel-p"   id="spa-p"></p>
-        </div>
-      </div>
-
-      <!-- Section panel B: post-Z beat 5 -->
-      <div class="s-panel flip" id="sp-b">
-        <div class="s-panel-card" id="spb-card">
-          <div id="spb-art" style="position:absolute;inset:0"></div>
-          <div class="s-panel-icon" id="spb-icon"></div>
-        </div>
-        <div class="s-panel-text">
-          <span class="s-panel-tag" id="spb-tag"></span>
-          <h2  class="s-panel-h"   id="spb-h"></h2>
-          <p   class="s-panel-p"   id="spb-p"></p>
-        </div>
-      </div>
-
-      <!-- Stories intro — fades out as Z-travel begins -->
-      <div id="stories-intro">
-        <div class="stories-intro-eyebrow">Passenger Stories</div>
-        <h2 class="stories-intro-head">Real rides.<br><em>Real people.</em></h2>
-        <p class="stories-intro-sub">Tariq plans the route, guides the ride live, and pays the fare. Here is what that feels like.</p>
-      </div>
+      <header id="stories-intro" class="chapter-head chapter-head--stage">
+        <p class="eyebrow">Passenger stories</p>
+        <h2 class="chapter-title">Real rides.<br><em>Real people.</em></h2>
+        <p class="chapter-lede">Tariq plans the route, guides the ride live, and pays the fare. Here is what that feels like.</p>
+      </header>
     </div>
   </div>
 </section>
 
-<!-- Seam: stories → vehicles (fade through night, same grammar as every boundary) -->
-<div class="seam seam-stories-vehicles" aria-hidden="true">
-  <div class="seam-overlay"></div>
-</div>
-
 <!-- ════════════════════════════════════════
      SECTION 3 — VEHICLES
 ════════════════════════════════════════ -->
-<section id="s-vehicles">
+<section id="s-vehicles" class="chapter" data-chapter="vehicles" data-light=".38" data-tint=".7" data-accent="#5078dc">
   <div id="v-stage"></div>
-  <div id="v-center-text">
-    <div id="v-ct-eye">Modes of transit</div>
-    <h2 id="v-ct-head">Your city,<br><em>every line.</em></h2>
-    <p id="v-ct-sub">Nine modes. One network. One app.</p>
-  </div>
-  <div id="v-beat" aria-hidden="true">
-    <div id="v-beat-label"></div>
-    <div id="v-beat-segs"></div>
+  <header id="v-center-text" class="chapter-head chapter-head--stage">
+    <p class="eyebrow">Modes of transit</p>
+    <h2 class="chapter-title">Your city,<br><em>every line.</em></h2>
+    <p class="chapter-lede">Nine modes. One network. One app.</p>
+  </header>
+  <div id="v-beat" class="wayfinder" aria-hidden="true">
+    <div id="v-beat-label" class="wayfinder-label"></div>
+    <div id="v-beat-segs" class="wayfinder-segs"></div>
   </div>
   <p class="nojs-modes">Metro (Lines 1–3) · Tramway · ETUSA Bus · Private Bus · Téléphérique · Télécabine · SNTF Train · Navette Maritime · Taxi</p>
 </section>
 
-<!-- Seam: vehicles → app (night holds, breath between machine and product) -->
-<div class="seam seam-vehicles-app" aria-hidden="true">
-  <div class="seam-overlay"></div>
-</div>
-
 <!-- ════════════════════════════════════════
      SECTION 4 — THE APP
 ════════════════════════════════════════ -->
-<section id="s-app">
+<section id="s-app" class="chapter" data-chapter="app" data-light=".55" data-tint=".45" data-accent="#c8a060">
   <div id="app-wrapper">
     <div id="app-sticky">
-
-      <div id="app-backdrop">
-        <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-          <ellipse cx="720" cy="940" rx="300"  ry="170" fill="none" stroke="rgba(200,160,80,.16)" stroke-width="1"/>
-          <ellipse cx="720" cy="940" rx="540"  ry="300" fill="none" stroke="rgba(200,160,80,.12)" stroke-width="1"/>
-          <ellipse cx="720" cy="940" rx="820"  ry="450" fill="none" stroke="rgba(200,160,80,.08)" stroke-width="1"/>
-          <ellipse cx="720" cy="940" rx="1140" ry="620" fill="none" stroke="rgba(200,160,80,.06)" stroke-width="1"/>
-        </svg>
-        <div id="app-glow"></div>
-      </div>
 
       <!-- Ghost phones — persistent depth props -->
       <div class="app-ghost" id="app-ghost-l" aria-hidden="true">
@@ -230,21 +168,21 @@
         <div class="phone"><div class="phone-screen"><img src="assets/app/05_profile.jpg" alt="" loading="lazy"></div></div>
       </div>
 
-      <!-- Chapter 0 — intro -->
-      <div id="app-intro">
-        <div class="app-eyebrow">The App</div>
-        <h2>Built for the <em>daily ride.</em></h2>
-        <p class="app-intro-sub">Real screens from the app we're bringing to Algiers.</p>
-        <p class="app-intro-free">The app is free — you pay only your fares.</p>
-      </div>
+      <!-- Chapter head -->
+      <header id="app-intro" class="chapter-head chapter-head--stage">
+        <p class="eyebrow">The app</p>
+        <h2 class="chapter-title">Built for the <em>daily ride.</em></h2>
+        <p class="chapter-lede">Real screens from the app we're bringing to Algiers.</p>
+        <p class="chapter-note">The app is free — you pay only your fares.</p>
+      </header>
 
       <!-- Chapters -->
       <div class="app-chapter" data-chapter="1">
         <div class="phone"><div class="phone-screen"><img class="light-src crop-top" src="assets/app/01_home.jpg" alt="Tariq home screen: departures near you, wallet and recent trips" loading="lazy"></div></div>
         <div class="app-chapter-text">
-          <div class="app-chapter-tag">Home</div>
-          <h3>Everything <em>in reach</em></h3>
-          <p>Departures near you, your wallet, your recent trips — one screen, ready when you are.</p>
+          <p class="eyebrow eyebrow--start">Home</p>
+          <h3 class="chapter-subtitle">Everything <em>in reach</em></h3>
+          <p class="chapter-body">Departures near you, your wallet, your recent trips — one screen, ready when you are.</p>
         </div>
       </div>
 
@@ -254,25 +192,25 @@
           <div class="phone phone-echo"><div class="phone-screen"><img class="light-src" src="assets/app/06_notifications.jpg" alt="Tariq trip alerts: ETA changes, vehicle arrivals, disruptions" loading="lazy"></div></div>
         </div>
         <div class="app-chapter-text">
-          <div class="app-chapter-tag">Plan &amp; Ride</div>
-          <h3>Type a place. <em>Ride it live.</em></h3>
-          <p>Search like you talk and get a route across the whole network — then the app keeps watch: ETA changes, vehicle arrivals, disruptions, door to last stop.</p>
+          <p class="eyebrow eyebrow--start">Plan &amp; Ride</p>
+          <h3 class="chapter-subtitle">Type a place. <em>Ride it live.</em></h3>
+          <p class="chapter-body">Search like you talk and get a route across the whole network — then the app keeps watch: ETA changes, vehicle arrivals, disruptions, door to last stop.</p>
         </div>
       </div>
 
       <div class="app-chapter" data-chapter="3">
         <div class="phone"><div class="phone-screen"><img src="assets/app/04_wallet.jpg" alt="Tariq wallet in Algerian dinars with CCP and CIB top-up" loading="lazy"></div></div>
         <div class="app-chapter-text">
-          <div class="app-chapter-tag">Pay</div>
-          <h3>A wallet that speaks <em>DZD</em></h3>
-          <p>Your balance, your tickets, your history — in dinars, where they belong. Top up in the app — built around how Algiers already pays, CCP and Carte Dahabia included.</p>
+          <p class="eyebrow eyebrow--start">Pay</p>
+          <h3 class="chapter-subtitle">A wallet that speaks <em>DZD</em></h3>
+          <p class="chapter-body">Your balance, your tickets, your history — in dinars, where they belong. Top up in the app — built around how Algiers already pays, CCP and Carte Dahabia included.</p>
         </div>
       </div>
 
       <!-- Progress -->
-      <div id="app-prog" aria-hidden="true">
-        <div id="app-prog-label"></div>
-        <div id="app-prog-segs"></div>
+      <div id="app-prog" class="wayfinder" aria-hidden="true">
+        <div id="app-prog-label" class="wayfinder-label"></div>
+        <div id="app-prog-segs" class="wayfinder-segs"></div>
       </div>
 
     </div>
@@ -280,20 +218,15 @@
 
 </section>
 
-<!-- Seam: app → cities (night holds; a warm gold horizon announces arrival) -->
-<div class="seam seam-app-cities" aria-hidden="true">
-  <div class="seam-overlay"></div>
-</div>
-
 <!-- ════════════════════════════════════════
-     SECTION 4 — CITIES
+     SECTION 5 — CITIES
 ════════════════════════════════════════ -->
-<section id="s-cities">
-  <div class="cities-header">
-    <div class="cities-eyebrow">Cities</div>
-    <h2 class="cities-h2">We're in your city.<br>Are you <em>on board?</em></h2>
-    <p class="cities-sub">Algiers live today — more cities on the way</p>
-  </div>
+<section id="s-cities" class="chapter chapter--flow" data-chapter="cities" data-light=".72" data-tint=".5" data-accent="#c8a060">
+  <header class="chapter-head">
+    <p class="eyebrow">Cities</p>
+    <h2 class="chapter-title">We're in your city.<br>Are you <em>on board?</em></h2>
+    <p class="chapter-lede">Algiers live today — more cities on the way.</p>
+  </header>
   <div class="marquee-wrapper" id="marquee-wrapper">
     <div class="marquee-track" id="cities-track">
 
@@ -312,7 +245,7 @@
             <div class="modes">All nine modes · One app</div>
             <div class="city-desc">The city of a million moves — all on one tap.</div>
           </div>
-          <a class="city-hover-btn" href="#app-waitlist">Join the waitlist</a>
+          <a class="city-hover-btn btn-ghost btn-sm" href="#app-waitlist">Join the waitlist</a>
         </div>
       </div>
 
@@ -332,7 +265,7 @@
             <div class="modes">Tram · Bus · Taxi</div>
             <div class="city-desc">The Bride of the Sea — tram lines weaving through the coast.</div>
           </div>
-          <a class="city-hover-btn" href="#app-waitlist">Join the waitlist</a>
+          <a class="city-hover-btn btn-ghost btn-sm" href="#app-waitlist">Join the waitlist</a>
         </div>
       </div>
 
@@ -352,7 +285,7 @@
             <div class="modes">Bus · Cable car</div>
             <div class="city-desc">Bus and cable car across the Rhumel gorge — city of bridges.</div>
           </div>
-          <a class="city-hover-btn" href="#app-waitlist">Notify me</a>
+          <a class="city-hover-btn btn-ghost btn-sm" href="#app-waitlist">Notify me</a>
         </div>
       </div>
 
@@ -372,7 +305,7 @@
             <div class="modes">Metro · Bus · Microbus</div>
             <div class="city-desc">The city that never sleeps — Cairo's vast network, all in one card.</div>
           </div>
-          <a class="city-hover-btn" href="#app-waitlist">Stay tuned</a>
+          <a class="city-hover-btn btn-ghost btn-sm" href="#app-waitlist">Stay tuned</a>
         </div>
       </div>
 
@@ -392,7 +325,7 @@
             <div class="modes">BRT · Ferry · Rail</div>
             <div class="city-desc">Africa's largest city — bus rapid transit, ferries and rail on one card.</div>
           </div>
-          <a class="city-hover-btn" href="#app-waitlist">Stay tuned</a>
+          <a class="city-hover-btn btn-ghost btn-sm" href="#app-waitlist">Stay tuned</a>
         </div>
       </div>
 
@@ -412,7 +345,7 @@
             <div class="modes">Bus · Minibus · Rail</div>
             <div class="city-desc">The Congo's beating heart — connecting Kinshasa's sprawling network.</div>
           </div>
-          <a class="city-hover-btn" href="#app-waitlist">Stay tuned</a>
+          <a class="city-hover-btn btn-ghost btn-sm" href="#app-waitlist">Stay tuned</a>
         </div>
       </div>
 
@@ -432,7 +365,7 @@
             <div class="modes">Bus · BRT · Ferry</div>
             <div class="city-desc">Angola's coastal capital — buses, rapid transit and bay ferries.</div>
           </div>
-          <a class="city-hover-btn" href="#app-waitlist">Stay tuned</a>
+          <a class="city-hover-btn btn-ghost btn-sm" href="#app-waitlist">Stay tuned</a>
         </div>
       </div>
 
@@ -443,15 +376,17 @@
 <!-- ════════════════════════════════════════
      SECTION 6 — THE CLOSE (single conversion moment)
 ════════════════════════════════════════ -->
-<section id="s-close">
+<section id="s-close" class="chapter chapter--flow" data-chapter="close" data-light="1" data-tint=".55" data-accent="#e8c96a">
   <div id="app-waitlist">
-    <div class="app-eyebrow">Early access</div>
-    <h2>Be riding before <em>everyone else.</em></h2>
-    <p class="waitlist-body">Leave your email and we'll send one message when Tariq opens in Algiers. No newsletter, no noise.</p>
+    <header class="chapter-head">
+      <p class="eyebrow">Early access</p>
+      <h2 class="chapter-title">Be riding before <em>everyone else.</em></h2>
+      <p class="chapter-lede">Leave your email and we'll send one message when Tariq opens in Algiers. No newsletter, no noise.</p>
+    </header>
     <form id="waitlist-form" novalidate>
-      <label for="waitlist-email" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Email address</label>
+      <label for="waitlist-email" class="sr-only">Email address</label>
       <input type="email" id="waitlist-email" name="email" placeholder="you@example.com" autocomplete="email" required>
-      <button type="submit" id="waitlist-submit">Join the waitlist</button>
+      <button type="submit" id="waitlist-submit" class="btn">Join the waitlist</button>
     </form>
     <div class="waitlist-error" id="waitlist-error" role="alert"></div>
     <p id="waitlist-done">You're on the list. We'll email you once, at launch.</p>
@@ -459,19 +394,10 @@
   </div>
 </section>
 
-<!-- Seam: cities → footer (night continues into the outro) -->
-<div class="seam seam-cities-footer" aria-hidden="true">
-  <div class="seam-overlay"></div>
-</div>
-
-<!-- ════════════════════════════════════════
-     FOOTER / CTA OUTRO (~60vh)
-════════════════════════════════════════ -->
-<footer id="s-footer">
-  <div class="footer-inner">
-    <!-- No eyebrow: the close's waitlist is the single ending; the footer is a
-         quiet tagline sign-off, not a second section announcement (cycle 9). -->
-    <h2 class="footer-head">One tap.<br><em>Every line. Every city.</em></h2>
+<!-- Colophon: the quiet sign-off inside the close's first light -->
+<footer id="s-footer" class="colophon">
+  <div class="footer-inner" data-reveal="rise">
+    <p class="footer-head">One tap.<br><em>Every line. Every city.</em></p>
     <div class="footer-meta">
       <span>© Tariq Transit</span>
       <span>Smart transit for African &amp; MENA cities</span>
@@ -480,14 +406,15 @@
   </div>
 </footer>
 
-<!-- Scripts: cursor first (global), then each section IIFE, then seam transitions last -->
+<!-- Scripts: cursor, then the scene controller (defines TariqScene, mounts its
+     triggers after every section has built its own stage), then each chapter -->
 <script src="js/cursor.js"></script>
+<script src="js/scene.js"></script>
 <script src="js/hero.js"></script>
 <script src="js/stories.js"></script>
 <script src="js/vehicles.js"></script>
 <script src="js/app.js"></script>
 <script src="js/cities.js"></script>
-<script src="js/transitions.js"></script>
 <script src="js/global-nav.js"></script>
 
 </body>

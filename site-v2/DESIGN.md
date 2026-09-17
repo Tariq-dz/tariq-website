@@ -24,7 +24,11 @@ operator view). Since cycle 9 no other list borrows its dot-and-line form. Every
 | `gold-ink` | `#6F5428` | darker still, added in cycle 4 | gold text on the gold tint (5.7:1; gold-deep there was only 4.0:1) |
 | `ok` | `#327A43` | terminal OK screen | only in the ride sequence, for "On your way" |
 
-Only three grounds exist: paper, slate and graphite (an alternate paper tone was removed in cycle 2). Renders that
+Only three grounds exist: paper, slate and graphite (an alternate paper tone was removed in cycle 2), with **one
+exception granted by the founder (2026-09-17): photographic grounds in the Tariq AI section on `/app`, and nowhere
+else** (D-102). They are treated as grounds, not decoration: 16:9 crops never taken above native, one graphite scrim
+anchored to wherever the text sits, and every text block measured against the real ground rather than judged by eye.
+Renders that
 sit on slate with margin (the angle view, the paper reload, the front face) use rectangular edge feathers (`.render-fade`, 12%;
 `.render-fade-rect`, 5%). A radial mask was used until cycle 7 and removed: it cut the pole, which runs to the frame edge, into a
 visible disc. Measured: WebP encoding moves the render background by at most 2 levels, so encoding was never the cause.
@@ -38,6 +42,22 @@ section carries a render.
 
 The logo's compass arc is cream and vanishes on paper. The mark is therefore always placed on a
 graphite or slate ground (the header chip, the slate sections, the footer). It is never recoloured.
+
+## Voice: the product is not about one city (D-103)
+The company starts in Algerian cities and intends to expand, and the cities section already says so with its
+Live / Coming soon / Planned badges. So **framing copy names no city and no currency**: "your city guide", "one
+balance, every fare", "top up with your bank card", "designed for the way cities move". Capabilities are stated as
+outcomes rather than widened — generalising "a wallet in dinars" into "your local currency" would promise
+multi-currency support the app does not have, and `claims-check` would not catch it.
+
+**Two things stay specific on purpose.** *Alt text* keeps describing exactly what is on a screen, place names and
+fares included: the clips show "Casbah of Algiers · 40 DA", and a description that denied it would hand a
+screen-reader user a different page from a sighted one. And *"Designed in Algeria"* stays — that is where the
+company builds, not a limit on where it runs.
+
+**When cutting a geographic qualifier, replace it, never delete it.** Several lines are laid out in pairs
+(`ModesStrip`'s name + sub, the mode chips), and emptying half leaves a visible hole: "ETUSA and private lines"
+became "public and private lines", "SNTF" became "national rail", both of similar weight.
 
 ## Type
 - **Mona Sans Variable** (wght 200–900, wdth 75–125) for everything Latin. Headlines use width 112 and
@@ -68,7 +88,7 @@ graphite or slate ground (the header chip, the slate sections, the footer). It i
 - **One reveal pattern.** Opacity 0→1 and y 16→0 at 0.6 s `out`, once, 0.06 s stagger for items entering together,
   via one IntersectionObserver + a CSS transition (cheaper than per-element ScrollTriggers; GSAP loads only where a
   signature moment lives). Content is visible without JS.
-- **Two signature moments** (below). GSAP and ScrollTrigger are imported on demand, only when the ≥1024 px, motion-allowed query
+- **Three signature moments** (below). GSAP and ScrollTrigger are imported on demand, only when the ≥1024 px, motion-allowed query
   matches, so phones and reduced-motion visitors never download them. Nothing else pins. No ScrollSmoother, no scroll-jacking, no cursor
   effects, no parallax on text.
 - Transforms and opacity only. Each clip is at most 5 s and plays once when it scrolls into view (D-31: WCAG 2.2.2 exempts
@@ -89,21 +109,24 @@ film at ≤ native width).
 
 ## Page outlines (one purpose per section)
 **Home `/`**
-1. Hero: "Plan in the app." / "Tap on board." on two fixed lines, top-aligned, with a subline in short sentences ("An app for riders. An on-board terminal designed to give operators a signed record of every ride. Designed in Algeria.") and a demo-recording caption beside the small print. The product frame extends into the right gutter. App and terminal in one composed frame on a shared floor: the phone overlaps only the terminal's left bezel, never its screen. Two CTAs (waitlist, for operators).
+1. Hero: "Plan in the app." / "Tap on board." on two fixed lines, top-aligned, with the company line as the subline ("Tariq is the digital layer that makes public transit navigable for riders and accountable for operators.") and the small print beneath it. The product frame extends into the right gutter. App and terminal in one composed frame on a shared floor: the phone overlaps only the terminal's left bezel, never its screen. Two CTAs (waitlist, for operators).
 2. The app: show the real app (a clip and a still) and three things it does, then link to /app.
 3. **The ride** *(signature 1)*: plan → destination → fare → one tap → OK → ticket → signed record → operator. It ends with the full-size record card landing under an "Operator view" label, joined by the gold line (on mobile: label → line → card).
 4. Modes: the ways the app plans across, named and ordered as the app names them, set as large type divided by thin gold rules on slate, forming one continuous dark chapter with the terminal section that follows (no dots; the dot-and-line form belongs to the tap-to-proof story), with one bus entry for ETUSA and private lines. There are no pictures, so the missing ferry photograph leaves no mode as the odd one out.
 5. Terminal: the terminal face in use (green OK screen, printed ticket out; the angled render is kept for /terminal and /operators), play the film, then link to /terminal.
 6. Waitlist with the three cities (Latin and Arabic script), plus the entry point for operators and cities.
 
-(D-29: the separate problem-framing section was removed in cycle 4. The brief's §9 plan is a starting proposal, and the ride's
-head, "One ride, from the plan to the proof.", frames the story. The cities merged into the waitlist block in cycle 3.)
+(D-29: the separate problem-framing section was removed in cycle 4 for page length, and the ride's head, "One ride, from the
+plan to the proof.", framed the story instead. **D-92 restored it**, smaller, as a block between 1 and 2: two audience
+statements under "For riders" / "For operators" over a rule, closing on "A rider app, an on-board terminal, and the record
+that connects them." **D-100 rewrote those two statements from problems into outcomes** — stating the reader's pain back to
+them read like a pitch deck rather than a company site. The cities merged into the waitlist block in cycle 3.)
 
 **Terminal `/terminal`**: reveal *(signature 2)* → step through a ride (click-through) → "Sealed. Secure. Built to be trusted." with
 the details in three labelled groups (On its face / Inside / On the vehicle) → film → installed and maintained by Tariq → for operators.
 
 **App `/app`**: hero clip → plan across modes → departures and map → DZD wallet → trips, receipts,
-rating, complaints → notifications → Tariq AI (one clip beside its copy) → English and Arabic (a native-size close-up of the app's real
+rating, complaints → notifications → **Tariq AI (signature 3: six beats, the phone constant, the city filling the section)** → English and Arabic (a native-size close-up of the app's real
 search field with its Arabic placeholder) → waitlist.
 
 **Operators `/operators`**: hero led by the angled terminal render on slate, with its small print directly beneath it (a composition used nowhere else; home owns the face + record
@@ -113,7 +136,7 @@ designed to report even when nobody boards → operator tools (designed-to langu
 
 **404**: a short message, links to every page, and the terminal's idle screen on slate with the required small print.
 
-## The two signature moments
+## The three signature moments
 1. **The ride** (home). A sticky two-column scene at ≥ 1024 px: in the plan state the phone stands alone, centred,
    playing the route-results clip (the terminal is fully hidden). From step 2 the phone steps out and the terminal face swaps
    its real screens (dest → tap → ok) while a ticket rises from the printer slot. One framing system across all six states. Then the terminal steps back and the full-size signed-record card lands under an
@@ -123,6 +146,13 @@ designed to report even when nobody boards → operator tools (designed-to langu
    top reaches 62% of the viewport, and the last step has 48vh of bottom padding, so the operator state holds for about 300 px of scroll.
 2. **The terminal reveal** (/terminal). A pinned slate stage crossfades the three strongest renders (angle → front face →
    paper reload) while the approved lines step through. It is scrubbed, with no snap: the page never moves on its own.
+3. **Tariq AI** (/app), added by founder decision (D-102). Six beats on one pinned stage: the ground, the phone's screen
+   and the line are crossfaded by a single scrubbed timeline, so the place filling the section and the place on the phone
+   change on the same scroll pixel — two triggers would drift, one timeline cannot. The photographs (Jardin d'Essai,
+   Maqam Echahid, the Casbah) are the same assets the app's own knowledge base serves, which is what makes the doubling
+   honest; beats 1, 2 and 6 stay on graphite, because no rush-hour photograph exists and none was invented. Below
+   1024 px, with reduced motion, or without JS it becomes a horizontal scroll-snap strip — one card per beat, no pin —
+   which keeps the section about one card tall instead of six screens long.
 
 ## Don't repeat (audit of `../index.html`, 9 council cycles + one-site run)
 1. A near-black night sky, stars and horizon glows as the backdrop for everything, with 12–14 px gold text on black.

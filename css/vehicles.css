@@ -1,35 +1,18 @@
 /* ═══════════════════════════════════════════
-   SECTION 3 — VEHICLES
+   VEHICLES — the network: a scroll-scrubbed diagonal card rail
+   Unique here: the rail and its cards. Scene, head and wayfinder
+   are the shared system; the focused mode's colour tints the scene.
 ═══════════════════════════════════════════ */
 #s-vehicles {
-  position: relative;
   width: 100%; height: 100vh;
   overflow: hidden;
-  background: var(--starfield) repeat, var(--night);
-  z-index: 5;
-}
-#s-vehicles::before {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    /* Softer top: modes no longer opens on a flat black wall; the seam-2
-       dissolve carries into a gentle darkening instead (cycle 9). */
-    linear-gradient(to bottom, rgba(10, 8, 6, .5) 0%, rgba(10, 8, 6, .22) 14%, rgba(10, 8, 6, 0) 32%),
-    radial-gradient(circle at 50% 50%,
-      rgba(255,255,255,.025) 0%,
-      rgba(255,255,255,.01)  35%,
-      rgba(0,0,0,.0)         55%,
-      rgba(0,0,0,.55)        80%,
-      rgba(0,0,0,.92)        100%);
-  pointer-events: none; z-index: 0;
 }
 #v-stage {
   position: absolute; inset: 0;
   pointer-events: none;
   perspective: 1200px; z-index: 3;
 }
-/* Gold guide rail — the diagonal the cards travel along; anchors the
-   lineup so the stage reads as a composed rail, not a void */
+/* Gold guide rail: the diagonal the cards travel along */
 #v-stage::before {
   content: '';
   position: absolute; left: -8%; right: -8%; top: 54%;
@@ -51,39 +34,39 @@
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   background: var(--ink-card);
-  border: 1px solid rgba(255,255,255,.06);
+  border: 1px solid rgba(255, 255, 255, .06);
   box-shadow: var(--shadow-card);
 }
 .vcard.focused {
-  border-color: rgba(var(--gold-rgb),.35);
-  box-shadow: 0 28px 90px rgba(0,0,0,.8), 0 0 0 1px rgba(var(--gold-rgb),.12), 0 0 40px rgba(var(--gold-rgb),.08);
+  border-color: rgba(var(--gold-rgb), .35);
+  box-shadow: 0 28px 90px rgba(0, 0, 0, .8), 0 0 0 1px rgba(var(--gold-rgb), .12), 0 0 40px rgba(var(--gold-rgb), .08);
 }
 .vc-overlay {
   position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(12,10,8,.98) 0%, rgba(12,10,8,.7) 38%, rgba(12,10,8,.15) 62%, transparent 80%);
+  background: linear-gradient(to top, rgba(12, 10, 8, .98) 0%, rgba(12, 10, 8, .7) 38%, rgba(12, 10, 8, .15) 62%, transparent 80%);
   z-index: 2;
 }
 .vc-initial {
   position: absolute; bottom: 4px; right: 12px;
   font-family: var(--font-display);
-  font-size: clamp(64px,10vw,120px); font-style: italic; font-weight: 600;
-  color: rgba(255,255,255,.10); line-height: 1; z-index: 3;
+  font-size: clamp(64px, 10vw, 120px); font-style: italic; font-weight: 600;
+  color: rgba(255, 255, 255, .10); line-height: 1; z-index: 3;
   pointer-events: none;
 }
 .vc-topline {
   position: absolute; top: 0; left: 15%; right: 15%; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(var(--gold-rgb),.6), transparent);
-  z-index: 4; opacity: 0; transition: opacity var(--dur-med) ease;
+  background: linear-gradient(90deg, transparent, rgba(var(--gold-rgb), .6), transparent);
+  z-index: 4; opacity: 0; transition: opacity var(--dur-med) var(--ease-out);
 }
 .vcard.focused .vc-topline { opacity: 1; }
 .vc-body {
   position: absolute; bottom: 0; left: 0; right: 0;
-  padding: 0 clamp(12px,1.8vw,18px) clamp(12px,1.8vw,16px); z-index: 5;
+  padding: 0 clamp(12px, 1.8vw, 18px) clamp(12px, 1.8vw, 16px); z-index: 5;
 }
 .vc-badge-wrap {
-  padding-bottom: clamp(6px,1vw,8px);
+  padding-bottom: clamp(6px, 1vw, 8px);
   opacity: 0; transform: translateY(5px);
-  transition: opacity var(--dur-med) ease .05s, transform var(--dur-med) ease .05s;
+  transition: opacity var(--dur-med) var(--ease-out) .05s, transform var(--dur-med) var(--ease-out) .05s;
 }
 .vcard.focused .vc-badge-wrap { opacity: 1; transform: translateY(0); }
 .vc-badge {
@@ -91,16 +74,16 @@
   font-size: var(--fs-micro); font-weight: 500;
   letter-spacing: var(--ls-label); text-transform: uppercase;
   color: var(--gold);
-  background: rgba(var(--gold-rgb),.1); border: 1px solid rgba(var(--gold-rgb),.22);
+  background: rgba(var(--gold-rgb), .1); border: 1px solid rgba(var(--gold-rgb), .22);
   border-radius: var(--r-pill); padding: 3px 10px; display: inline-block;
 }
-.vc-rule { width: 100%; height: 1px; background: linear-gradient(90deg, rgba(var(--gold-rgb),.35), transparent); margin-bottom: clamp(6px,1vw,10px); }
+.vc-rule { width: 100%; height: 1px; background: linear-gradient(90deg, rgba(var(--gold-rgb), .35), transparent); margin-bottom: clamp(6px, 1vw, 10px); }
 .vc-name {
   font-family: var(--font-display);
   font-size: var(--fs-h4); font-weight: 600;
   color: var(--text-1); letter-spacing: -.01em; line-height: 1;
 }
-.vc-name em { font-style: italic; font-weight: 400; color: rgba(var(--gold-rgb),.88); }
+.vc-name em { font-style: italic; font-weight: 400; color: rgba(var(--gold-rgb), .88); }
 .vc-tag {
   font-family: var(--font-sans);
   font-size: var(--fs-micro); font-weight: 300;
@@ -112,14 +95,8 @@
   display: flex; align-items: center; justify-content: center;
   opacity: .38; z-index: 1;
 }
-.vc-placeholder svg {
-  width: clamp(72px, 11vw, 120px);
-  height: auto;
-}
-.vc-art {
-  position: absolute; inset: 0;
-  z-index: 1; overflow: hidden;
-}
+.vc-placeholder svg { width: clamp(72px, 11vw, 120px); height: auto; }
+.vc-art { position: absolute; inset: 0; z-index: 1; overflow: hidden; }
 .vc-img {
   position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
@@ -131,71 +108,7 @@
   pointer-events: none;
 }
 
-#v-center-text {
-  position: absolute;
-  top: clamp(48px, 5.5vh, 80px); left: 50%;
-  transform: translateX(-50%);
-  text-align: center; z-index: 20;
-  pointer-events: none;
-  display: flex; flex-direction: column; align-items: center;
-  width: max-content; max-width: 92vw;
-}
-/* Opener silhouette: RULE-BELOW — label over a short centered underline.
-   Distinct from Stories (bare) above it and The App (double-rule) below it. */
-#v-ct-eye {
-  font-family: var(--font-sans); font-size: var(--fs-micro); font-weight: 600;
-  letter-spacing: var(--ls-eyebrow); text-transform: uppercase; color: var(--gold-dim);
-  margin-bottom: 16px;
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
-  padding-left: var(--ls-eyebrow);
-}
-#v-ct-eye::after { content: ''; width: 42px; height: 1px; background: var(--gold-dim); opacity: 0.6; }
-#v-ct-head {
-  font-family: var(--font-display);
-  font-size: var(--fs-h2); font-weight: 600;
-  color: var(--text-1); line-height: 1.12;
-  letter-spacing: -0.02em; margin-bottom: 12px;
-}
-#v-ct-head em { font-style: italic; font-weight: 400; color: rgba(var(--gold-rgb),.9); }
-#v-ct-sub {
-  font-family: var(--font-sans); font-size: var(--fs-sub); font-weight: 300;
-  color: var(--text-3); letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.75;
-}
-
-/* One wayfinding idiom across pinned sections: label + dash segments,
-   same grammar as Stories and The App (C7) */
-#v-beat {
-  position: absolute; bottom: 16px; left: 50%;
-  transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  z-index: 60; pointer-events: none;
-}
-#v-beat-label {
-  font-family: var(--font-sans);
-  font-size: var(--fs-micro); font-weight: 500;
-  letter-spacing: var(--ls-eyebrow); text-transform: uppercase;
-  color: rgba(var(--gold-rgb), .75);
-  white-space: nowrap;
-}
-#v-beat-segs { display: flex; gap: 6px; }
-.v-seg {
-  width: 22px; height: 2px;
-  background: rgba(var(--gold-rgb), .18);
-  border-radius: 1px; overflow: hidden;
-}
-.v-seg-fill {
-  display: block; width: 100%; height: 100%;
-  background: var(--gold);
-  transform: scaleX(0);
-  transform-origin: left center;
-}
-
-@media (max-width: 768px) { #v-center-text { white-space: normal; text-align: center; left: 20px; right: 20px; transform: none; } }
-@media (max-width: 480px) { #v-ct-head { font-size: clamp(28px, 9vw, 44px); } }
-
-/* ─── Typographic cards (modes without photography) ───
-   A lit gold emblem on a ring field with a horizon line — designed
-   art at the photographic cards' value level, not a missing image. */
+/* ─── Typographic cards (modes without photography) ─── */
 .vcard.vcard-typo .vc-placeholder { opacity: .92; }
 .vcard.vcard-typo .vc-placeholder svg {
   width: clamp(110px, 15vw, 180px);
@@ -215,8 +128,7 @@
   box-shadow: 0 0 34px rgba(var(--gold-deep-rgb), .18),
     inset 0 0 30px rgba(var(--gold-deep-rgb), .1);
 }
-.vc-typo-rings::after  { width: 88%;  aspect-ratio: 1; border-color: rgba(var(--gold-rgb), .14); }
-/* Horizon line + rising glow floor behind the emblem */
+.vc-typo-rings::after { width: 88%; aspect-ratio: 1; border-color: rgba(var(--gold-rgb), .14); }
 .vc-typo-horizon {
   position: absolute; left: 8%; right: 8%; top: 62%;
   height: 1px; z-index: 0; pointer-events: none;

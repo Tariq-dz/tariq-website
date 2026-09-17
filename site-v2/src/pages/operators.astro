@@ -8,9 +8,9 @@ import LeadForm from '../components/LeadForm.astro';
 import { SMALL_PRINT } from '../config';
 
 const tools = [
-  { title: 'Complaint triage.', text: 'Designed so riders file complaints from the app, tied to the trip they took, and operators triage them in one place.' },
-  { title: 'Disruption alerts.', text: 'Designed so operators can warn riders about line suspensions, delays and service changes.' },
-  { title: 'Refunds.', text: 'Designed to return a refund to the rider’s wallet, where it shows in the history.' },
+  { title: 'Complaint triage.', text: 'A complaint arrives tied to the trip it is about, so the operator sees a specific, checkable event rather than an anonymous report.' },
+  { title: 'Disruption alerts.', text: 'Operators publish line suspensions, delays and service changes, and riders get them in the app.' },
+  { title: 'Refunds.', text: 'A refund goes back to the rider’s wallet, where it shows in the history.' },
 ];
 ---
 
@@ -40,8 +40,8 @@ const tools = [
     <div class="container see__grid">
       <h2 class="h2" id="see-title" data-reveal>A record for every tap, signed where it happened.</h2>
       <div class="see__body">
-        <p class="lead" data-reveal>Each record carries the line, the stops, the fare and the time of a tap. The terminal is designed to sign each record, so it can stand as proof.</p>
-        <p class="body" data-reveal>Together, the records show which trips ran and what was collected, in a form an operator can share with the city.</p>
+        <p class="lead" data-reveal>Each record carries the line, the stops, the fare and the time of a tap. Each one is signed on the terminal itself, so it can stand as proof.</p>
+        <p class="body" data-reveal>Together, the records show which trips ran and what was collected, in a form you can share with the city.</p>
         <SignedRecord class="see__record" />
       </div>
     </div>
@@ -55,9 +55,8 @@ const tools = [
     <div class="container zero__grid">
       <h2 class="h2" id="zero-title" data-reveal>An empty bus is not a switched-off terminal.</h2>
       <div class="zero__body">
-        <p class="lead" data-reveal>The terminal is designed to keep reporting even when nobody boards.</p>
-        <p class="lead" data-reveal>It is designed to flag when it is switched off or tampered with.</p>
-        <p class="body" data-reveal>So you can tell an empty route from a switched-off terminal.</p>
+        <p class="lead" data-reveal>The terminal keeps reporting even when nobody boards.</p>
+        <p class="lead" data-reveal>It flags when it is switched off or tampered with.</p>
       </div>
     </div>
   </section>
@@ -83,7 +82,7 @@ const tools = [
       <div class="contact__head">
         <h2 class="h2" id="contact-title">Bring Tariq to your network.</h2>
         <p class="lead">For transport operators, cities and the teams that run a network. Tell us who you are and what you run.</p>
-        <p class="body">The terminal is designed to be installed and maintained by Tariq, as a service.</p>
+        <p class="body">Tariq installs the terminal and maintains it, with no upfront invoice to the operator.</p>
       </div>
       <LeadForm kind="contact" id="ops-contact" />
     </div>
@@ -105,6 +104,7 @@ const tools = [
   }
 
   .see { background: var(--c-paper); }
+  /* The problem, stated directly above the answer the section gives it (POSITIONING_PLAN change 5). */
   .see__grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: var(--s-8); align-items: start; }
   .see__grid .h2 { max-width: 16ch; }
   .see__body { display: grid; gap: var(--s-5); padding-top: var(--s-2); }

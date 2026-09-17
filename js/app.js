@@ -1,4 +1,4 @@
-/* Section 4 — THE APP: sticky chapter stage + waitlist form */
+/* THE APP: sticky chapter stage + the close's waitlist form */
 (function initApp() {
   const CHAPTER_LABELS = ['Home', 'Plan & Ride', 'Pay'];
 
@@ -48,9 +48,9 @@
 
   const segFills = CHAPTER_LABELS.map(() => {
     const seg = document.createElement('div');
-    seg.className = 'app-seg';
+    seg.className = 'wf-seg';
     const fill = document.createElement('span');
-    fill.className = 'app-seg-fill';
+    fill.className = 'wf-fill';
     seg.appendChild(fill);
     segsWrap.appendChild(seg);
     return fill;
