@@ -1,0 +1,157 @@
+---
+// Signature moment 1: the ride, end to end.
+// ≥1024 px with motion: the step copy scrolls on the left while a sticky slate stage on the right changes
+// state (src/scripts/ride.ts). Below 1024 px, with reduced motion, or without JS: every step carries
+// its own static visual, in the same order with the same copy.
+import PhoneFrame from './PhoneFrame.astro';
+import TerminalFace from './TerminalFace.astro';
+import SignedRecord from './SignedRecord.astro';
+import { SMALL_PRINT } from '../config';
+
+const steps = [
+  { id: 'plan', title: 'Plan in the app.', body: 'Search a place. The app compares bus, metro, tram, train and more, and shows the fare before you set off.' },
+  { id: 'dest', title: 'Choose your destination.', body: 'The fare is shown before you tap.' },
+  { id: 'tap', title: 'One tap.', body: 'A card or a phone, at the gold ring.' },
+  { id: 'ok', title: 'On your way.', body: 'Accepted, and your ticket is already printing.' },
+  { id: 'record', title: 'Every tap, on the record.', body: 'The ticket is your receipt. The signed record is the proof.' },
+  { id: 'operator', title: 'On the operator’s side.', body: 'The operator sees the same record the rider holds.' },
+];
+---
+
+<section class="ride" id="ride" data-ride aria-labelledby="ride-title">
+  <div class="container">
+    <div class="ride__head">
+      <h2 class="h2" id="ride-title" data-reveal>One ride, from the plan to the proof.</h2>
+    </div>
+
+    <div class="ride__layout">
+      <div class="ride__track">
+      <span class="ride__rail" aria-hidden="true"><span class="ride__rail-fill" data-ride-rail></span></span>
+      <ol class="ride__steps" role="list">
+        {steps.map((s, i) => (
+          <li class="rstep" data-step={s.id}>
+            <div class="rstep__copy">
+              <p class="rstep__num num" aria-hidden="true">{i + 1}</p>
+              <h3 class="h3">{s.title}</h3>
+              <p class="body">{s.body}</p>
+            </div>
+            <div class:list={['rstep__visual', { 'rstep__visual--slate': s.id !== 'plan' }]}>
+              {s.id === 'plan' && <PhoneFrame clip="route" label="Route results in the Tariq app: to the Casbah of Algiers, 75 minutes, 40 DA, walk then bus 98" class="rstep__phone" />}
+              {s.id === 'dest' && <TerminalFace screens={['dest']} sizes="(max-width: 1023px) 88vw, 640px" />}
+              {s.id === 'tap' && <TerminalFace screens={['tap']} sizes="(max-width: 1023px) 88vw, 640px" />}
+              {s.id === 'ok' && <TerminalFace screens={['ok']} ticket ticketShown sizes="(max-width: 1023px) 88vw, 640px" />}
+              {s.id === 'record' && <SignedRecord class="rstep__record" />}
+              {s.id === 'operator' && <div class="rstep__dest"><span class="rstep__line" aria-hidden="true"></span><p class="dest-pill"><span class="dest-pill__dot" aria-hidden="true"></span>Operator view</p><span class="rstep__line" aria-hidden="true"></span><SignedRecord class="rstep__record" /></div>}
+            </div>
+          </li>
+        ))}
+      </ol>
+      </div>
+
+      <div class="ride__stage surface-slate" data-ride-stage data-state="plan" aria-hidden="true">
+        <div class="stage__face">
+          <TerminalFace screens={['idle', 'dest', 'tap', 'ok']} ticket sizes="620px" />
+          <span class="stage__ring"></span>
+        </div>
+        <PhoneFrame clip="route" label="Route results in the Tariq app" class="stage__phone" autoplay={false} />
+        <div class="stage__record"><SignedRecord /></div>
+        <p class="dest-pill stage__dest"><span class="dest-pill__dot" aria-hidden="true"></span>Operator view</p>
+        <p class="small-print stage__fine">{SMALL_PRINT}</p>
+      </div>
+    </div>
+
+    <p class="small-print ride__fine">{SMALL_PRINT}</p>
+  </div>
+</section>
+
+<style>
+  .ride { padding-block: calc(var(--section-pad) * 0.5) var(--section-pad); background: var(--c-paper); }
+  .ride__head { margin-bottom: var(--s-8); }
+  .ride__head .h2 { max-width: 14ch; }
+  .ride__track { position: relative; }
+  .ride__steps { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-8); }
+  .ride__rail { display: none; }
+  .rstep { display: grid; gap: var(--s-5); }
+  .rstep__copy { display: grid; gap: var(--s-2); max-width: 34ch; }
+  .rstep__num { font-size: 1.5rem; font-weight: 640; font-stretch: 112%; line-height: 1; color: var(--c-gold-deep); }
+  .rstep__visual { border-radius: var(--r-panel); overflow: hidden; }
+  .rstep__visual--slate { background: var(--c-slate); padding: var(--s-5); display: grid; place-items: center; }
+  .rstep__phone { width: min(260px, 64%); margin-inline: auto; }
+  .rstep__record { max-width: 360px; }
+  .rstep__dest { display: grid; justify-items: center; gap: var(--s-4); padding-block: var(--s-6); }
+  .rstep__line { width: 2px; height: 64px; background: var(--c-gold); }
+  .dest-pill { display: inline-flex; align-items: center; gap: 10px; margin: 0; padding: 12px 18px; border-radius: var(--r-pill); background: var(--c-slate-deep); color: var(--c-cream); font-weight: 600; font-stretch: 106%; }
+  .dest-pill__dot { width: 14px; height: 14px; border-radius: 50%; background: var(--c-gold); box-shadow: 0 0 0 6px rgb(200 160 96 / 0.25); }
+  .ride__stage { display: none; }
+  @media (max-width: 1023px), (prefers-reduced-motion: reduce) {
+    .ride { content-visibility: auto; contain-intrinsic-size: auto 3400px; }
+  }
+  .ride__fine { margin-top: var(--s-7); }
+
+  @media (min-width: 1024px) {
+    .rstep { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: var(--s-8); align-items: center; }
+  }
+
+  /* staged mode: JS present, wide, motion allowed */
+  @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+    :global(.js) .ride__layout { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: var(--s-8); align-items: start; }
+    :global(.js) .ride__steps { gap: 0; }
+    :global(.js) .ride__track { padding-left: var(--s-6); }
+    :global(.js) .ride__rail { display: block; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--line); }
+    :global(.js) .ride__rail-fill { display: block; width: 100%; height: 100%; background: var(--c-gold); transform-origin: top; transform: scaleY(0); }
+    :global(.js) .rstep { display: block; min-height: 28vh; padding-block: 6vh; }
+    :global(.js) .rstep:first-of-type { padding-top: 0; }
+    /* long enough that the sticky stage stays pinned for ~300 px of scroll in the operator state (stage 588–720 px tall, stuck at header + 32 px) */
+    :global(.js) .rstep:last-of-type { padding-bottom: 48vh; }
+    :global(.js) .rstep .h3 { color: var(--c-ink-muted); transition: color var(--dur-2) var(--ease-out); }
+    /* every step keeps its one line; the active step is the one in full ink (colour only, so no layout shift) */
+    :global(.js) .rstep .body { color: var(--c-ink-muted); transition: color var(--dur-2) var(--ease-out); }
+    :global(.js) .rstep.is-active .body { color: var(--c-graphite); }
+    :global(.js) .rstep.is-active .h3 { color: var(--c-graphite); }
+    :global(.js) .rstep .rstep__num { color: var(--c-ink-muted); }
+    :global(.js) .rstep.is-active .rstep__num { color: var(--c-gold-deep); }
+    :global(.js) .rstep__visual { display: none; }
+    :global(.js) .ride__fine { display: none; }
+
+    :global(.js) .ride__stage {
+      display: block; position: sticky; top: calc(var(--header-h) + 32px);
+      height: min(calc(100dvh - var(--header-h) - 64px), 720px);
+      border-radius: var(--r-panel); overflow: hidden;
+      container-type: size; --cy: calc(50% + 14px);
+    }
+    .stage__face, .stage__phone, .stage__record, .stage__dest { position: absolute; transition: transform 0.5s var(--ease-out), opacity 0.4s var(--ease-out); will-change: transform, opacity; }
+    .stage__face { width: min(80%, 78cqh * 1.09); right: 4%; top: var(--cy); transform: translate(4%, -50%) scale(0.94); opacity: 0; }
+    .stage__phone { left: 50%; top: var(--cy); width: 29%; transform: translate(-50%, -50%); opacity: 1; z-index: 2; }
+    .stage__record { right: 5%; top: var(--cy); width: 44%; max-width: 400px; transform: translate(0, calc(-50% + 40px)); opacity: 0; z-index: 2; }
+    /* anchored to the landed card (centre +40px, ~340px tall), not to the stage top, so it stays in view with the card */
+    .stage__dest { right: 5%; top: calc(var(--cy) - 165px); transform: translateY(-12px); opacity: 0; z-index: 3; }
+    .stage__dest::after { content: ''; position: absolute; left: 50%; top: 100%; width: 2px; height: 48px; background: var(--c-gold); }
+    .stage__fine { position: absolute; left: 6%; top: 28px; z-index: 4; margin: 0; color: var(--c-mist); }
+    .stage__ring {
+      position: absolute; left: 73.9%; top: 70.9%; width: 26%; aspect-ratio: 1; border-radius: 50%;
+      border: 2px solid var(--c-gold); transform: translate(-50%, -50%) scale(0.9); opacity: 0; pointer-events: none;
+    }
+
+    [data-state='dest'] .stage__face, [data-state='tap'] .stage__face, [data-state='ok'] .stage__face { transform: translate(0, -50%) scale(1); opacity: 1; }
+    [data-state='dest'] .stage__phone, [data-state='tap'] .stage__phone, [data-state='ok'] .stage__phone,
+    [data-state='record'] .stage__phone, [data-state='operator'] .stage__phone { transform: translate(calc(-50% - 40px), -50%); opacity: 0; }
+    [data-state='tap'] .stage__ring { animation: ring 1.6s var(--ease-out) 0.2s 2; }
+    [data-state='record'] .stage__face { transform: translate(-30%, -50%) scale(0.86); opacity: 1; }
+    [data-state='record'] .stage__record { transform: translate(0, -50%); opacity: 1; }
+    [data-state='operator'] .stage__face { transform: translate(-46%, -50%) scale(0.72); opacity: 0.22; }
+    /* the full-size card lands under the "Operator view" label, joined to it by the gold line */
+    [data-state='operator'] .stage__record { transform: translate(0, calc(-50% + 110px)) scale(0.92); transform-origin: top center; opacity: 1; z-index: 5; }
+    [data-state='operator'] .stage__dest { transform: translateY(0); opacity: 1; }
+    /* set by ride.ts when the stage unsticks: the label leaves before it can pass under the sticky header */
+    .ride__stage.is-leaving .stage__dest { opacity: 0; transform: translateY(-12px); }
+
+    @keyframes ring {
+      0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.9; }
+      100% { transform: translate(-50%, -50%) scale(1.35); opacity: 0; }
+    }
+  }
+</style>
+
+<script>
+  import '../scripts/ride';
+</script>

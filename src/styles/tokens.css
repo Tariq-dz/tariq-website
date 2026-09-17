@@ -1,0 +1,106 @@
+/* Tariq v2 design tokens — three layers: primitive → semantic → component. See DESIGN.md. */
+
+:root {
+  /* ---------- primitives ---------- */
+  --c-paper: #f7f4ef;        /* app background, sampled */
+  --c-white: #ffffff;
+  --c-slate: #3a3e44;        /* render stage, measured */
+  --c-slate-deep: #30343a;   /* recessed panels on slate */
+  --c-graphite: #26282c;
+  --c-ink-muted: #56585c;    /* 6.6:1 on paper */
+  --c-cream: #f4f1ea;        /* 9.6:1 on slate */
+  --c-mist: #d3cbbd;         /* warm mist (A1): 6.7:1 on slate, 9.2:1 on graphite; matches the cream headlines instead of a cool grey */
+  --c-gold: #c8a060;         /* app Colors.kt */
+  --c-gold-deep: #8a6a36;    /* gold text on paper, 4.8:1 */
+  /* city tints (secondary accents, DESIGN.md "Cities section"): sky light and the pass glow only, never text */
+  --city-algiers: #d9a15c;
+  --city-oran: #4f8f9a;
+  --city-constantine: #b8776a;
+  --c-gold-tint: #efe5d3;
+  --c-gold-ink: #6f5428;     /* gold text on the gold tint, 5.7:1 */
+  --c-ok: #327a43;           /* terminal OK screen */
+  --c-error: #a3322a;
+
+  --font-sans: 'Mona Sans Variable', 'Mona Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-arabic: 'IBM Plex Sans Arabic', 'Noto Sans Arabic', 'Geeza Pro', 'Segoe UI', sans-serif;
+
+  /* fluid type, interpolated between 390 px and 1440 px viewports */
+  --fs-display: clamp(2.75rem, 1.543rem + 4.952vw, 6rem);   /* 44 → 96 */
+  --fs-h2: clamp(2rem, 1.35rem + 2.667vw, 3.75rem);         /* 32 → 60 */
+  --fs-h3: clamp(1.375rem, 1.189rem + 0.762vw, 1.875rem);   /* 22 → 30 */
+  --fs-lead: clamp(1.25rem, 1.157rem + 0.381vw, 1.5rem);    /* 20 → 24 */
+  --fs-body: clamp(1.0625rem, 1.039rem + 0.095vw, 1.125rem);/* 17 → 18 */
+  --fs-small: 0.9375rem;                                     /* 15 */
+  --fs-fine: 0.875rem;                                       /* 14 */
+
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px;
+  --s-7: 48px; --s-8: 64px; --s-9: 96px; --s-10: 128px; --s-11: 176px;
+
+  --r-pill: 999px;
+  --r-panel: 24px;
+  --r-sm: 12px;
+
+  --ease-out: cubic-bezier(0.22, 0.8, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-1: 0.2s;
+  --dur-2: 0.5s;
+  --dur-3: 0.9s;
+
+  --z-header: 50;
+  --z-lightbox: 100;
+
+  /* ---------- semantic ---------- */
+  --maxw: 1240px;
+  --gutter: clamp(20px, 5vw, 64px);
+  --section-pad: clamp(64px, 7.5vw, 120px);
+  --header-h: 68px;
+
+  /* surface defaults = paper; .surface-slate overrides */
+  --bg: var(--c-paper);
+  --fg: var(--c-graphite);
+  --fg-muted: var(--c-ink-muted);
+  --line: rgb(38 40 44 / 0.12);
+  --accent: var(--c-gold);
+  --accent-text: var(--c-gold-deep);
+  --raised: var(--c-white);
+  --focus: var(--c-gold-deep);      /* 4.6:1 on paper, 5.0:1 on white: a focus ring in the brand accent */
+  --focus-halo: rgb(200 160 96 / 0.28);
+
+  /* ---------- component ---------- */
+  --btn-h: 50px;
+  --btn-pad: 0 var(--s-5);
+  --btn-primary-bg: var(--c-gold);
+  --btn-primary-bg-hover: #d4b073;
+  --btn-primary-fg: var(--c-graphite);
+  --btn-secondary-border: rgb(38 40 44 / 0.35);
+  --field-bg: var(--c-white);
+  --field-border: #86888c;          /* 3.5:1 on white, 3.2:1 on paper (WCAG 1.4.11 input boundary) */
+  --phone-radius: 11.5%/5.6%;
+  --phone-bezel: #1d1e21;
+}
+
+.surface-slate {
+  --bg: var(--c-slate);
+  --fg: var(--c-cream);
+  --fg-muted: var(--c-mist);
+  --line: rgb(255 255 255 / 0.14);
+  --accent-text: var(--c-gold);
+  --raised: var(--c-slate-deep);
+  --focus: var(--c-gold);
+  --focus-halo: rgb(200 160 96 / 0.3);
+  --btn-secondary-border: rgb(244 241 234 / 0.4);
+  --field-bg: var(--c-slate-deep);
+  --field-border: rgb(244 241 234 / 0.55);
+}
+
+.surface-graphite {
+  --bg: var(--c-graphite);
+  --fg: var(--c-cream);
+  --fg-muted: var(--c-mist);
+  --line: rgb(255 255 255 / 0.12);
+  --accent-text: var(--c-gold);
+  --raised: #303236;
+  --focus: var(--c-gold);
+  --focus-halo: rgb(200 160 96 / 0.3);
+  --btn-secondary-border: rgb(244 241 234 / 0.4);
+}

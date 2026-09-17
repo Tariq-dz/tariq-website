@@ -1,0 +1,194 @@
+---
+import { Image, getImage } from 'astro:assets';
+import heroFace from '../assets/terminal/face.png';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PhoneFrame from '../components/PhoneFrame.astro';
+import TerminalFace from '../components/TerminalFace.astro';
+import RideSequence from '../components/RideSequence.astro';
+import ModesStrip from '../components/ModesStrip.astro';
+import CityMarquee from '../components/CityMarquee.astro';
+import FilmLightbox from '../components/FilmLightbox.astro';
+import topupStill from '../assets/app/topup.png';
+import { SMALL_PRINT } from '../config';
+
+const arrow = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+// The hero terminal face is the LCP element: preload the same responsive variants TerminalFace renders.
+const HERO_FACE_SIZES = '(max-width: 899px) 92vw, 560px';
+const heroFacePreload = await getImage({ src: heroFace, widths: [480, 767] });
+---
+
+<BaseLayout
+  title="Tariq"
+  description="Tariq is the digital layer that makes public transit navigable for riders and accountable for operators: a rider app, an on-board terminal, and a signed record of every tap."
+  waitlistHref="#waitlist"
+>
+  <link slot="head" rel="preload" as="image" imagesrcset={heroFacePreload.srcSet.attribute} imagesizes={HERO_FACE_SIZES} fetchpriority="high" />
+  <!-- 1 · Hero: what Tariq is, app and terminal in one frame -->
+  <section class="hero surface-slate" aria-labelledby="hero-title">
+    <div class="container hero__grid">
+      <div class="hero__copy">
+        <h1 class="display" id="hero-title"><span class="line">Plan in the app.</span> <span class="line">Tap on board.</span></h1>
+        <p class="lead">Tariq is the digital layer that makes public transit navigable for riders and accountable for operators.</p>
+        <div class="hero__cta">
+          <a class="btn btn--primary" href="#waitlist">Join the waitlist</a>
+          <a class="btn" href="/operators">For operators</a>
+        </div>
+      </div>
+      <div class="hero__visual">
+        <TerminalFace screens={['dest']} ticket ticketShown eager class="hero__face" sizes="(max-width: 899px) 92vw, 560px" />
+        <PhoneFrame clip="home" label="The Tariq app home screen: nearby departures, a wallet balance and recent trips" class="hero__phone" eager />
+      </div>
+    </div>
+    <div class="container"><p class="small-print hero__fine">{SMALL_PRINT}</p></div>
+  </section>
+
+  <!-- 2 · Framing: the two problems, then the one system that answers them (POSITIONING_PLAN change 2).
+       Restores the section D-29 removed, at a smaller type scale so the page does not grow the way it did then. -->
+  <section class="frame" aria-labelledby="frame-title">
+    <div class="container">
+      <div class="frame__grid">
+        <p class="frame__line" data-reveal><span class="frame__who">For riders</span><span>Plan any trip across every mode, and pay for it from one balance.</span></p>
+        <p class="frame__line" data-reveal><span class="frame__who">For operators</span><span>See the service that ran, and show it to the city.</span></p>
+      </div>
+      <h2 class="frame__lead" id="frame-title" data-reveal>A rider app, an <span class="nowrap">on-board</span> terminal, and the record that connects them.</h2>
+    </div>
+  </section>
+
+  <!-- 3 · The app -->
+  <section class="app section" aria-labelledby="app-title">
+    <div class="container app__grid">
+      <div class="app__copy">
+        <h2 class="h2" id="app-title" data-reveal>Plan the trip. Pay the fare.</h2>
+        <ul class="app__list" role="list">
+          <li data-reveal>
+            <h3 class="app__item-title">Plan across modes</h3>
+            <p class="body">Fastest, fewest transfers or cheapest. You see the fare before you go.</p>
+          </li>
+          <li data-reveal>
+            <h3 class="app__item-title">Pay from one balance</h3>
+            <p class="body">Top up with your bank card. The app is free; you pay only your fares.</p>
+          </li>
+          <li data-reveal>
+            <h3 class="app__item-title">Ask Tariq AI</h3>
+            <p class="body">Your city guide: places near you, a plan for your day with reminders, and help filing a complaint.</p>
+          </li>
+        </ul>
+        <a class="link-arrow" href="/app" data-reveal>See the app <Fragment set:html={arrow} /></a>
+      </div>
+      <div class="app__phones" data-reveal>
+        <PhoneFrame still={topupStill} label="A wallet top-up confirmed: plus 1 000 DA, new balance 15 340 DA" class="app__phone app__phone--back" />
+        <PhoneFrame clip="ai-dayplan" label="Tariq AI day plan for the Casbah: five places on the map, a transport budget, and four reminders being scheduled" class="app__phone app__phone--front" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · Signature: the ride, end to end -->
+  <RideSequence />
+
+  <!-- 5 · Modes -->
+  <ModesStrip />
+
+  <!-- 6 · Terminal teaser -->
+  <section class="term surface-slate" aria-labelledby="term-title" data-terminal-media>
+    <div class="container term__grid">
+      <div class="term__art" data-reveal>
+        <TerminalFace screens={['idle']} ticket ticketShown class="term__face" sizes="(max-width: 899px) 92vw, 640px" />
+      </div>
+      <div class="term__copy">
+        <h2 class="h2" id="term-title" data-reveal>Designed for the way cities move.</h2>
+        <p class="lead" data-reveal>The Tariq terminal: one tap, a ticket and a signed record.</p>
+        <div class="term__cta" data-reveal>
+          <button class="btn btn--primary" type="button" data-lightbox-open="film">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5.5v9l7-4.5z" fill="currentColor" /></svg>
+            Watch the film
+          </button>
+        </div>
+        <p class="small-print" data-reveal>{SMALL_PRINT}</p>
+      </div>
+    </div>
+    <FilmLightbox />
+  </section>
+
+  <!-- 8 · Cities + waitlist (marquee adapted from the founder's reference; the city's card opens the sign-up) -->
+  <CityMarquee id="waitlist" />
+</BaseLayout>
+
+<style>
+  /* 1 · hero */
+  .hero { padding-block: clamp(40px, 7vh, 88px) var(--s-6); overflow: hidden; }
+  .hero__grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: var(--s-7); align-items: center; }
+  .hero__copy { display: grid; gap: var(--s-5); }
+  .hero .display { font-size: clamp(2.4rem, min(0.6rem + 3.3vw, 8vh), 3.9rem); }
+  .hero .display .line { display: block; white-space: nowrap; }
+  .hero .lead { color: var(--c-mist); text-wrap: balance; }
+  .hero__cta { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-2); }
+  /* Two objects, one frame, no overlap: the phone plans (left, lower), the terminal takes the tap (right, larger). */
+  .hero__visual { position: relative; aspect-ratio: 1 / 0.74; margin-right: calc(-1 * var(--gutter)); }
+  .hero__visual::before { content: ''; position: absolute; inset: -6% -4% 0 18%; background: radial-gradient(closest-side, rgb(244 241 234 / 0.07), transparent); pointer-events: none; }
+  .hero__face { position: absolute; right: 0; bottom: 4%; width: 64%; z-index: 1; }
+  /* the render's own slate edge fades out, so the shared floor shadow can pass under it without a seam */
+  .hero__face :global(.tface__body) { -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent), linear-gradient(transparent, #000 4%, #000 96%, transparent); -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent), linear-gradient(transparent, #000 4%, #000 96%, transparent); mask-composite: intersect; }
+  .hero__visual::after { content: ''; position: absolute; left: 3%; right: 1%; bottom: -3%; height: 10%; background: radial-gradient(closest-side, rgb(12 13 15 / 0.55), transparent); z-index: 0; pointer-events: none; }
+  /* the phone overlaps only the terminal's left bezel (the screen starts at 42% of the frame) */
+  .hero__phone { position: absolute; left: 9%; bottom: 0; width: 31%; z-index: 2; filter: drop-shadow(0 30px 30px rgb(10 12 14 / 0.45)); }
+  .hero__fine { margin-top: var(--s-5); font-size: var(--fs-small); }
+
+  @media (max-width: 899px) {
+    .hero__grid { grid-template-columns: 1fr; gap: var(--s-4); }
+    .hero__copy { gap: var(--s-4); }
+    .hero .lead { font-size: 1.0625rem; line-height: 1.45; }
+    /* Stacked: both objects stay above the fold; the phone still overlaps only the terminal's left bezel. */
+    .hero__visual { aspect-ratio: 1 / 0.8; margin-right: 0; }
+    .hero__face { width: 76%; bottom: 3%; }
+    .hero__phone { left: 0; width: 30%; }
+  }
+
+  /* 2 · framing */
+  /* No bottom padding: the app section that follows is also paper and brings its own top padding,
+     so the pair keeps one section gap instead of stacking two (the /terminal .details idiom). */
+  .frame { background: var(--c-paper); padding-block: calc(var(--section-pad) * 0.85) 0; }
+  .frame__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-6) var(--s-8); }
+  /* Statements sit at lead scale, not h2: the closing line below is the one that carries the weight. */
+  .frame__line { font-size: var(--fs-lead); font-weight: 560; font-stretch: 104%; letter-spacing: -0.01em; line-height: 1.3; display: grid; gap: var(--s-3); text-wrap: balance; padding-top: var(--s-4); border-top: 2px solid var(--c-graphite); }
+  .frame__line + .frame__line { border-top-color: var(--c-gold); }
+  .frame__who { font-size: var(--fs-small); font-weight: 600; font-stretch: 100%; letter-spacing: 0; color: var(--c-gold-deep); }
+  @media (max-width: 719px) { .frame__grid { grid-template-columns: 1fr; } }
+  .frame__lead { margin-top: var(--s-7); max-width: 24ch; font-size: var(--fs-h2); font-weight: 620; font-stretch: 112%; letter-spacing: -0.022em; line-height: 1.04; text-wrap: balance; color: var(--c-graphite); }
+
+  /* 3 · app */
+  .app { background: var(--c-paper); }
+  .app__grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-8); align-items: center; }
+  .app__copy { display: grid; gap: var(--s-6); align-content: start; }
+  .app__list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-5); }
+  .app__list li { display: grid; gap: var(--s-1); padding-left: var(--s-5); border-left: 2px solid var(--c-gold); }
+  .app__item-title { font-size: 1.25rem; font-weight: 620; font-stretch: 106%; letter-spacing: -0.01em; }
+  .app__phones { position: relative; aspect-ratio: 1 / 1.06; }
+  .app__phone { position: absolute; }
+  .app__phone--back { left: 4%; top: 0; width: 34%; }
+  .app__phone--front { right: 4%; bottom: 0; width: 46%; }
+  @media (max-width: 899px) {
+    .app__grid { grid-template-columns: 1fr; }
+    .app__phones { aspect-ratio: 1 / 1.3; }
+    .app__phone--back { left: 0; width: 40%; }
+    .app__phone--front { right: 0; width: 56%; }
+  }
+
+  /* 6 · terminal teaser */
+  .term { padding-block: var(--section-pad); }
+  .term__grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--s-8); align-items: center; }
+  .term__img { width: 100%; height: auto; }
+  .term__copy { display: grid; gap: var(--s-5); }
+  .term__copy .body { color: var(--c-cream); font-weight: 560; }
+  .term__cta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-6); }
+  @media (max-width: 899px) { .term__grid { grid-template-columns: 1fr; gap: var(--s-6); } .term__art { order: 2; } }
+
+  /* 7 · cities (merged into the waitlist block) */
+  .cities { background: var(--c-paper); }
+  .cities__title { margin-bottom: var(--s-7); }
+  .cities__list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .city { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-5); padding-block: clamp(20px, 3vw, 36px); border-bottom: 1px solid var(--line); }
+  .city__en { font-size: clamp(2.4rem, 1.2rem + 5vw, 6rem); font-weight: 600; font-stretch: 118%; letter-spacing: -0.03em; line-height: 1; }
+  .city__ar { font-size: clamp(1.6rem, 1rem + 2.6vw, 3.4rem); font-weight: 500; color: var(--c-gold-deep); line-height: 1.2; }
+
+  /* 8 · join */
+</style>

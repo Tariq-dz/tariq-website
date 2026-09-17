@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { NAV, SMALL_PRINT } from '../config';
+import TerminalFace from '../components/TerminalFace.astro';
+---
+
+<BaseLayout title="Page not found" description="This page does not exist. Find the Tariq app, the terminal, or the page for operators." noindex>
+  <section class="nf section">
+    <div class="container nf__inner">
+      <div class="nf__copy">
+      <p class="nf__code num" aria-hidden="true">404</p>
+      <h1 class="display">This page is not on the route.</h1>
+      <p class="lead">The address may be mistyped, or the page has moved. These are the pages that exist:</p>
+      <ul class="nf__links" role="list">
+        <li><a class="link-arrow" href="/">Home <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></a></li>
+        {NAV.map((n) => (
+          <li><a class="link-arrow" href={n.href}>{n.label} <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></a></li>
+        ))}
+      </ul>
+      </div>
+      <div class="nf__art surface-slate">
+        <TerminalFace screens={['idle']} sizes="(max-width: 899px) 80vw, 460px" />
+        <p class="small-print">{SMALL_PRINT}</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf { min-height: calc(100dvh - var(--header-h) - 200px); display: grid; align-items: center; }
+  .nf__inner { display: grid; gap: var(--s-7); }
+  .nf__copy { display: grid; gap: var(--s-5); align-content: center; }
+  /* desktop: message left, terminal right, so the page reads as one composed frame */
+  @media (min-width: 900px) {
+    .nf__inner { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--s-8); align-items: center; }
+    .nf__art { justify-self: end; width: 100%; }
+  }
+  .nf__code { font-size: var(--fs-small); font-weight: 600; color: var(--c-gold-deep); }
+  .nf .display { max-width: 14ch; }
+  .nf__art { border-radius: var(--r-panel); padding: var(--s-5); max-width: 460px; display: grid; gap: var(--s-3); }
+  .nf__links { list-style: none; padding: 0; margin: var(--s-4) 0 0; display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-6); font-size: var(--fs-lead); }
+</style>

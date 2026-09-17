@@ -1,0 +1,143 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TerminalReveal from '../components/TerminalReveal.astro';
+import ScreenFlow from '../components/ScreenFlow.astro';
+import FilmLightbox from '../components/FilmLightbox.astro';
+import { SMALL_PRINT } from '../config';
+
+const arrow = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+const details = [
+  { group: 'On its face', items: [
+    { name: '7″ display', note: 'Non-touch. Destinations and the fare are shown before the tap.' },
+    // U+00A0 between the standard's name and number so the pair never splits across lines in the narrow column
+    { name: 'Contactless NFC', note: 'A card or a phone, at the gold ring. Open NFC standards (ISO/IEC 14443).' },
+    { name: 'Thermal printer', note: 'A ticket on every tap.' },
+  ] },
+  { group: 'Inside', items: [
+    { name: 'Cellular and GNSS', note: 'Mobile network and satellite positioning, built in.' },
+    { name: 'Sealed electronics bay', note: 'Opened only by a technician.' },
+    { name: 'Offline queue', note: 'Designed to hold every tap when the network drops, and send them when it returns.' },
+  ] },
+  { group: 'On the vehicle', items: [
+    { name: 'One sealed connector', note: 'One connection. Nothing exposed. Recessed into the bottom edge.' },
+    { name: 'Pole mount', note: 'Mounts to the pole. Nothing else on the back.' },
+    { name: 'Paper reload without tools', note: 'The roll sits outside the sealed bay.' },
+  ] },
+];
+---
+
+<BaseLayout
+  title="The terminal"
+  description="Meet the Tariq terminal: a vehicle-mounted NFC terminal designed in Algeria. Choose a destination, see the fare, tap once, and a ticket prints. Every tap, on the record."
+>
+  <TerminalReveal />
+
+  <ScreenFlow />
+
+  <!-- The details -->
+  <section class="details section" aria-labelledby="details-title">
+    <div class="container">
+      <h2 class="h2 details__title" id="details-title" data-reveal>Sealed. Secure. Built to be trusted.</h2>
+      <p class="lead details__lead" data-reveal>The electronics sit in a sealed bay that only a technician opens.</p>
+      <div class="details__groups" data-reveal>
+        {details.map((g) => (
+          <div class="details__group">
+            <h3 class="details__group-title">{g.group}</h3>
+            <ul class="details__names" role="list">
+              {g.items.map((it) => (
+                <li><span class="details__name">{it.name}</span><span class="details__note">{it.note}</span></li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Film -->
+  <section class="film surface-slate" aria-labelledby="film-title" data-terminal-media>
+    <div class="container film__grid">
+      <div class="film__copy">
+        <h2 class="h2" id="film-title" data-reveal>Watch the film.</h2>
+        <p class="lead" data-reveal>A short film: the terminal, from the first look to the last ticket.</p>
+      </div>
+      <button class="film__poster" type="button" data-lightbox-open="film" data-reveal>
+        <img src="/media/film/tariq-terminal-film.webp" alt="" width="854" height="480" loading="lazy" decoding="async" class="film__img" />
+        <span class="film__play"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5.5v9l7-4.5z" fill="currentColor" /></svg>Play the film</span>
+      </button>
+      <p class="small-print film__fine">{SMALL_PRINT}</p>
+    </div>
+    <FilmLightbox />
+  </section>
+
+  <!-- Service + close -->
+  <section class="close section surface-slate" aria-labelledby="close-title">
+    <div class="container close__inner">
+      <h2 class="h2" id="close-title" data-reveal>Installed and maintained by Tariq.</h2>
+      <p class="lead" data-reveal>Delivered as a service: Tariq installs the terminal on board and maintains it.</p>
+      <div class="close__cta" data-reveal>
+        <a class="btn btn--primary" href="/operators#contact">Talk to us</a>
+        <a class="link-arrow" href="/operators#see-title">See the signed record <Fragment set:html={arrow} /></a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .split { padding-block: var(--section-pad); }
+  .split--paper { background: var(--c-paper); }
+  .split__grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-8); align-items: center; }
+  .split__grid--flip { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+  .split__copy { display: grid; gap: var(--s-5); }
+  .split__copy .h2 { max-width: 14ch; }
+  .split__img { width: 100%; max-width: 560px; height: auto; margin-inline: auto; }
+  .split__img--detail { max-width: 460px; }
+  .split__art--panel { border-radius: var(--r-panel); overflow: hidden; }
+  @media (max-width: 899px) {
+    .split__grid, .split__grid--flip { grid-template-columns: 1fr; gap: var(--s-6); }
+    .split__grid--flip .split__art { order: 2; }
+  }
+
+  .details { background: var(--c-paper); padding-top: 0; }
+  .details__title { max-width: 16ch; margin-bottom: var(--s-4); }
+  .details__lead { max-width: 48ch; margin-bottom: var(--s-8); }
+  .details__groups { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-7); }
+  .details__names { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-5); }
+  .details__name { display: block; font-size: var(--fs-h3); font-weight: 620; font-stretch: 108%; letter-spacing: -0.01em; line-height: 1.15; }
+  .details__note { display: block; margin-top: 4px; font-size: var(--fs-small); color: var(--fg-muted); }
+  .details__group { border-top: 2px solid var(--c-graphite); padding-top: var(--s-4); }
+  .details__group-title { font-size: var(--fs-small); font-weight: 600; color: var(--c-gold-deep); margin-bottom: var(--s-5); }
+  .details__list { margin: 0; display: grid; gap: var(--s-5); }
+  .details__item dt { font-size: var(--fs-h3); font-weight: 620; font-stretch: 108%; letter-spacing: -0.01em; line-height: 1.15; }
+  .details__item dd { margin: var(--s-1) 0 0; color: var(--fg-muted); }
+  @media (max-width: 899px) { .details__groups { grid-template-columns: 1fr; gap: var(--s-6); } }
+  /* A2: on phones the short items sit two per row, so the list reads as a set instead of one long column */
+  @media (max-width: 899px) {
+    .details__names { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-5) var(--s-4); }
+    .details__name { font-size: 1.125rem; }
+  }
+
+  .film { padding-block: var(--section-pad); }
+  .film__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-6); justify-items: center; text-align: center; }
+  .film__copy { justify-items: center; }
+  .film__copy .lead { max-width: 40ch; }
+  .film__copy { display: grid; gap: var(--s-4); }
+  .film__poster { position: relative; display: block; padding: 0; border: 0; background: none; cursor: pointer; border-radius: var(--r-panel); overflow: hidden; max-width: 854px; width: 100%; justify-self: center; }
+  .film__img { width: 100%; height: auto; transition: transform var(--dur-3) var(--ease-out); }
+  .film__poster:hover .film__img { transform: scale(1.015); }
+  .film__play {
+    position: absolute; left: var(--s-5); bottom: var(--s-5); display: inline-flex; align-items: center; gap: var(--s-2);
+    min-height: 48px; padding: 0 var(--s-5) 0 var(--s-4); border-radius: var(--r-pill); background: var(--c-gold); color: var(--c-graphite); font-weight: 600;
+  }
+  .film__play svg { width: 20px; height: 20px; }
+  .film__poster:focus-visible { outline: 2.5px solid var(--c-gold); outline-offset: 4px; }
+  .film__fine { justify-self: center; }
+  @media (max-width: 899px) { .film__grid { text-align: left; justify-items: stretch; } .film__copy { justify-items: start; } .film__fine { justify-self: start; } }
+
+  .close { padding-top: 0; }
+  .close__inner { display: grid; gap: var(--s-5); }
+  .close__inner > * { max-width: 760px; }
+  .close__cta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-6); margin-top: var(--s-2); }
+</style>

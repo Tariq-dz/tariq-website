@@ -1,0 +1,84 @@
+---
+// What one tap leaves behind, drawn as a record. The values mirror the terminal's own printed ticket
+// (screens/ticket40.png): Place des Martyrs to Bologhine, Line 12, bus, 40 DA, 18:52. Illustrative.
+// Drawn as ticket paper: gold cap, perforation with side notches (a mask, so it works on any surface), a seal with the mark.
+import { Image } from 'astro:assets';
+import mark from '../assets/brand/mark.png';
+interface Props { class?: string }
+const { class: cls } = Astro.props;
+---
+
+<figure class:list={['record', cls]}>
+  <div class="record__paper">
+    <div class="record__head">
+      <p class="record__title">Signed record</p>
+      <span class="record__example">Example</span>
+    </div>
+    <p class="record__by">Signed by the terminal</p>
+    <dl class="record__rows">
+      <div><dt>From</dt><dd>Place des Martyrs</dd></div>
+      <div><dt>To</dt><dd>Bologhine</dd></div>
+      <div><dt>Service</dt><dd>Bus, line 12</dd></div>
+      <div><dt>Paid with</dt><dd>Card</dd></div>
+      <div><dt>Time</dt><dd class="num">18:52</dd></div>
+    </dl>
+    <div class="record__foot">
+      <span class="record__seal" aria-hidden="true"><Image src={mark} alt="" width={56} height={Math.round(56 * mark.height / mark.width)} class="record__mark" loading="lazy" /></span>
+      <dl class="record__total"><dt>Fare</dt><dd class="num">40 DA</dd></dl>
+      <p class="record__id num" translate="no">TRQ1-4C7-0198-1842</p>
+    </div>
+  </div>
+  <figcaption class="sr-only">An example of the record a single tap produces.</figcaption>
+</figure>
+
+<style>
+  .record {
+    color: var(--c-graphite);
+    font-size: 0.9375rem;
+    filter: drop-shadow(0 1px 0 rgb(38 40 44 / 0.08)) drop-shadow(0 20px 26px rgb(20 22 26 / 0.34));
+  }
+  :where(.record) { width: 100%; }
+  .record__paper {
+    --foot: 88px; --pad: 20px; --notch-y: calc(100% - var(--foot) - var(--pad));
+    position: relative;
+    background: var(--c-white);
+    border-radius: var(--r-sm);
+    box-shadow: inset 0 3px 0 var(--c-gold);
+    padding: 22px 22px var(--pad);
+    -webkit-mask:
+      radial-gradient(circle 9px at 0 var(--notch-y), #0000 96%, #000) 0 0 / 51% 100% no-repeat,
+      radial-gradient(circle 9px at 100% var(--notch-y), #0000 96%, #000) 100% 0 / 51% 100% no-repeat;
+    mask:
+      radial-gradient(circle 9px at 0 var(--notch-y), #0000 96%, #000) 0 0 / 51% 100% no-repeat,
+      radial-gradient(circle 9px at 100% var(--notch-y), #0000 96%, #000) 100% 0 / 51% 100% no-repeat;
+  }
+  .record__head { display: flex; justify-content: space-between; align-items: center; gap: var(--s-3); }
+  .record__title { margin: 0; font-weight: 660; font-stretch: 112%; font-size: 1.125rem; letter-spacing: -0.01em; }
+  .record__example { font-size: 0.8125rem; font-weight: 560; color: var(--c-gold-ink); background: var(--c-gold-tint); padding: 2px 9px; border-radius: var(--r-pill); }
+  .record__by { margin: 2px 0 0; color: var(--c-ink-muted); font-weight: 500; font-size: 0.875rem; }
+  .record__rows { display: grid; gap: 7px; margin: 14px 0 0; padding-top: 14px; border-top: 1px solid rgb(38 40 44 / 0.1); }
+  .record__rows div { display: grid; grid-template-columns: 6.25em 1fr; gap: var(--s-3); }
+  .record__rows dt { color: var(--c-ink-muted); }
+  .record__rows dd { margin: 0; font-weight: 560; }
+  .record__foot {
+    position: relative; height: var(--foot); margin-top: 16px; padding-top: 16px;
+    display: grid; grid-template-columns: 52px minmax(0, 1fr); grid-template-rows: auto auto; column-gap: 14px; align-content: center;
+  }
+  /* the perforation, running between the two notches */
+  .record__foot::before {
+    content: ''; position: absolute; left: -12px; right: -12px; top: 0; height: 1.5px;
+    background-image: linear-gradient(90deg, rgb(38 40 44 / 0.28) 55%, transparent 0); background-size: 9px 100%;
+  }
+  .record__seal {
+    grid-row: 1 / span 2; align-self: center;
+    width: 52px; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center;
+    background: var(--c-gold-tint);
+    border: 1.5px solid var(--c-gold);
+    box-shadow: inset 0 0 0 3px var(--c-white), inset 0 0 0 4px rgb(200 160 96 / 0.55);
+  }
+  .record__mark { width: 28px; height: auto; }
+  .record__total { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-3); margin: 0; }
+  .record__total dt { color: var(--c-ink-muted); font-weight: 520; }
+  .record__total dd { margin: 0; font-size: 1.625rem; line-height: 1.1; font-weight: 680; font-stretch: 110%; letter-spacing: -0.015em; }
+  .record__id { margin: 2px 0 0; font-size: 0.8125rem; color: var(--c-ink-muted); letter-spacing: 0.06em; }
+</style>

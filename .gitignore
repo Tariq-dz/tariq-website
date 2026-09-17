@@ -1,16 +1,4 @@
-# Ignore Markdown Documentation
-*.md
-!AUDIT.md
-!COHERENCE_LOG.md
-!CLAUDE.md
-docs/
-preview/
-ui_kits/
-
-# Generated verification artifacts (regenerable via Playwright)
-screenshots/
-
-# Ignore Sensitive / Temporary Files
-ssh_key_to_add.txt
-uploads/
-.DS_Store
+node_modules/
+dist/
+.shots/
+.astro/

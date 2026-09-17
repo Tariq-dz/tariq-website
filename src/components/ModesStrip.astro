@@ -1,0 +1,53 @@
+---
+// The modes, named and ordered the way the app names them (no count), set as type divided by thin gold rules.
+// No pictures (no ferry photograph exists and stock is forbidden) and no dots: the dot-and-line form is reserved for
+// the tap → signed record → operator story, so this list must not look like another timeline.
+const modes = [
+  { name: 'Bus', sub: 'public and private lines' },
+  { name: 'Metro' },
+  { name: 'Tram' },
+  { name: 'Train', sub: 'national rail' },
+  { name: 'Cable car' },
+  { name: 'Ferry' },
+  { name: 'Taxi' },
+];
+interface Props { title?: string; lead?: string }
+const { title = 'One search, every mode.', lead = 'Bus, metro, tram, train, cable car, ferry and taxi. A route can start on a bus and end on a cable car, and the app plans it as one trip.' } = Astro.props;
+---
+
+<section class="modes section cv surface-slate" style="--cv-size: 560px" aria-labelledby="modes-title">
+  <div class="container">
+    <div class="modes__head">
+      <h2 class="h2" id="modes-title" data-reveal>{title}</h2>
+      <p class="lead" data-reveal>{lead}</p>
+    </div>
+    <ul class="route" role="list" data-reveal>
+      {modes.map((m) => (
+        <li class="stop">
+          <p class="stop__name">{m.name}</p>
+          {m.sub && <p class="stop__sub">{m.sub}</p>}
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .modes { background: var(--bg); color: var(--fg); }
+  .modes__head { display: grid; gap: var(--s-4); margin-bottom: var(--s-8); }
+  .modes__head .h2 { max-width: 17ch; }
+  .modes__head .lead { max-width: 44ch; }
+
+  .route { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border-top: 2px solid var(--c-gold); }
+  .stop { padding: var(--s-5) var(--s-4) 0; display: grid; align-content: start; gap: 6px; }
+  .stop + .stop { border-left: 1px solid rgb(200 160 96 / 0.45); }
+  .stop:first-child { padding-left: 0; }
+  .stop__name { font-size: clamp(1.25rem, 0.7rem + 1.2vw, 1.75rem); font-weight: 620; font-stretch: 112%; letter-spacing: -0.015em; line-height: 1.1; }
+  .stop__sub { font-size: var(--fs-small); color: var(--fg-muted); line-height: 1.35; }
+
+  @media (max-width: 899px) {
+    .route { grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 0; column-gap: var(--s-5); }
+    .stop, .stop:first-child { padding: var(--s-4) 0; border-left: 0; border-top: 1px solid rgb(200 160 96 / 0.45); }
+    .stop:nth-child(-n + 2) { border-top: 2px solid var(--c-gold); }
+  }
+</style>

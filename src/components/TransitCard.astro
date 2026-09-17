@@ -1,0 +1,52 @@
+---
+// A city's transit card, adapted from the founder's reference (community-section): a dark gradient in the city's colours, grain, light leak,
+// accent line, NFC arcs, a big initial and a footer with the city and the Tariq mark. Deliberately NOT a bank card:
+// no chip and no card number (Tariq issues no payment card; founder decision). Colours come from the city's data (src/config.ts).
+import { Image } from 'astro:assets';
+import mark from '../assets/brand/mark.png';
+import type { CityScene } from '../config';
+
+interface Props { scene: CityScene; size?: 'pop' | 'large'; class?: string; hidden?: boolean }
+const { scene, size = 'pop', class: cls, hidden = false } = Astro.props;
+---
+
+<div class:list={['tcard', `tcard--${size}`, `tcard--${scene.id}`, cls]} style={`--a: ${scene.accent}; --tc-bg: ${scene.pass}`} data-pass={scene.id} hidden={hidden} aria-hidden="true">
+  <span class="tcard__grain"></span>
+  <span class="tcard__leak"></span>
+  <span class="tcard__line"></span>
+  <svg class="tcard__nfc" viewBox="0 0 22 16"><path d="M3 5.2a3.6 3.6 0 0 1 0 5.6" /><path d="M8 2.6a7.4 7.4 0 0 1 0 10.8" /><path d="M13 0.8a11 11 0 0 1 0 14.4" /></svg>
+  <span class="tcard__initial">{scene.en.charAt(0)}</span>
+  {size === 'large' && <span class="tcard__ar" lang="ar">{scene.ar}</span>}
+  <span class="tcard__foot">
+    <span class="tcard__city">{scene.en}</span>
+    <Image src={mark} alt="" width={40} height={Math.round((40 * mark.height) / mark.width)} class="tcard__mark" loading="lazy" />
+  </span>
+</div>
+
+<style>
+  .tcard {
+    --a: var(--c-gold);
+    position: relative; aspect-ratio: 1.586; overflow: hidden; container-type: inline-size;
+    border-radius: 13px; border: 1px solid color-mix(in srgb, var(--a) 38%, transparent);
+    background: var(--tc-bg, linear-gradient(140deg, #2a1e08 0%, #3e2c0e 50%, #1e1406 100%));
+  }
+  .tcard[hidden] { display: none; }
+  .tcard--pop { width: 150px; }
+  /* px radii: a cqi length on the container element itself resolves against an ancestor (the viewport here), which rounded the card into a pill */
+  .tcard--large { width: min(340px, 100%); border-radius: 22px; }
+  .tcard__grain {
+    position: absolute; inset: 0; opacity: 0.5; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23f)' opacity='0.06'/%3E%3C/svg%3E");
+  }
+  .tcard__leak { position: absolute; top: -14cqi; left: -14cqi; width: 70cqi; height: 70cqi; border-radius: 50%; background: var(--a); opacity: 0.16; filter: blur(22cqi); }
+  .tcard__line { position: absolute; top: 0; left: 20%; right: 20%; height: 1px; background: linear-gradient(90deg, transparent, var(--a), transparent); opacity: 0.45; }
+  .tcard__nfc { position: absolute; top: 10cqi; left: 10cqi; width: 15cqi; fill: none; stroke: var(--a); stroke-width: 1.6; stroke-linecap: round; opacity: 0.7; }
+  .tcard__initial {
+    position: absolute; right: 7cqi; top: 50%; transform: translateY(-55%);
+    font-size: 58cqi; font-weight: 560; font-stretch: 112%; line-height: 1; color: rgb(255 255 255 / 0.035);
+  }
+  .tcard__ar { position: absolute; left: 10cqi; top: 34cqi; font-size: 10cqi; font-weight: 600; color: color-mix(in srgb, var(--a) 80%, white); }
+  .tcard__foot { position: absolute; left: 10cqi; right: 9cqi; bottom: 8cqi; display: flex; align-items: center; justify-content: space-between; }
+  .tcard__city { font-size: 6.2cqi; font-weight: 640; letter-spacing: 0.18em; text-transform: uppercase; color: var(--a); }
+  .tcard__mark { width: 14cqi; height: auto; opacity: 0.85; }
+</style>

@@ -1,0 +1,176 @@
+---
+// The Tariq AI section on /app (D-102). The phone plays the recording straight through, as one continuous
+// 26-second flow, and the section behind it becomes whatever place is on the phone: when the Jardin d'Essai
+// card appears, the garden fills the section; Maqam Echahid and the Casbah the same.
+//
+// The story is no longer told by scroll (founder, 2026-09-17). Coupling a scrubbed scroll timeline to video
+// playback was the hardest part of this section and the least robust; the video's own clock now drives the
+// ground, the line and the credit, so the phone and the place cannot drift apart — they are read from one
+// number. That removes the pin, the scrub, the mobile strip fallback and GSAP from this page entirely.
+//
+// The clip is 26 s, well past the 5-second WCAG 2.2.2 exemption the site's other clips rely on (D-31), so this
+// one carries a real pause control.
+import { Image } from 'astro:assets';
+import PhoneFrame from './PhoneFrame.astro';
+
+import jardinPhoto from '../assets/app/places/jardin.jpg';
+import martyrsPhoto from '../assets/app/places/martyrs.jpg';
+import casbahPhoto from '../assets/app/places/casbah.jpg';
+
+// Segment boundaries in the joined clip (public/media/clips/ai-story.*), measured from the encoded parts.
+// `ground` is the place filling the section while that segment plays; null keeps the site's own graphite.
+const beats = [
+  { at: 0.0,  ground: null,      title: 'It knows your city.',                   line: 'Open it and ask — a place, a stop, or the hour to go.' },
+  { at: 1.5,  ground: null,      title: 'When, not just where.',               line: 'In the evening peak it points you at the metro, and names the buses to skip.' },
+  { at: 5.7,  ground: 'jardin',  title: 'You might want somewhere calm.',      line: 'It tells you when to come, whether there is shade, and the tram that gets you there.' },
+  { at: 10.7, ground: 'martyrs', title: 'Or somewhere that explains the city.', line: 'On the hill above the garden. Morning, before the haze — and no shade at all.' },
+  { at: 15.1, ground: null,      title: 'Then ask for the whole day.',         line: 'Stops in order, the transport budget, and reminders before you need to leave.' },
+  { at: 17.5, ground: 'casbah',  title: 'Every stop, checked the same way.',   line: 'Open from 08:00, free, and twelve minutes from the nearest metro.' },
+  { at: 21.1, ground: null,      title: 'Then go.',                            line: 'The route on the map, every stop to the door, and the fare before you board.' },
+];
+
+const photos = [
+  { id: 'jardin',  src: jardinPhoto,  widths: [960, 1280, 1600, 1920, 2400] },
+  { id: 'martyrs', src: martyrsPhoto, widths: [960, 1280, 1600, 1920, 2400] },
+  { id: 'casbah',  src: casbahPhoto,  widths: [720, 960, 1200] },
+];
+
+const LABEL =
+  'Tariq AI in the app, played through: the assistant opens and is asked about the rush hour; it advises against buses 1, 22 and 26 and sets Metro M1 beside Bus 26; the Jardin d’Essai and Maqam Echahid place cards are opened and their Overview, Tips and Getting There tabs read; a whole day is laid out with a transport budget and four reminders; the Casbah is checked the same way; and finally the route there is followed on the map, stop by stop, to the fare.';
+---
+
+<section class="aim section surface-graphite" data-aim aria-labelledby="ai-title">
+  <div class="aim__grounds" aria-hidden="true">
+      <div class="aim__ground aim__plain is-on" data-ground="plain"></div>
+      {photos.map((p) => (
+        <div class="aim__ground" data-ground={p.id}>
+          <Image src={p.src} alt="" widths={p.widths} sizes="100vw" quality={72} class="aim__photo" loading="lazy" decoding="async" />
+        </div>
+      ))}
+    <div class="aim__scrim"></div>
+  </div>
+
+  <div class="container aim__grid" data-aim-stage>
+    <div class="aim__copy">
+      <h2 class="h2 aim__h2" id="ai-title" data-reveal>Tariq AI. Your city guide.</h2>
+      <div class="aim__lines">
+        {beats.map((b, i) => (
+          <div class="aim__line" data-line={i} data-at={b.at}>
+            <p class="lead aim__title">{b.title}</p>
+            <p class="body aim__body">{b.line}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <PhoneFrame clip="ai-story" label={LABEL} autoplay={false} class="aim__phone" sizes="(min-width: 900px) 360px, 70vw" />
+  </div>
+
+  <div class="container aim__foot">
+      <button type="button" class="aim__toggle" data-aim-toggle aria-label="Pause the Tariq AI walkthrough">
+        <span data-aim-toggle-text>Pause</span>
+      </button>
+      <p class="fine aim__credit" data-aim-credit>
+        Jardin d’Essai and Maqam Echahid photographed by Boumediene15,
+        <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="license noopener">CC&nbsp;BY-SA&nbsp;4.0</a> and
+        <a href="https://creativecommons.org/licenses/by-sa/3.0" rel="license noopener">CC&nbsp;BY-SA&nbsp;3.0</a>, cropped.
+    </p>
+  </div>
+</section>
+
+<style>
+  /* Shaped like the wallet section on this page (.feat), at the founder's instruction: the same grid, the same
+     phone width, ordinary section padding. The full-bleed ground behind it is what makes this section different —
+     it becomes whatever place the phone is showing. */
+  .aim { background: var(--bg); color: var(--fg); position: relative; overflow: clip; }
+  /* the heading lives in the copy column with the changing text, the way .feat__copy holds its h2 and lead.
+     As its own row above the grid it cost 210px plus a 32px margin, which was most of the 317px this section
+     ran taller than the wallet section it is meant to match. */
+  /* Same shape as .feat__copy: heading, then the copy, one gap between them. The previous auto/1fr split left
+     a lone label stranded at the top with a void beneath it. */
+  .aim__copy { display: grid; gap: var(--s-5); align-content: center; }
+  /* the site's own h2, at the site's own size, like every other section on this page */
+  .aim__h2 { max-width: 13ch; color: var(--c-cream); }
+
+  /* the place fills the whole section */
+  .aim__grounds { position: absolute; inset: 0; z-index: 0; }
+  .aim__ground { position: absolute; inset: 0; opacity: 0; transition: opacity 0.6s var(--ease-out); }
+  .aim__ground.is-on { opacity: 1; }
+  .aim__plain { background: var(--c-graphite); }
+  .aim__photo { width: 100%; height: 100%; object-fit: cover; }
+  .aim__scrim {
+    position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(180deg, rgb(38 40 44 / 0.76) 0%, rgb(38 40 44 / 0.70) 34%, rgb(38 40 44 / 0.72) 66%, rgb(38 40 44 / 0.82) 100%);
+  }
+
+  /* the same two columns and gap as .feat__grid */
+  .aim__grid {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+    gap: var(--s-8); align-items: center;
+  }
+
+  /* the seven lines share one cell and crossfade; all stay in the DOM, so a screen reader reads the whole story */
+  .aim__lines { display: grid; }
+  /* The seven blocks share one cell. Hiding the inactive ones with opacity alone left them in the hit-testing
+     layer, so six invisible blocks sat on top of the visible words and the text could not be selected at all.
+     pointer-events is what actually takes them out of the way. */
+  .aim__line {
+    grid-area: 1 / 1; align-self: center;
+    display: grid; gap: var(--s-3); align-content: center;
+    opacity: 0; transform: translateY(12px); pointer-events: none;
+    transition: opacity 0.45s var(--ease-out), transform 0.45s var(--ease-out);
+  }
+  .aim__line.is-on { opacity: 1; transform: none; pointer-events: auto; }
+  /* a touch above --fs-lead's 24px ceiling: at 23.998px it sat a thousandth under WCAG's large-text
+     threshold, so it was graded by the stricter rule anyway. Make that explicit rather than accidental. */
+  .aim__title { color: var(--c-cream); max-width: 34ch; font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.625rem); line-height: 1.35; }
+  .aim__body { color: var(--c-cream); max-width: 40ch; }
+
+  /* exactly .feat__phone: no height cap, no mask. Capping and fading it made the phone small and cut. */
+  .aim__phone { width: min(360px, 80%); justify-self: center; }
+
+  /* overlaid, not stacked: in flow it cost another 42px plus a 32px margin */
+  .aim__foot {
+    position: absolute; left: 0; right: 0; bottom: var(--s-5); z-index: 2;
+    display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-5);
+  }
+  .aim__toggle {
+    flex: none; min-height: 40px; padding: 0 var(--s-4);
+    border-radius: var(--r-pill); border: 1.5px solid rgb(244 241 234 / 0.4);
+    background: rgb(38 40 44 / 0.55); color: var(--c-cream);
+    font-size: 0.9375rem; font-weight: 580; font-stretch: 104%; line-height: 1; cursor: pointer;
+    transition: border-color var(--dur-1) var(--ease-out), background-color var(--dur-1) var(--ease-out);
+  }
+  .aim__toggle:hover { border-color: var(--c-cream); background: rgb(38 40 44 / 0.75); }
+  .aim__credit { color: var(--c-mist); max-width: 62ch; margin: 0; opacity: 0; transition: opacity 0.6s var(--ease-out); }
+  /* the credit names two photographers: it belongs on screen only while one of their photographs is */
+  .aim__credit.is-on { opacity: 1; }
+  .aim__credit a { color: inherit; text-underline-offset: 2px; }
+
+  /* stacks like .feat does */
+  @media (max-width: 899px) {
+    .aim__grid { grid-template-columns: 1fr; gap: var(--s-6); }
+    .aim__copy { order: 1; grid-template-rows: auto auto; gap: var(--s-4); align-self: auto; }
+    .aim__phone { order: 2; width: min(320px, 78%); }
+    .aim__foot { position: static; margin-top: var(--s-5); }
+    .aim__title { max-width: none; }
+    .aim__scrim {
+      background: linear-gradient(180deg, rgb(38 40 44 / 0.82) 0%, rgb(38 40 44 / 0.72) 40%, rgb(38 40 44 / 0.62) 72%, rgb(38 40 44 / 0.78) 100%);
+    }
+  }
+
+  /* No JS: every line is visible in order, stacked, and the poster stands in for the video. */
+  :global(html:not(.js)) .aim__line { opacity: 1; transform: none; position: relative; grid-area: auto; pointer-events: auto; }
+  :global(html:not(.js)) .aim__lines { gap: var(--s-5); }
+  :global(html:not(.js)) .aim__credit { opacity: 1; }
+  :global(html:not(.js)) .aim__toggle { display: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .aim__ground, .aim__line, .aim__credit { transition: none; }
+  }
+</style>
+
+<script>
+  import '../scripts/ai-immersion';
+</script>

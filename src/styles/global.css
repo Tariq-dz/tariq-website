@@ -1,0 +1,140 @@
+/* Tariq v2 — base, layout primitives and shared components. Tokens live in tokens.css. */
+
+*, *::before, *::after { box-sizing: border-box; }
+html { color-scheme: light; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; -webkit-tap-highlight-color: rgb(200 160 96 / 0.25); scroll-padding-top: calc(var(--header-h) + var(--s-4)); }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+body {
+  margin: 0;
+  background: var(--c-paper);
+  color: var(--c-graphite);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  font-weight: 420;
+  font-stretch: 100%;
+  line-height: 1.55;
+  font-kerning: normal;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+[hidden] { display: none !important; }
+img, video, svg, picture { display: block; max-width: 100%; }
+img, video { height: auto; }
+button, input, select, textarea { font: inherit; color: inherit; }
+a, button, input, select, textarea, label { touch-action: manipulation; }
+a { color: inherit; }
+h1, h2, h3, h4, p, figure, blockquote, ul, ol, dl, dd { margin: 0; }
+ul[role='list'], ol[role='list'] { list-style: none; padding: 0; }
+:where([lang='ar'], .ar) { font-family: var(--font-arabic); font-stretch: 100%; letter-spacing: 0; }
+
+/* ---------- type ---------- */
+.display, .h2, .h3 {
+  font-weight: 620;
+  font-stretch: 112%;
+  letter-spacing: -0.022em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+.display { font-size: var(--fs-display); letter-spacing: -0.03em; line-height: 0.98; }
+.h2 { font-size: var(--fs-h2); line-height: 1.04; }
+.h3 { font-size: var(--fs-h3); font-weight: 600; font-stretch: 106%; letter-spacing: -0.012em; line-height: 1.15; }
+.lead { font-size: var(--fs-lead); line-height: 1.45; color: var(--fg-muted); max-width: 38ch; }
+.body { max-width: 62ch; color: var(--fg-muted); }
+.muted { color: var(--fg-muted); }
+.num { font-variant-numeric: tabular-nums; }
+.label { font-size: var(--fs-small); font-weight: 560; color: var(--accent-text); letter-spacing: 0.005em; }
+.fine { font-size: var(--fs-fine); line-height: 1.5; color: var(--fg-muted); }
+.wordmark { font-weight: 640; font-stretch: 125%; letter-spacing: 0.32em; text-transform: uppercase; }
+
+/* ---------- below-the-fold sections: layout and paint are skipped until they approach the viewport ---------- */
+/* Never on a section that GSAP measures (the desktop ride, the terminal reveal) or that owns a modal dialog. */
+.cv { content-visibility: auto; contain-intrinsic-size: auto var(--cv-size, 900px); }
+/* containers that receive focus from an in-page link (skip link, #waitlist) don't draw a ring around the whole region */
+:where(main, section, [id])[tabindex='-1']:focus { outline: none; }
+
+/* ---------- surfaces paint themselves ---------- */
+.surface-slate, .surface-graphite { background: var(--bg); color: var(--fg); }
+
+/* ---------- layout primitives ---------- */
+.container { width: 100%; max-width: calc(var(--maxw) + 2 * var(--gutter)); margin-inline: auto; padding-inline: var(--gutter); }
+.section { background: var(--bg); color: var(--fg); padding-block: var(--section-pad); position: relative; }
+.section--tight { padding-block: calc(var(--section-pad) * 0.6); }
+.section--flush-top { padding-top: 0; }
+.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--s-5); row-gap: var(--s-7); }
+.stack > * + * { margin-top: var(--flow, var(--s-5)); }
+.stack-sm { --flow: var(--s-3); }
+.stack-lg { --flow: var(--s-7); }
+@media (max-width: 899px) { .grid { grid-template-columns: minmax(0, 1fr); } .grid > * { grid-column: 1 / -1 !important; } }
+
+/* ---------- buttons & links ---------- */
+.btn {
+  --_bg: transparent; --_fg: var(--fg); --_bd: var(--btn-secondary-border);
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2);
+  min-height: var(--btn-h); padding: var(--btn-pad);
+  border-radius: var(--r-pill); border: 1.5px solid var(--_bd);
+  background: var(--_bg); color: var(--_fg);
+  font-size: 1rem; font-weight: 580; font-stretch: 104%; letter-spacing: 0.005em; line-height: 1; white-space: nowrap;
+  text-decoration: none; cursor: pointer;
+  transition: background-color var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out), transform var(--dur-1) var(--ease-out), color var(--dur-1);
+}
+.btn:hover { --_bd: var(--fg); }
+.btn:active { transform: translateY(1px) scale(0.985); }
+.btn--primary { --_bg: var(--btn-primary-bg); --_fg: var(--btn-primary-fg); --_bd: var(--btn-primary-bg); }
+.btn--primary:hover { --_bg: var(--btn-primary-bg-hover); --_bd: var(--btn-primary-bg-hover); }
+.btn--sm { min-height: 40px; padding: 0 var(--s-4); font-size: 0.9375rem; }
+.btn svg { width: 18px; height: 18px; flex: none; }
+
+.link-arrow {
+  display: inline-flex; align-items: center; gap: 0.45em;
+  font-weight: 580; font-stretch: 104%; text-decoration: none; color: var(--fg);
+  padding-block: var(--s-2);
+  background: linear-gradient(currentColor, currentColor) 0 calc(100% - 4px) / 0% 1.5px no-repeat;
+  transition: background-size var(--dur-2) var(--ease-out);
+}
+.link-arrow:hover { background-size: calc(100% - 1.3em) 1.5px; }
+.link-arrow svg { width: 1em; height: 1em; transition: transform var(--dur-1) var(--ease-out); }
+.link-arrow:hover svg { transform: translateX(3px); }
+
+:focus-visible { outline: 2.5px solid var(--focus); outline-offset: 3px; border-radius: 6px; }
+.btn:focus-visible { border-radius: var(--r-pill); }
+
+.skip-link { position: absolute; left: var(--s-4); top: -100px; z-index: calc(var(--z-header) + 1); background: var(--c-graphite); color: var(--c-cream); padding: var(--s-3) var(--s-4); border-radius: var(--r-sm); }
+.skip-link:focus { top: var(--s-4); }
+.sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* ---------- small print ---------- */
+/* flagged by four critics in a row: full foreground colour at 85%, a touch heavier, on every surface */
+.small-print { font-size: var(--fs-small); font-weight: 480; line-height: 1.5; color: color-mix(in srgb, var(--fg) 85%, transparent); max-width: 70ch; }
+
+/* ---------- reveal (one pattern; JS adds .js; content is visible without JS or with reduced motion) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] {
+    opacity: 0; transform: translateY(16px);
+    transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+    transition-delay: var(--reveal-delay, 0s);
+  }
+  .js [data-reveal].is-in { opacity: 1; transform: none; }
+}
+
+/* ---------- renders on slate: edges fade into the stage, so no encoding seam can show ---------- */
+.render-fade {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent), linear-gradient(transparent, #000 12%, #000 88%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent), linear-gradient(transparent, #000 12%, #000 88%, transparent);
+  mask-composite: intersect;
+}
+.render-fade-rect {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent), linear-gradient(transparent, #000 5%, #000 95%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent), linear-gradient(transparent, #000 5%, #000 95%, transparent);
+  mask-composite: intersect;
+}
+
+/* close-up crops that are product edge to edge (no slate margin to fade into) */
+.render-tile { border-radius: var(--r-panel); }
+
+/* ---------- text utilities ---------- */
+.nowrap { white-space: nowrap; }
+
+/* ---------- media utilities ---------- */
+.media-cover { width: 100%; height: 100%; object-fit: cover; }
