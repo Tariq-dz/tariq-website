@@ -31,7 +31,7 @@ const heroFacePreload = await getImage({ src: heroFace, widths: [480, 767] });
         <p class="lead">Tariq is the digital layer that makes public transit navigable for riders and accountable for operators.</p>
         <div class="hero__cta">
           <a class="btn btn--primary" href="#waitlist">Join the waitlist</a>
-          <a class="btn" href="/operators">For operators</a>
+          <a class="btn" href={`${import.meta.env.BASE_URL}operators`}>For operators</a>
         </div>
       </div>
       <div class="hero__visual">
@@ -73,7 +73,7 @@ const heroFacePreload = await getImage({ src: heroFace, widths: [480, 767] });
             <p class="body">Your city guide: places near you, a plan for your day with reminders, and help filing a complaint.</p>
           </li>
         </ul>
-        <a class="link-arrow" href="/app" data-reveal>See the app <Fragment set:html={arrow} /></a>
+        <a class="link-arrow" href={`${import.meta.env.BASE_URL}app`} data-reveal>See the app <Fragment set:html={arrow} /></a>
       </div>
       <div class="app__phones" data-reveal>
         <PhoneFrame still={topupStill} label="A wallet top-up confirmed: plus 1 000 DA, new balance 15 340 DA" class="app__phone app__phone--back" />

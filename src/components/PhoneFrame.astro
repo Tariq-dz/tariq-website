@@ -20,7 +20,7 @@ const { clip, still, label, eager = false, sizes = '(max-width: 860px) 70vw, 340
 <figure class:list={['phone', cls]}>
   <div class="phone__screen">
     {clip ? (
-      <img class="phone__media phone__poster" src={`/media/clips/${clip}.webp`} alt="" width="434" height="888" loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : undefined} decoding="async" />
+      <img class="phone__media phone__poster" src={`${import.meta.env.BASE_URL}media/clips/${clip}.webp`} alt="" width="434" height="888" loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : undefined} decoding="async" />
       <video
         class="phone__media phone__video"
         muted
@@ -31,8 +31,8 @@ const { clip, still, label, eager = false, sizes = '(max-width: 860px) 70vw, 340
         aria-label={label}
         data-autoplay={autoplay ? '' : undefined}
       >
-        <source src={`/media/clips/${clip}.webm`} type="video/webm" />
-        <source src={`/media/clips/${clip}.mp4`} type="video/mp4" />
+        <source src={`${import.meta.env.BASE_URL}media/clips/${clip}.webm`} type="video/webm" />
+        <source src={`${import.meta.env.BASE_URL}media/clips/${clip}.mp4`} type="video/mp4" />
       </video>
     ) : still ? (
       <Image src={still} alt={label} widths={[320, 480, 720]} sizes={sizes} class="phone__media" loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : undefined} />

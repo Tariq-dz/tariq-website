@@ -12,7 +12,7 @@ import TerminalFace from '../components/TerminalFace.astro';
       <h1 class="display">This page is not on the route.</h1>
       <p class="lead">The address may be mistyped, or the page has moved. These are the pages that exist:</p>
       <ul class="nf__links" role="list">
-        <li><a class="link-arrow" href="/">Home <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></a></li>
+        <li><a class="link-arrow" href={import.meta.env.BASE_URL}>Home <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></a></li>
         {NAV.map((n) => (
           <li><a class="link-arrow" href={n.href}>{n.label} <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></a></li>
         ))}

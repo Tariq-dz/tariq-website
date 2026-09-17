@@ -17,9 +17,9 @@ import { NAV, SITE, SMALL_PRINT } from '../config';
 
     <nav class="site-footer__nav" aria-label="Footer">
       <ul role="list">
-        <li><a href="/">Home</a></li>
+        <li><a href={import.meta.env.BASE_URL}>Home</a></li>
         {NAV.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
-        <li><a href="/#waitlist">Join the waitlist</a></li>
+        <li><a href={`${import.meta.env.BASE_URL}#waitlist`}>Join the waitlist</a></li>
       </ul>
     </nav>
 

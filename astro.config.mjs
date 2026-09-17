@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 // Static marketing site. `site` is a placeholder domain until the founder picks one (HANDOFF TODO).
 export default defineConfig({
   site: 'https://tariq-dz.github.io',
-  base: '/tariq-website',
+  base: '/tariq-website/',
   output: 'static',
   trailingSlash: 'ignore',
   build: { format: 'directory', inlineStylesheets: 'always' },
