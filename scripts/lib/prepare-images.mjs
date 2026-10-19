@@ -26,7 +26,7 @@ for (const d of ['src/assets/terminal', 'src/assets/screens', 'src/assets/app', 
 
 // Bounding box of the terminal body: rows count only when more than 60 pixels differ from the slate, so
 // the thin mounting pole (about 30 px wide) does not stretch the box to the frame edges.
-async function productBox(file) {
+async function productBox(file, minRow = 60) {
   const { data, info } = await sharp(file).removeAlpha().raw().toBuffer({ resolveWithObject: true });
   const W = info.width, H = info.height;
   const diff = (i) => Math.abs(data[i] - SLATE.r) + Math.abs(data[i + 1] - SLATE.g) + Math.abs(data[i + 2] - SLATE.b) > 24;
@@ -34,7 +34,7 @@ async function productBox(file) {
   for (let y = 0; y < H; y++) {
     let n = 0, lo = W, hi = 0;
     for (let x = 0; x < W; x++) if (diff((y * W + x) * 3)) { n++; if (x < lo) lo = x; if (x > hi) hi = x; }
-    if (n > 60) { if (y < y0) y0 = y; y1 = y; if (lo < x0) x0 = lo; if (hi > x1) x1 = hi; }
+    if (n > minRow) { if (y < y0) y0 = y; y1 = y; if (lo < x0) x0 = lo; if (hi > x1) x1 = hi; }
   }
   return { x0, y0, x1, y1, w: W, h: H };
 }
@@ -77,6 +77,22 @@ const face = {
   },
 };
 await sharp(join(TERM, 'renders', 'front.png')).removeAlpha().extract(faceCrop).png().toFile('src/assets/terminal/face.png');
+
+// ---- the handheld (/terminal "Two forms" and "Made to be held") -----------------------------------
+// Stills of two moments of the two-forms film, rendered like the studio stills so their ground is this slate
+// (tariq-hardware models/handheld/film_both.py --still): the hero pair at 6.4 s, the handheld after a tap at 17.4 s.
+// Neither has a pole, so every row counts: a lower threshold than the fixed terminal's 60 px.
+const HH = join(ROOT, 'tariq-hardware/models/handheld/renders');
+// Their ground is the slate plus a level or two of render noise, which reads as a faint box on the flat page: pixels
+// within 6 levels (summed over RGB) of the slate are set to it exactly. The products never come that close to it.
+for (const [src, out, pad, aspect] of [['web_pair.png', 'forms-pair', 0.05, 1.7], ['web_handheld_ok.png', 'handheld-ok', 0.12, 0.8]]) {
+  const b = await productBox(join(HH, src), 4);
+  const { data, info } = await sharp(join(HH, src)).removeAlpha().extract(padBox(b, pad, aspect)).raw().toBuffer({ resolveWithObject: true });
+  for (let i = 0; i < data.length; i += 3) {
+    if (Math.abs(data[i] - SLATE.r) + Math.abs(data[i + 1] - SLATE.g) + Math.abs(data[i + 2] - SLATE.b) <= 6) { data[i] = SLATE.r; data[i + 1] = SLATE.g; data[i + 2] = SLATE.b; }
+  }
+  await sharp(data, { raw: info }).png().toFile(`src/assets/terminal/${out}.png`);
+}
 
 // ---- screens -----------------------------------------------------------------------------------
 for (const n of ['idle', 'dest', 'pay', 'tap', 'ok', 'ticket40']) copyFileSync(join(TERM, 'screens', `${n}.png`), `src/assets/screens/${n}.png`);
