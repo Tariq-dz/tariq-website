@@ -1,10 +1,12 @@
 // Pinned, scrubbed crossfade through the terminal's angles with the film's approved lines.
-// GSAP is loaded on demand, only when the query below matches, so phones and reduced-motion visitors never download it.
-const QUERY = '(min-width: 1024px) and (prefers-reduced-motion: no-preference)';
+// Runs at every width (phones pin too); GSAP is loaded on demand, so reduced-motion visitors never download it.
+const QUERY = '(prefers-reduced-motion: no-preference)';
 
 async function start() {
   const [{ gsap }, { ScrollTrigger }] = await Promise.all([import('gsap'), import('gsap/ScrollTrigger')]);
   gsap.registerPlugin(ScrollTrigger);
+  // the mobile browser bar showing/hiding must not re-measure the pin mid-scroll
+  ScrollTrigger.config({ ignoreMobileResize: true });
   document.querySelectorAll<HTMLElement>('[data-treveal]').forEach((root) => {
   const pin = root.querySelector<HTMLElement>('[data-treveal-pin]');
   const frames = gsap.utils.toArray<HTMLElement>('[data-frame]', root);
@@ -12,7 +14,7 @@ async function start() {
   if (!pin || frames.length < 2) return;
 
   const mm = gsap.matchMedia();
-  mm.add('(min-width: 1024px) and (prefers-reduced-motion: no-preference)', () => {
+  mm.add(QUERY, () => {
     const header = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 68;
     gsap.set(frames, { xPercent: -50, yPercent: -50, x: 0, y: 0 });
     gsap.set(frames.slice(1), { opacity: 0, scale: 1.04 });
@@ -25,6 +27,8 @@ async function start() {
         start: `top ${header}px`,
         end: () => `+=${(frames.length - 1) * window.innerHeight * 0.85}`,
         pin: true,
+        pinSpacing: true,
+        anticipatePin: 1,
         scrub: 0.6,
         invalidateOnRefresh: true,
       },

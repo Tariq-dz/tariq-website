@@ -1,6 +1,6 @@
 ---
-// Signature moment 2: the terminal reveal. ≥1024 px with motion: a pinned slate stage whose angles and
-// approved lines are scrubbed by scroll (src/scripts/terminal-reveal.ts). Otherwise: a stacked sequence.
+// Signature moment 2: the terminal reveal. With motion allowed (phones included): a pinned slate stage whose angles and
+// approved lines are scrubbed by scroll (src/scripts/terminal-reveal.ts). Reduced motion or no JS: a stacked sequence.
 import { Image } from 'astro:assets';
 import persp from '../assets/terminal/persp-tight.png';
 import face from '../assets/terminal/face.png';
@@ -36,7 +36,7 @@ const frames = [
 <style>
   .treveal { position: relative; }
   .treveal__pin { position: relative; }
-  /* stacked default (mobile, reduced motion, no JS): each line followed by its frame */
+  /* stacked default (reduced motion, no JS): each line followed by its frame */
   .treveal__lines { display: contents; }
   .treveal__frames { display: contents; }
   .treveal__pin { display: flex; flex-direction: column; padding: var(--s-8) var(--gutter) var(--s-7); gap: 0; }
@@ -52,7 +52,7 @@ const frames = [
   .treveal__fine { order: 10; }
   .treveal .display { font-size: clamp(2.5rem, 1.6rem + 3.6vw, 4.75rem); }
 
-  @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  @media (prefers-reduced-motion: no-preference) {
     :global(.js) .treveal__pin {
       display: block; height: calc(100dvh - var(--header-h)); min-height: 620px; padding: 0; overflow: hidden;
     }
@@ -70,6 +70,19 @@ const frames = [
     :global(.js) .treveal__frame + .treveal__frame { opacity: 0; }
     :global(.js) .treveal__frame--wide { height: 92%; width: auto; max-height: 700px; }
     :global(.js) .treveal__fine { position: absolute; left: 0; right: 0; bottom: 14px; z-index: 2; }
+  }
+  /* phones and tablets: svh so the browser bar never resizes the pinned stage; smaller type and a taller lines block,
+     since the lines wrap to more rows on a narrow screen */
+  @media (max-width: 1023px) and (prefers-reduced-motion: no-preference) {
+    :global(.js) .treveal__pin { height: calc(100svh - var(--header-h)); min-height: 520px; }
+    :global(.js) .treveal__lines { top: clamp(16px, 3.5vh, 40px); }
+    :global(.js) .treveal__line { width: calc(100vw - 2 * var(--gutter)); gap: var(--s-2); }
+    :global(.js) .treveal .display, :global(.js) .treveal .h2 { font-size: clamp(1.625rem, 1rem + 3.4vw, 2.5rem); }
+    :global(.js) .treveal .lead { font-size: clamp(0.9375rem, 0.85rem + 0.6vw, 1.125rem); }
+    :global(.js) .treveal__frames { top: clamp(190px, 33svh, 300px); bottom: 40px; }
+    :global(.js) .treveal__frame { top: 50%; height: 100%; max-width: 92vw; }
+    :global(.js) .treveal__frame--wide { height: auto; width: 92vw; max-height: 100%; }
+    :global(.js) .treveal__fine { padding-inline: var(--gutter); font-size: 0.75rem; }
   }
 </style>
 

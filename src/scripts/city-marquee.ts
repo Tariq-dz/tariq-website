@@ -1,13 +1,14 @@
-// Cities marquee (adapted from the founder's reference). Drift only with a fine pointer and motion allowed. The pointer steers it like the
+// Cities marquee (adapted from the founder's reference). Drifts whenever motion is allowed, on touch too. The pointer steers it like the
 // reference: a centre zone holds the strip still so a card can be picked, and the closer the pointer gets to either edge, the faster the strip
 // runs that way (up to MAX_SPEED); crossing to the other side reverses it smoothly. It also stops for keyboard focus, an open sign-up panel
-// and when off-screen. Touch and reduced motion keep the native swipe strip.
+// and when off-screen. On touch a finger drags the strip and flings it, then the drift picks up again; an opened card holds it still.
+// Reduced motion keeps the native swipe strip.
 // Cloned cards (the loop) are live copies: hovering or clicking one acts on its city exactly like the original, but clones stay out of the
 // accessibility tree and the tab order (aria-hidden, tabindex -1). The card's action ("Join the waitlist", "Notify me" or "Stay tuned",
 // or a click anywhere on a card; a first tap on touch opens the card) opens the panel for that city, tinted with its accent.
 type Scene = { id: string; en: string; accent: string; title: string };
 
-const DRIFT_QUERY = '(prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine)';
+const DRIFT_QUERY = '(prefers-reduced-motion: no-preference)';
 const IDLE_SPEED = 0.55; // px per 60 Hz frame while the pointer is away from the strip
 const MAX_SPEED = 7;     // px per 60 Hz frame with the pointer at the very edge
 const DEAD_ZONE = 0.22;  // share of the half-width around the centre that holds the strip still
@@ -21,7 +22,7 @@ function init(root: HTMLElement) {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   const coarse = window.matchMedia('(hover: none), (pointer: coarse)');
 
-  const state = { focused: false, panelOpen: false, visible: true };
+  const state = { focused: false, panelOpen: false, visible: true, dragging: false };
   let lastTrigger: HTMLElement | null = null;
   let onStateChange = () => {};
 
@@ -83,7 +84,7 @@ function init(root: HTMLElement) {
     openPanel(city, originalJoin(city) || card.querySelector<HTMLElement>('[data-ccard-join]'));
   });
 
-  // ---------- drift (fine pointer, motion allowed) ----------
+  // ---------- drift (motion allowed) ----------
   if (!window.matchMedia(DRIFT_QUERY).matches) return;
 
   const originals = [...track.children] as HTMLElement[];
@@ -115,8 +116,16 @@ function init(root: HTMLElement) {
   const apply = () => { track.style.transform = `translate3d(${offset.toFixed(2)}px, 0, 0)`; };
   apply();
 
-  const stopped = () => state.focused || state.panelOpen;
+  const wrap = () => {
+    const before = offset;
+    while (offset <= -setWidth * 2) offset += setWidth;
+    while (offset > -setWidth) offset -= setWidth;
+    return offset - before;
+  };
+  // a card opened by a first tap on touch holds the strip so it can be read
+  const stopped = () => state.focused || state.panelOpen || (coarse.matches && !!track.querySelector('.ccard.is-open'));
   const tick = (now: number) => {
+    if (state.dragging) { running = false; last = 0; return; }
     const dt = last ? Math.min(3, (now - last) / 16.667) : 1; // frame-rate independent
     last = now;
     const goal = stopped() ? 0 : target;
@@ -125,10 +134,7 @@ function init(root: HTMLElement) {
     speed += (goal - speed) * k;
     if (goal === 0 && Math.abs(speed) < 0.03) speed = 0;
     offset += speed * dt;
-    if (!state.focused) {
-      while (offset <= -setWidth * 2) offset += setWidth;
-      while (offset > -setWidth) offset -= setWidth;
-    }
+    if (!state.focused) wrap();
     apply();
     if (state.visible && (speed !== 0 || goal !== 0)) requestAnimationFrame(tick);
     else { running = false; last = 0; }
@@ -159,6 +165,63 @@ function init(root: HTMLElement) {
     target = speed > 0.05 ? IDLE_SPEED : -IDLE_SPEED; // keep drifting the way it was last steered
     kick();
   });
+
+  // touch: the finger moves the strip; vertical swipes stay with the page (touch-action: pan-y)
+  let startX = 0, startY = 0, startOffset = 0, lastX = 0, lastT = 0, fling = 0, suppressClick = false;
+  let pointerId = -1;
+  viewport.addEventListener('pointerdown', (e) => {
+    if (e.pointerType === 'mouse') return;
+    pointerId = e.pointerId;
+    startX = lastX = e.clientX;
+    startY = e.clientY;
+    startOffset = offset;
+    lastT = e.timeStamp;
+    fling = 0;
+  });
+  viewport.addEventListener('pointermove', (e) => {
+    if (e.pointerType === 'mouse' || e.pointerId !== pointerId) return;
+    const dx = e.clientX - startX;
+    if (!state.dragging) {
+      if (Math.abs(dx) < 8 || Math.abs(dx) < Math.abs(e.clientY - startY)) return;
+      state.dragging = true;
+      speed = 0;
+      startOffset = offset - dx;
+      track.querySelectorAll('.ccard.is-open').forEach((c) => c.classList.remove('is-open'));
+      viewport.setPointerCapture(e.pointerId);
+    }
+    offset = startOffset + dx;
+    startOffset += wrap();
+    apply();
+    const dt = Math.max(1, e.timeStamp - lastT);
+    fling = fling * 0.4 + ((e.clientX - lastX) / dt) * 16.667 * 0.6; // px per 60 Hz frame, smoothed
+    lastX = e.clientX;
+    lastT = e.timeStamp;
+  });
+  const release = (e: PointerEvent) => {
+    if (e.pointerId !== pointerId) return;
+    pointerId = -1;
+    if (!state.dragging) return;
+    state.dragging = false;
+    suppressClick = true;
+    window.setTimeout(() => { suppressClick = false; }, 0);
+    // a stale finger (held still before lifting) doesn't fling
+    if (e.timeStamp - lastT > 80) fling = 0;
+    speed = Math.max(-40, Math.min(40, fling));
+    target = speed > 0.05 ? IDLE_SPEED : -IDLE_SPEED;
+    kick();
+  };
+  viewport.addEventListener('pointerup', release);
+  viewport.addEventListener('pointercancel', release);
+  // a tap outside the strip closes an opened card and lets the drift resume
+  document.addEventListener('pointerdown', (e) => {
+    if (e.pointerType === 'mouse' || viewport.contains(e.target as Node)) return;
+    const open = track.querySelectorAll('.ccard.is-open');
+    if (!open.length) return;
+    open.forEach((c) => c.classList.remove('is-open'));
+    kick();
+  });
+  // the click that ends a drag doesn't open a card
+  viewport.addEventListener('click', (e) => { if (suppressClick) { e.preventDefault(); e.stopPropagation(); suppressClick = false; } }, true);
 
   // keyboard: stop, and bring the focused original fully into view
   track.addEventListener('focusin', (e) => {
