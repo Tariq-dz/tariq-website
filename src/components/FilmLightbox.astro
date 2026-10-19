@@ -1,20 +1,22 @@
 ---
-// The terminal film in a native <dialog>, shown at no more than its native 854 px width.
+// A film in a native <dialog>, shown at no more than its native width. Defaults are the terminal film,
+// so `<FilmLightbox />` is unchanged; /terminal passes the two-forms and handheld films too.
 import { SMALL_PRINT } from '../config';
-interface Props { id?: string }
-const { id = 'film' } = Astro.props;
+interface Props { id?: string; title?: string; film?: string; width?: number; height?: number }
+const { id = 'film', title = 'Meet the Tariq terminal', film = 'tariq-terminal-film', width = 854, height = 480 } = Astro.props;
+const media = `${import.meta.env.BASE_URL}media/film/${film}`;
 ---
 
-<dialog class="lightbox" id={id} aria-label="The Tariq terminal film" data-terminal-media>
+<dialog class="lightbox" id={id} aria-label={`Film: ${title}`} data-terminal-media style={`--film-w:${width}px;--film-ar:${width} / ${height}`}>
   <div class="lightbox__inner surface-graphite">
     <div class="lightbox__bar">
-      <p class="lightbox__title">Meet the Tariq terminal</p>
+      <p class="lightbox__title">{title}</p>
       <button class="lightbox__close" type="button" data-lightbox-close>
         <span class="sr-only">Close the film</span>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg>
       </button>
     </div>
-    <video class="lightbox__video" controls playsinline preload="none" width="854" height="480" data-poster={`${import.meta.env.BASE_URL}media/film/tariq-terminal-film.webp`} data-src={`${import.meta.env.BASE_URL}media/film/tariq-terminal-film.mp4`}>
+    <video class="lightbox__video" controls playsinline preload="none" width={width} height={height} data-poster={`${media}.webp`} data-src={`${media}.mp4`}>
       Your browser cannot play this film.
     </video>
     <p class="small-print" data-small-print>{SMALL_PRINT}</p>
@@ -22,7 +24,7 @@ const { id = 'film' } = Astro.props;
 </dialog>
 
 <style>
-  .lightbox { overscroll-behavior: contain; padding: 0; border: 0; background: transparent; max-width: min(854px, calc(100vw - 2 * var(--gutter))); width: 100%; color: var(--c-cream); }
+  .lightbox { overscroll-behavior: contain; padding: 0; border: 0; background: transparent; max-width: min(var(--film-w), calc(100vw - 2 * var(--gutter))); width: 100%; color: var(--c-cream); }
   .lightbox::backdrop { background: rgb(20 21 23 / 0.82); }
   .lightbox__inner { background: var(--bg); color: var(--fg); border-radius: var(--r-panel); overflow: hidden; padding-bottom: var(--s-4); }
   .lightbox__bar { display: flex; align-items: center; justify-content: space-between; padding: var(--s-2) var(--s-2) var(--s-2) var(--s-5); }
@@ -30,7 +32,7 @@ const { id = 'film' } = Astro.props;
   .lightbox__close { display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: var(--r-pill); background: transparent; color: inherit; cursor: pointer; }
   .lightbox__close:hover { background: rgb(255 255 255 / 0.08); }
   .lightbox__close svg { width: 22px; height: 22px; }
-  .lightbox__video { width: 100%; height: auto; aspect-ratio: 854 / 480; background: #1b1c1f; }
+  .lightbox__video { width: 100%; height: auto; aspect-ratio: var(--film-ar); background: #1b1c1f; }
   .lightbox .small-print { padding: var(--s-3) var(--s-5) 0; }
   @media (prefers-reduced-motion: no-preference) {
     .lightbox[open] { animation: lb-in var(--dur-2) var(--ease-out); }

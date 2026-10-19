@@ -61,7 +61,8 @@ const RAW_BANNED = [
 
 const SMALL_PRINT = 'Renders of a design in development. Example fares.';
 // Anything that shows a terminal render, terminal screen or the film.
-const TERMINAL_MEDIA = /(\/terminal\/|\/screens\/|terminal-film|data-terminal-media|\/(persp|front|side|rear|service|reload|bottom|face|idle|dest|pay|tap|ok|ticket|ticket40)(-tight)?\.[\w-]+\.(webp|avif|png|jpe?g))/;
+// The handheld's stills (forms-pair, handheld-ok) and its two films count too.
+const TERMINAL_MEDIA = /(\/terminal\/|\/screens\/|(terminal|handheld|forms)-film|data-terminal-media|\/(persp|front|side|rear|service|reload|bottom|face|idle|dest|pay|tap|ok|ticket|ticket40|forms-pair|handheld-ok)(-tight)?\.[\w-]+\.(webp|avif|png|jpe?g))/;
 
 function walk(dir) {
   return readdirSync(dir).flatMap((f) => {

@@ -105,7 +105,7 @@ the real screens placed on the measured glass, and the printed ticket rising fro
 tagged "Example") · RecordFlow (tap → signed record → operator view) · RideSequence (signature 1) · TerminalReveal
 (signature 2) · ScreenFlow (click through the real screens) · ModesStrip (typographic stations on the route line) · LeadForm
 (waitlist / contact: labels above, inline errors, honest success state, `FORM_ENDPOINT`) · FilmLightbox (native `<dialog>`,
-film at ≤ native width).
+film at ≤ native width; `id`, `title`, `film`, `width`, `height` props, defaulting to the terminal film).
 
 ## Page outlines (one purpose per section)
 **Home `/`**
@@ -122,8 +122,21 @@ statements under "For riders" / "For operators" over a rule, closing on "A rider
 that connects them." **D-100 rewrote those two statements from problems into outcomes** — stating the reader's pain back to
 them read like a pitch deck rather than a company site. The cities merged into the waitlist block in cycle 3.)
 
-**Terminal `/terminal`**: reveal *(signature 2)* → step through a ride (click-through) → "Sealed. Secure. Built to be trusted." with
-the details in three labelled groups (On its face / Inside / On the vehicle) → film → installed and maintained by Tariq → for operators.
+**Terminal `/terminal`**: reveal *(signature 2)* → step through a ride (click-through; its lead says the handheld shows the same screens) → "Sealed. Secure. Built to be trusted." with
+the details in three labelled groups (On its face / Inside / On the vehicle) → **two forms** → **the handheld** → **the films** → installed and maintained by Tariq → for operators.
+
+*The handheld (D-104).* The terminal comes in two forms, and an operator chooses one. The page keeps the mounted terminal's story intact and then
+cuts from paper to slate into three blocks that run as one dark chapter:
+1. **"One terminal. Two forms."** One composed frame of both (the two-forms film's hero pair), never a spec table: the founder rejected a
+   side-by-side film as reading like a comparison, so the forms share a frame instead of facing off. Each form is named directly under itself
+   ("Mounted" / "In hand", a gold rule over each), on columns measured from the image (19 / 37.5 / 24.5 / 19 % of its width), so the labels
+   cannot drift off their device. Below 900 px they stack.
+2. **"Made to be held."** The handheld *in use* (green OK screen, ticket out), not at rest: the page's rule is that a render explains the
+   product before the copy does. Four details in a 2×2 grid, each traced to the hardware repo. Nothing about power or battery
+   (the hardware principle and `claims-check`'s battery pattern), nothing that reads as one vehicle type.
+3. **The films.** One section for all three, at native size: the two-forms film large (it is the only one that shows both), the two single-form
+   films side by side under it. Each card is one button (poster, play mark, title, length), and each opens its own `FilmLightbox`. No
+   film CTA inside block 2, so no button repeats one a few hundred pixels below it.
 
 **App `/app`**: hero clip → plan across modes → departures and map → DZD wallet → trips, receipts,
 rating, complaints → notifications → **Tariq AI (signature 3: six beats, the phone constant, the city filling the section)** → English and Arabic (a native-size close-up of the app's real

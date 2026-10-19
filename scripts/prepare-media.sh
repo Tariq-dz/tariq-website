@@ -13,6 +13,7 @@ ROOT=${TARIQ_ROOT:-$HOME/projects/Tariq-dz}
 DEMO="$ROOT/TARIQ_AI_Demo_2min.mp4"
 TERM_DIR="$ROOT/tariq-hardware/models/ourterminal"
 FILM="$TERM_DIR/film/tariq-terminal-film.mp4"
+HH_FILM_DIR="$ROOT/tariq-hardware/models/handheld/film"   # the handheld's film (film1) and the two-forms film (film2)
 CLIPS=public/media/clips
 FILMOUT=public/media/film
 CHECK=.shots/media-check
@@ -108,6 +109,13 @@ if [ "$ONLY" = all ] || [ "$ONLY" = film ]; then
   ffmpeg -nostdin -v error -y -i "$FILM" -an -c:v libx264 -preset slow -crf 24 -pix_fmt yuv420p -movflags +faststart "$FILMOUT/tariq-terminal-film.mp4"
   ffmpeg -nostdin -v error -y -ss 63 -i "$FILM" -frames:v 1 -c:v libwebp -quality 82 "$FILMOUT/tariq-terminal-film.webp"
   printf "   film mp4 %s KB\n" $(( $(stat -c %s "$FILMOUT/tariq-terminal-film.mp4") / 1024 ))
+  # name | source | poster time (s): a frame with the whole product in it and no caption burned in
+  echo "tariq-handheld-film|$HH_FILM_DIR/film1.mp4|4.3
+tariq-forms-film|$HH_FILM_DIR/film2.mp4|7.7" | while IFS='|' read -r name src poster; do
+    ffmpeg -nostdin -v error -y -i "$src" -an -c:v libx264 -preset slow -crf 24 -pix_fmt yuv420p -movflags +faststart "$FILMOUT/$name.mp4"
+    ffmpeg -nostdin -v error -y -ss "$poster" -i "$src" -frames:v 1 -c:v libwebp -quality 82 "$FILMOUT/$name.webp"
+    printf "   %s mp4 %s KB\n" "$name" $(( $(stat -c %s "$FILMOUT/$name.mp4") / 1024 ))
+  done
 fi
 
 if [ "$ONLY" = all ] || [ "$ONLY" = images ]; then

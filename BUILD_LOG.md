@@ -2332,3 +2332,35 @@ accessibility, and the two point the same way.**
 
 **After:** claims-check 5/5 · full-site shoot **20/20, 0 problems** · every page height unchanged, so no gap opened
 where copy was replaced · nothing staged.
+
+
+## D-104 · The handheld on /terminal (2026-10-18)
+**Founder request:** add the handheld terminal to the website, "like real UX and UI", carefully. Done from the tariq-hardware session at
+the founder's direct request. The Notion Website task's plan was a separate tariq-website session briefed from the task page alone,
+so that hub test did not run this time.
+
+**Information architecture.** The task's decision held: a section on `/terminal`, not a new page, and the film lightbox pattern. The mounted
+terminal's story (reveal → screens → details) is untouched. The handheld comes after it as a dark chapter: two forms → the handheld → the
+films → close. Why this order: an operator reads what the terminal *is* first, then learns it comes in two forms and which form fits which
+operator ("Where no one collects fares" / "Where someone does"), then sees the second form in use, then watches.
+
+**Copy, and where it comes from.** Every line traces to tariq-hardware: the approved film scripts (`docs/2026-10-16-handheld-finish-and-films.md`)
+and the handheld architecture (operators choose one form; never deployed together → "Each operator chooses one"). Nothing about power or
+battery. "Carried down the aisle" and "crews who collect fares on board" name no vehicle type. Small edits elsewhere: ScreenFlow's lead
+adds "The handheld shows the same ones."; the home terminal teaser says "mounted on board or carried in hand"; the close says Tariq "installs the
+mounted terminal on board, or supplies the handheld to your crew, and maintains it" (a handheld is not installed); the page description names both forms.
+The two-forms film is titled "One terminal. Two forms." on the page, its opening line.
+
+**Images.** No existing handheld render suited the page, so two new stills were rendered from the two-forms film's scene (`film_both.py --still`):
+Cycles on the CPU, AgX and the studio world, so the ground is this slate, as the mounted terminal's renders are. EEVEE was avoided because it
+corrupts large frames on that machine. The pair is the film's hero frame, and the handheld is shown just after a tap. Their render noise
+(±2 levels) read as a faint box on the flat page, so `prepare-images.mjs` sets near-slate pixels to the slate exactly. After WebP, the ground
+is within 1 level of the page.
+
+**Checks.** `claims-check` now counts `forms-pair`, `handheld-ok` and the two new films as terminal media, so a page that shows them without the
+small print fails the build. Build + claims 5/5. `shoot.mjs` `/terminal` desktop and mobile and `/` desktop: 0 problems (no console error,
+no failed request, no overflow). A Playwright pass opened all three films: each loads and plays at 854 px, Escape closes it, focus
+returns to its card, and the accessible names read "Play the film: The handheld, 0:50".
+
+**Open.** The films are the 854×480 drafts (founder TODO 4). The fixed terminal's own idle screen (`face.png`) and the footer lockup still
+carry طريق, which the hardware side no longer writes. That is a separate founder question and is untouched here.

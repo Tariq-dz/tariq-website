@@ -21,7 +21,7 @@ On GitHub Pages, publish `dist/` (for example with `actions/deploy-pages`). Set 
 | Route | Purpose |
 |---|---|
 | `/` | Hero ("Plan in the app. Tap on board.", app and terminal in one frame) → the app → **the ride, end to end** (signature 1, ending on the record reaching the operator view) → the modes, set as type → terminal and film → waitlist with the three cities, and the operator entry ("Talk to us") |
-| `/terminal` | **Terminal reveal** (signature 2: angle → front face → paper reload, pinned and scrubbed) → try the real screens → "Sealed. Secure. Built to be trusted." and the details → film → installed and maintained by Tariq |
+| `/terminal` | **Terminal reveal** (signature 2: angle → front face → paper reload, pinned and scrubbed) → try the real screens → "Sealed. Secure. Built to be trusted." and the details → **"One terminal. Two forms."** (the mounted terminal and the handheld in one frame, each named under itself) → **"Made to be held."** (the handheld after a tap, four details) → **the films** (the two-forms film large, the mounted-terminal and handheld films beside each other) → installed and maintained by Tariq (D-104) |
 | `/app` | Plan across modes → departures and map → DZD wallet → trips and alerts → Tariq AI → English and Arabic → waitlist |
 | `/operators` | Signed records → the tap → record → operator diagram → the "designed to" intent → operator tools → contact form (with the service note) |
 | `/404` | Not found, with links to every page |
@@ -51,6 +51,10 @@ Clip crop for all app video: 434×888 at x 53, y 30 of the 540×960 recording (r
 | `public/media/clips/trip.*` | same | 1:55.9–1:58.5 (poster at +1.4 s, five stars) | the rating screen only (the receipt showed a demo "Duration 1 min"); ends before the home greeting returns (1:59) |
 | `public/media/film/tariq-terminal-film.mp4` | `tariq-hardware/models/ourterminal/film/tariq-terminal-film.mp4` | full 1:24, 854×480 | re-encoded (CRF 24, faststart), never upscaled, shown in a lightbox |
 | `public/media/film/tariq-terminal-film.webp` | same | frame at 1:03 | a front view with no burned caption |
+| `public/media/film/tariq-handheld-film.{mp4,webp}` | `tariq-hardware/models/handheld/film/film1.mp4` | full 0:50, 854×480; poster at 4.3 s | the handheld film (draft, approved script). Same encode as the terminal film |
+| `public/media/film/tariq-forms-film.{mp4,webp}` | `tariq-hardware/models/handheld/film/film2.mp4` | full 0:40, 854×480; poster at 7.7 s | the two-forms film "One path" (draft) |
+| `src/assets/terminal/forms-pair.png` | `tariq-hardware/models/handheld/renders/web_pair.png` (`film_both.py --still main`, t 6.4 s, 3200×2000 Cycles) | product box + 5%, 1.7:1, 1980×1165 | the two-forms film's hero pair, rendered like the studio stills so the ground is this slate. Pixels within 6 levels of the slate are set to it exactly (render noise read as a faint box) |
+| `src/assets/terminal/handheld-ok.png` | `…/renders/web_handheld_ok.png` (`--still win_hh`, t 17.4 s) | product box + 12%, 4:5, 1240×1550 | the handheld after a tap: OK screen, ticket out. Same ground treatment |
 | `src/assets/app/home.png` | demo video | 0:16.0 | greeting and avatar painted out |
 | `src/assets/app/map.png` | demo video | 0:20.4 | |
 | `src/assets/app/ai-welcome.png` | demo video | 0:36.6 | |
@@ -82,7 +86,7 @@ Astro encodes the `src/assets` images to responsive WebP at build.
    forms validate and say "Nothing was sent yet."
 2. **Domain.** Replace `https://tariq.example` in `astro.config.mjs` and `public/robots.txt`.
 3. **Analytics.** None is installed. Add a privacy-respecting one and update the privacy wording if needed.
-4. **Full-resolution terminal film.** The shipped film is the 854×480 draft.
+4. **Full-resolution films.** All three shipped films (the terminal, the handheld, the two forms) are the 854×480 drafts. The handheld and two-forms finals in full HD come from tariq-hardware once the founder approves the drafts; re-run `bash scripts/prepare-media.sh film` and raise `width`/`height` on the `FilmLightbox` calls in `terminal.astro`.
 5. **Final-quality terminal renders.** The back and bottom renders show an untextured label plate and a white slab, and the
    side view reads dark on dark, so none of them is used; the site shows the angle, front and paper-reload views only. The
    finish reads soft next to real product photography.

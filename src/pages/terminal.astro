@@ -4,6 +4,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import TerminalReveal from '../components/TerminalReveal.astro';
 import ScreenFlow from '../components/ScreenFlow.astro';
 import FilmLightbox from '../components/FilmLightbox.astro';
+import formsPair from '../assets/terminal/forms-pair.png';
+import handheldOk from '../assets/terminal/handheld-ok.png';
 import { SMALL_PRINT } from '../config';
 
 const arrow = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -26,11 +28,28 @@ const details = [
     { name: 'Paper reload without tools', note: 'The roll sits outside the sealed bay.' },
   ] },
 ];
+
+// The handheld: each line traces to the hardware repo (tariq-hardware docs/2026-10-16-handheld-finish-and-films.md and the
+// handheld film's approved script); nothing about power or battery, and nothing that reads as one vehicle type.
+const handheld = [
+  { name: 'The same 7″ display', note: 'The same screens as the mounted terminal, in the same order.' },
+  { name: 'One tap, on the head', note: 'The gold ring sits in the paper door. A card or a phone.' },
+  { name: 'A tear, not a wait', note: 'A ticket on every tap, torn off a steel bar.' },
+  { name: 'Soft in the hand', note: 'A fluted grip down each side, and a palm pad on the back.' },
+];
+
+// The films, the two-forms film first. Native size only (854×480 drafts); each opens its own lightbox.
+const films = [
+  { id: 'film-forms', file: 'tariq-forms-film', title: 'One terminal. Two forms.', length: '0:40', feature: true },
+  { id: 'film', file: 'tariq-terminal-film', title: 'The mounted terminal', length: '1:24' },
+  { id: 'film-handheld', file: 'tariq-handheld-film', title: 'The handheld', length: '0:50' },
+];
+const play = '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5.5v9l7-4.5z" fill="currentColor" /></svg>';
 ---
 
 <BaseLayout
   title="The terminal"
-  description="Meet the Tariq terminal: a vehicle-mounted NFC terminal designed in Algeria. Choose a destination, see the fare, tap once, and a ticket prints. Every tap, on the record."
+  description="Meet the Tariq terminal, mounted on board or carried in hand: an NFC terminal designed in Algeria. Choose a destination, see the fare, tap once, and a ticket prints. Every tap, on the record."
 >
   <TerminalReveal />
 
@@ -56,27 +75,71 @@ const details = [
     </div>
   </section>
 
-  <!-- Film -->
-  <section class="film surface-slate" aria-labelledby="film-title" data-terminal-media>
-    <div class="container film__grid">
-      <div class="film__copy">
-        <h2 class="h2" id="film-title" data-reveal>Watch the film.</h2>
-        <p class="lead" data-reveal>A short film: the terminal, from the first look to the last ticket.</p>
+  <!-- Two forms: the mounted terminal and the handheld, one composed frame (the two-forms film's hero pair) -->
+  <section class="forms section surface-slate" aria-labelledby="forms-title" data-terminal-media>
+    <div class="container">
+      <div class="forms__head">
+        <h2 class="h2" id="forms-title" data-reveal>One terminal. Two forms.</h2>
+        <p class="lead" data-reveal>Mounted on board, or carried down the aisle. Each operator chooses one, and the record is the same either way.</p>
       </div>
-      <button class="film__poster" type="button" data-lightbox-open="film" data-reveal>
-        <img src={`${import.meta.env.BASE_URL}media/film/tariq-terminal-film.webp`} alt="" width="854" height="480" loading="lazy" decoding="async" class="film__img" />
-        <span class="film__play"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5.5v9l7-4.5z" fill="currentColor" /></svg>Play the film</span>
-      </button>
-      <p class="small-print film__fine">{SMALL_PRINT}</p>
+      <div class="forms__stage">
+        <Image src={formsPair} alt="The two forms of the Tariq terminal: the mounted terminal, with its display, printer and gold tap ring, and the handheld standing in front of it to the right. Both show the Tariq idle screen." widths={[640, 960, 1280, formsPair.width]} sizes="(min-width: 1240px) 1100px, 92vw" class="forms__img render-fade-rect" style={`max-width:${formsPair.width}px`} loading="lazy" data-reveal />
+        <ul class="forms__list" role="list">
+          <li data-reveal><h3 class="h3">Mounted</h3><p>Where no one collects fares. It boards passengers on its own.</p></li>
+          <li data-reveal><h3 class="h3">In hand</h3><p>Where someone does. A second person, and a second pair of eyes.</p></li>
+        </ul>
+      </div>
     </div>
-    <FilmLightbox />
+  </section>
+
+  <!-- The handheld -->
+  <section class="hand section section--flush-top surface-slate" aria-labelledby="hand-title" data-terminal-media>
+    <div class="container hand__grid">
+      <div class="hand__art" data-reveal>
+        <Image src={handheldOk} alt="The Tariq handheld just after a tap: its screen green with “Have a good trip” and 40 DA, and the printed ticket rising from its head" widths={[360, 540, handheldOk.width]} sizes="(min-width: 900px) 34vw, 80vw" class="hand__img render-fade-rect" style={`max-width:${handheldOk.width}px`} loading="lazy" />
+      </div>
+      <div class="hand__copy">
+        <h2 class="h2" id="hand-title" data-reveal>Made to be held.</h2>
+        <p class="lead" data-reveal>The handheld is for crews who collect fares on board: the same screens, the same tap and the same signed record, carried down the aisle.</p>
+        <ul class="hand__list" role="list" data-reveal>
+          {handheld.map((it) => (
+            <li><span class="hand__name">{it.name}</span><span class="hand__note">{it.note}</span></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Films -->
+  <section class="films section section--flush-top surface-slate" aria-labelledby="films-title" data-terminal-media>
+    <div class="container">
+      <div class="films__head">
+        <h2 class="h2" id="films-title" data-reveal>Watch the films.</h2>
+        <p class="lead" data-reveal>Both forms together, then each one on its own.</p>
+      </div>
+      <ul class="films__grid" role="list">
+        {films.map((f) => (
+          <li class:list={['films__item', { 'films__item--feature': f.feature }]} data-reveal>
+            <button class="films__poster" type="button" data-lightbox-open={f.id}>
+              <span class="films__frame">
+                <img src={`${import.meta.env.BASE_URL}media/film/${f.file}.webp`} alt="" width="854" height="480" loading="lazy" decoding="async" class="films__img" />
+                <span class="films__play"><Fragment set:html={play} /><span class="sr-only">Play the film: </span></span>
+              </span>
+              <span class="films__caption"><span class="films__title">{f.title}</span><span class="films__len num"><span class="sr-only">, </span>{f.length}</span></span>
+            </button>
+          </li>
+        ))}
+      </ul>
+      <p class="small-print films__fine">{SMALL_PRINT}</p>
+    </div>
+    {films.map((f) => <FilmLightbox id={f.id} title={f.title} film={f.file} />)}
   </section>
 
   <!-- Service + close -->
   <section class="close section surface-slate" aria-labelledby="close-title">
     <div class="container close__inner">
       <h2 class="h2" id="close-title" data-reveal>Installed and maintained by Tariq.</h2>
-      <p class="lead" data-reveal>Delivered as a service: Tariq installs the terminal on board and maintains it.</p>
+      <p class="lead" data-reveal>Delivered as a service: Tariq installs the mounted terminal on board, or supplies the handheld to your crew, and maintains it.</p>
       <div class="close__cta" data-reveal>
         <a class="btn btn--primary" href={`${import.meta.env.BASE_URL}operators#contact`}>Talk to us</a>
         <a class="link-arrow" href={`${import.meta.env.BASE_URL}operators#see-title`}>See the signed record <Fragment set:html={arrow} /></a>
@@ -119,22 +182,68 @@ const details = [
     .details__name { font-size: 1.125rem; }
   }
 
-  .film { padding-block: var(--section-pad); }
-  .film__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-6); justify-items: center; text-align: center; }
-  .film__copy { justify-items: center; }
-  .film__copy .lead { max-width: 40ch; }
-  .film__copy { display: grid; gap: var(--s-4); }
-  .film__poster { position: relative; display: block; padding: 0; border: 0; background: none; cursor: pointer; border-radius: var(--r-panel); overflow: hidden; max-width: 854px; width: 100%; justify-self: center; }
-  .film__img { width: 100%; height: auto; transition: transform var(--dur-3) var(--ease-out); }
-  .film__poster:hover .film__img { transform: scale(1.015); }
-  .film__play {
-    position: absolute; left: var(--s-5); bottom: var(--s-5); display: inline-flex; align-items: center; gap: var(--s-2);
-    min-height: 48px; padding: 0 var(--s-5) 0 var(--s-4); border-radius: var(--r-pill); background: var(--c-gold); color: var(--c-graphite); font-weight: 600;
+  /* two forms: one composed frame, each form named under itself (columns follow the crop: the mounted terminal
+     fills the left of the frame, the handheld the right) */
+  .forms__head { display: grid; gap: var(--s-4); justify-items: center; text-align: center; margin-bottom: var(--s-6); }
+  .forms__head .lead { max-width: 44ch; text-wrap: balance; }
+  .forms__stage { max-width: 1100px; margin-inline: auto; }
+  .forms__img { width: 100%; height: auto; margin-inline: auto; }
+  /* measured on forms-pair.png: the mounted terminal spans 19–56.5% of the frame's width, the handheld 56.5–81% */
+  .forms__list { display: grid; grid-template-columns: 19fr 37.5fr 24.5fr 19fr; column-gap: var(--s-5); margin-top: var(--s-5); }
+  .forms__list li:first-child { grid-column: 2; }
+  .forms__list li:last-child { grid-column: 3; }
+  .forms__list li { border-top: 2px solid var(--c-gold); padding-top: var(--s-4); display: grid; gap: var(--s-2); align-content: start; }
+  .forms__list p { color: var(--fg-muted); max-width: 34ch; }
+  @media (max-width: 899px) {
+    .forms__head { justify-items: start; text-align: left; }
+    .forms__list { grid-template-columns: 1fr; gap: var(--s-5); }
+    .forms__list li:first-child, .forms__list li:last-child { grid-column: 1; }
   }
-  .film__play svg { width: 20px; height: 20px; }
-  .film__poster:focus-visible { outline: 2.5px solid var(--c-gold); outline-offset: 4px; }
-  .film__fine { justify-self: center; }
-  @media (max-width: 899px) { .film__grid { text-align: left; justify-items: stretch; } .film__copy { justify-items: start; } .film__fine { justify-self: start; } }
+
+  /* the handheld: the render beside its four details */
+  .hand__grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-8); align-items: center; }
+  .hand__img { width: 100%; height: auto; margin-inline: auto; }
+  .hand__copy { display: grid; gap: var(--s-5); }
+  .hand__copy .h2 { max-width: 14ch; }
+  .hand__copy .lead { max-width: 40ch; }
+  .hand__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-6) var(--s-6); margin-top: var(--s-3); }
+  .hand__list li { border-top: 1px solid var(--line); padding-top: var(--s-4); }
+  .hand__name { display: block; font-size: var(--fs-h3); font-weight: 620; font-stretch: 108%; letter-spacing: -0.01em; line-height: 1.15; }
+  .hand__note { display: block; margin-top: 4px; font-size: var(--fs-small); color: var(--fg-muted); }
+  @media (max-width: 899px) {
+    .hand__grid { grid-template-columns: 1fr; gap: var(--s-6); }
+    .hand__art { max-width: 360px; margin-inline: auto; width: 100%; }
+    .hand__list { gap: var(--s-5) var(--s-4); }
+    .hand__name { font-size: 1.125rem; }
+  }
+
+  /* films: the two-forms film large, the two single-form films side by side under it, all at most native width */
+  .films__head { display: grid; gap: var(--s-4); justify-items: center; text-align: center; margin-bottom: var(--s-7); }
+  .films__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-6) var(--s-5); max-width: 854px; margin-inline: auto; }
+  .films__item--feature { grid-column: 1 / -1; }
+  .films__poster { display: grid; gap: var(--s-3); width: 100%; padding: 0; border: 0; background: none; color: inherit; text-align: left; cursor: pointer; border-radius: var(--r-panel); }
+  .films__frame { position: relative; display: block; border-radius: var(--r-panel); overflow: hidden; }
+  .films__img { width: 100%; height: auto; transition: transform var(--dur-3) var(--ease-out); }
+  .films__poster:hover .films__img { transform: scale(1.015); }
+  .films__play {
+    position: absolute; left: var(--s-4); bottom: var(--s-4); display: grid; place-items: center; width: 48px; height: 48px;
+    border-radius: var(--r-pill); background: var(--c-gold); color: var(--c-graphite);
+    transition: transform var(--dur-1) var(--ease-out), background-color var(--dur-1) var(--ease-out);
+  }
+  .films__item--feature .films__play { width: 56px; height: 56px; left: var(--s-5); bottom: var(--s-5); }
+  .films__play svg { width: 22px; height: 22px; }
+  .films__poster:hover .films__play { background: var(--btn-primary-bg-hover); transform: scale(1.06); }
+  .films__caption { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-4); padding-inline: var(--s-1); }
+  .films__title { font-weight: 600; font-stretch: 106%; }
+  .films__item--feature .films__title { font-size: var(--fs-h3); letter-spacing: -0.012em; line-height: 1.15; }
+  .films__len { color: var(--fg-muted); font-size: var(--fs-small); }
+  .films__poster:focus-visible { outline: 2.5px solid var(--c-gold); outline-offset: 6px; }
+  .films__fine { text-align: center; margin: var(--s-6) auto 0; }
+  @media (max-width: 899px) {
+    .films__head { justify-items: start; text-align: left; }
+    .films__grid { grid-template-columns: 1fr; }
+    .films__fine { text-align: left; margin-inline: 0; }
+  }
 
   .close { padding-top: 0; }
   .close__inner { display: grid; gap: var(--s-5); }
