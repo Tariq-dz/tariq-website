@@ -90,7 +90,7 @@ const arrowUp = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11l6-6M
   .cmq__item { position: relative; flex: 0 0 auto; scroll-snap-align: center; }
   /* the open card's transit card reaches past its edge: lift that card above its neighbour */
   .cmq__item:has(.ccard:is(:hover, :focus-within, .is-open)) { z-index: 2; }
-  .cmq.is-drifting .cmq__viewport { overflow: hidden; scroll-snap-type: none; }
+  .cmq.is-drifting .cmq__viewport { overflow: hidden; scroll-snap-type: none; touch-action: pan-y; }
   .cmq.is-drifting .cmq__track { padding-inline: 64px; will-change: transform; }
 
   /* card (reference anatomy: tile, badge, city, modes, description on open, action, pop-out transit card) */
