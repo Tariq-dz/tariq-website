@@ -20,8 +20,30 @@ async function start() {
 
   // re-runs when the stage moves from beside the steps to above them (a phone rotating, a window resizing)
   mm.add({ narrow: `(max-width: 1023px) and ${QUERY}`, wide: `(min-width: 1024px) and ${QUERY}` }, (ctx) => {
-    // on narrow screens the stage covers the top half, so a step takes it lower down, where the steps are read
-    const line = ctx.conditions?.narrow ? '80%' : '62%';
+    // on narrow screens the steps run under the full-height stage (RideSequence.astro); the trigger line sits so step 1
+    // holds the stage for a beat once it sticks, and step 6 still gets one before it unsticks
+    const narrow = !!ctx.conditions?.narrow;
+    const line = narrow ? '60%' : '62%';
+
+    // narrow: scale and place the record so it fits above the caption whatever the text size (Android font scaling)
+    const record = stage.querySelector<HTMLElement>('.stage__record');
+    const pill = stage.querySelector<HTMLElement>('.stage__dest');
+    const fit = () => {
+      if (!narrow || !record || !pill) return;
+      const pic = stage.clientHeight * 0.62; // the picture area above the caption (caption starts at 64%)
+      const rh = record.offsetHeight || 1;
+      const recFit = Math.min(1, (pic - 32) / rh);
+      const top = 16 + pill.offsetHeight + 20; // under the label and its gold line
+      const opFit = Math.min(1, (pic - top - 8) / rh);
+      stage.style.setProperty('--rec-fit', recFit.toFixed(3));
+      stage.style.setProperty('--rec-y', `${(pic / 2).toFixed(1)}px`);
+      stage.style.setProperty('--op-fit', opFit.toFixed(3));
+      stage.style.setProperty('--op-y', `${(top + (rh * opFit) / 2).toFixed(1)}px`);
+    };
+    fit();
+    ScrollTrigger.addEventListener('refresh', fit);
+    // late web fonts change the steps' heights: re-measure every trigger once they land
+    document.fonts?.ready.then(() => { fit(); ScrollTrigger.refresh(); });
     let current = '';
     let stageVisible = false;
 
@@ -57,10 +79,11 @@ async function start() {
       end: 'bottom top',
       onToggle: (self) => { stageVisible = self.isActive; syncVideo(); },
     });
-    // When the layout's bottom reaches the stage's bottom, the sticky stage starts scrolling away.
+    // When the layout's bottom reaches the stage's bottom, the sticky stage starts scrolling away (40 px early on wide
+    // screens; on narrow ones the stage fills the screen, so exactly then).
     const leaving = ScrollTrigger.create({
       trigger: root.querySelector('.ride__layout'),
-      start: () => `bottom top+=${parseFloat(getComputedStyle(stage).top) + stage.offsetHeight + 40}`,
+      start: () => `bottom top+=${parseFloat(getComputedStyle(stage).top) + stage.offsetHeight + (narrow ? 0 : 40)}`,
       onEnter: () => stage.classList.add('is-leaving'),
       onLeaveBack: () => stage.classList.remove('is-leaving'),
       invalidateOnRefresh: true,
@@ -70,6 +93,8 @@ async function start() {
       : null;
 
     return () => {
+      ScrollTrigger.removeEventListener('refresh', fit);
+      ['--rec-fit', '--rec-y', '--op-fit', '--op-y'].forEach((v) => stage.style.removeProperty(v));
       triggers.forEach((t) => t.kill());
       visibility.kill();
       leaving.kill();
