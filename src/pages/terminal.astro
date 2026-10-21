@@ -241,8 +241,16 @@ const play = '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5.5v9l7-4.
   .films__fine { text-align: center; margin: var(--s-6) auto 0; }
   @media (max-width: 899px) {
     .films__head { justify-items: start; text-align: left; }
-    .films__grid { grid-template-columns: 1fr; }
     .films__fine { text-align: left; margin-inline: 0; }
+  }
+  /* phones keep the desktop arrangement (the feature, then the two films side by side), with the caption stacked */
+  @media (max-width: 560px) {
+    .films__grid { gap: var(--s-6) var(--s-3); }
+    .films__play { width: 40px; height: 40px; left: var(--s-3); bottom: var(--s-3); }
+    .films__play svg { width: 18px; height: 18px; }
+    .films__item--feature .films__play { width: 48px; height: 48px; left: var(--s-4); bottom: var(--s-4); }
+    .films__item:not(.films__item--feature) .films__caption { flex-direction: column; gap: 2px; }
+    .films__item:not(.films__item--feature) .films__title { font-size: 0.9375rem; line-height: 1.3; }
   }
 
   .close { padding-top: 0; }

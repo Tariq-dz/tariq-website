@@ -56,6 +56,15 @@ const steps = [
         <PhoneFrame clip="route" label="Route results in the Tariq app" class="stage__phone" autoplay={false} />
         <div class="stage__record"><SignedRecord /></div>
         <p class="dest-pill stage__dest"><span class="dest-pill__dot" aria-hidden="true"></span>Operator view</p>
+        <div class="stage__caption">
+          {steps.map((s, i) => (
+            <div class="stage__cap" data-cap={s.id}>
+              <p class="stage__cap-num num">{i + 1}</p>
+              <p class="stage__cap-title">{s.title}</p>
+              <p class="stage__cap-body">{s.body}</p>
+            </div>
+          ))}
+        </div>
         <p class="small-print stage__fine">{SMALL_PRINT}</p>
       </div>
     </div>
@@ -152,29 +161,44 @@ const steps = [
       100% { transform: translate(-50%, -50%) scale(1.35); opacity: 0; }
     }
   }
-  /* after the shared staged rules, so these override them */
-  /* narrow: the stage sticks under the header above the steps, which scroll beneath it */
+  .stage__caption { display: none; }
+  /* after the shared staged rules, so these override them.
+     Narrow: the stage fills the screen under the header and carries the active step's copy in its caption; the steps
+     run underneath it as the scroll distance (pulled up under the stage, transparent but still read by screen readers). */
   @media (max-width: 1023px) and (prefers-reduced-motion: no-preference) {
-    :global(.js) .ride__layout { display: flex; flex-direction: column; gap: var(--s-5); }
+    :global(.js) .ride__layout { display: flex; flex-direction: column; }
     :global(.js) .ride__stage {
-      order: -1; z-index: 2; top: calc(var(--header-h) + 8px); height: min(52svh, 460px);
-      box-shadow: 0 0 0 8px var(--c-paper); --cy: 50%;
+      order: -1; z-index: 2; top: calc(var(--header-h) + 8px); height: calc(100svh - var(--header-h) - 16px);
+      box-shadow: 0 0 0 8px var(--c-paper); --cy: 31%;
     }
     :global(.js) .ride__head { margin-bottom: var(--s-6); }
-    :global(.js) .rstep { min-height: 34svh; padding-block: 3svh; }
-    :global(.js) .rstep:last-of-type { padding-bottom: 24svh; }
-    .stage__face { width: min(92%, 84cqh * 1.09); left: 50%; right: auto; transform: translate(-50%, -50%) scale(0.94); }
-    .stage__phone { width: 40cqh; }
-    .stage__record { left: 50%; right: auto; width: min(84%, 320px); transform: translate(-50%, calc(-50% + 40px)); }
+    :global(.js) .ride__rail { display: none; }
+    :global(.js) .ride__track { padding-left: 0; margin-top: calc(var(--header-h) + 16px - 65svh); }
+    :global(.js) .rstep { min-height: 45svh; padding: 0; opacity: 0; }
+    :global(.js) .rstep:last-of-type { padding-bottom: 75svh; }
+    .stage__face { width: min(92%, 56cqh * 1.09); left: 50%; right: auto; transform: translate(-50%, -50%) scale(0.94); }
+    .stage__phone { width: 27cqh; }
+    /* the record is sized to fit by ride.ts (--rec-*, --op-*), so it never runs into the caption at any text size */
+    .stage__record { left: 50%; right: auto; top: 0; width: min(84%, 320px); transform-origin: center;
+      transform: translate(-50%, calc(var(--rec-y, 30cqh) - 50% + 40px)) scale(var(--rec-fit, 0.8)); }
     .stage__dest { left: 50%; right: auto; top: 16px; white-space: nowrap; padding: 9px 16px; transform: translate(-50%, -12px); }
-    .stage__dest::after { height: 22px; }
-    .stage__fine { left: 0; right: 0; top: auto; bottom: 8px; text-align: center; font-size: 0.6875rem; max-width: none; }
+    .stage__dest::after { height: 20px; }
+    .stage__fine { left: 0; right: 0; top: auto; bottom: 10px; text-align: center; font-size: 0.6875rem; max-width: none; }
     [data-state='dest'] .stage__face, [data-state='tap'] .stage__face, [data-state='ok'] .stage__face { transform: translate(-50%, -50%) scale(1); }
     [data-state='record'] .stage__face, [data-state='operator'] .stage__face { transform: translate(-50%, -50%) scale(0.8); opacity: 0.18; }
-    [data-state='record'] .stage__record { transform: translate(-50%, -50%) scale(0.9); }
-    [data-state='operator'] .stage__record { transform: translate(-50%, calc(-50% + 34px)) scale(0.76); transform-origin: center; }
+    [data-state='record'] .stage__record { transform: translate(-50%, calc(var(--rec-y, 30cqh) - 50%)) scale(var(--rec-fit, 0.8)); }
+    [data-state='operator'] .stage__record { transform: translate(-50%, calc(var(--op-y, 34cqh) - 50%)) scale(var(--op-fit, 0.7)); }
     [data-state='operator'] .stage__dest { transform: translate(-50%, 0); }
     .ride__stage.is-leaving .stage__dest { transform: translate(-50%, -12px); }
+
+    .stage__caption { display: block; position: absolute; left: var(--s-5); right: var(--s-5); top: 64%; bottom: 36px; }
+    .stage__cap { position: absolute; inset: 0 0 auto; display: grid; gap: var(--s-2); opacity: 0; transform: translateY(12px); transition: opacity 0.4s var(--ease-out), transform 0.5s var(--ease-out); }
+    .stage__cap p { margin: 0; }
+    .stage__cap-num { font-size: 1.125rem; font-weight: 640; font-stretch: 112%; line-height: 1; color: var(--c-gold); }
+    .stage__cap-title { font-size: clamp(1.25rem, 0.9rem + 1.6vw, 1.625rem); font-weight: 640; font-stretch: 108%; line-height: 1.15; letter-spacing: -0.01em; color: var(--c-cream); }
+    .stage__cap-body { color: var(--c-mist); line-height: 1.5; max-width: 40ch; }
+    [data-state='plan'] [data-cap='plan'], [data-state='dest'] [data-cap='dest'], [data-state='tap'] [data-cap='tap'],
+    [data-state='ok'] [data-cap='ok'], [data-state='record'] [data-cap='record'], [data-state='operator'] [data-cap='operator'] { opacity: 1; transform: none; }
   }
 </style>
 

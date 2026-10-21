@@ -20,7 +20,7 @@ const steps = [
       <div class="sflow__progress">
         <p class="sflow__count"><span class="num" data-sflow-count>Step 1 of {steps.length}</span><span class="sflow__count-label" data-sflow-label>{steps[0].label}</span></p>
         <div class="sflow__rail" aria-hidden="true">
-          {steps.map((_, i) => <span class:list={['sflow__seg', { 'is-done': i === 0 }]} data-sflow-seg></span>)}
+          {steps.map((_, i) => <span class:list={['sflow__seg', { 'is-done': i === 0 }]} data-sflow-seg={i}></span>)}
         </div>
       </div>
       <ol class="sflow__steps" role="list">
@@ -48,6 +48,14 @@ const steps = [
     </div>
     <div class="sflow__stage surface-slate">
       <TerminalFace screens={['idle', 'dest', 'pay', 'tap', 'ok']} ticket sizes="(max-width: 899px) 88vw, 640px" />
+      <!-- narrow + motion: the fixed stage carries the active step's copy (the beats underneath stay the readable source) -->
+      <div class="sflow__cap" aria-hidden="true">
+        <p class="sflow__cap-count"><span class="num" data-sflow-cap-count>Step 1 of {steps.length}</span><span class="sflow__cap-label" data-sflow-cap-label>{steps[0].label}</span></p>
+        <div class="sflow__rail">
+          {steps.map((_, i) => <span class:list={['sflow__seg', { 'is-done': i === 0 }]} data-sflow-seg={i}></span>)}
+        </div>
+        <p class="sflow__cap-text" data-sflow-cap-text>{steps[0].text}</p>
+      </div>
       <p class="small-print sflow__fine">{SMALL_PRINT}</p>
     </div>
   </div>
@@ -105,14 +113,31 @@ const steps = [
   .sflow__stage { border-radius: var(--r-panel); padding: clamp(20px, 3vw, 40px); }
   .sflow__fine { margin: var(--s-4) 0 0; }
   @media (max-width: 899px) { .sflow__grid { grid-template-columns: 1fr; gap: var(--s-6); } .sflow__stage { order: -1; } }
-  /* one column: the stage sticks under the header, kept short enough that the beats read below it */
+  .sflow__cap { display: none; }
+  /* one column with motion: title and lead, then a stage that fills the screen under the header and carries the active
+     step's copy; the beats run underneath it as the scroll distance (pulled up under the stage, transparent) */
   @media (max-width: 899px) and (prefers-reduced-motion: no-preference) {
-    :global(.js) .sflow__stage { top: calc(var(--header-h) + 8px); z-index: 2; padding: var(--s-4); box-shadow: 0 0 0 8px var(--c-paper); }
-    :global(.js) .sflow__stage :global(.tface) { width: min(100%, 34svh * 1.09); margin-inline: auto; }
-    :global(.js) .sflow__fine { margin-top: var(--s-2); font-size: 0.75rem; text-align: center; max-width: none; }
-    :global(.js) .sflow__progress { position: static; }
-    :global(.js) .sflow__beat { min-height: 36svh; padding-block: 4svh; }
-    :global(.js) .sflow__beat:last-child { padding-bottom: 20svh; }
+    :global(.js) .sflow__copy { display: contents; }
+    :global(.js) .sflow__progress { display: none; }
+    :global(.js) .sflow__stage {
+      order: 2; position: sticky; top: calc(var(--header-h) + 8px); z-index: 2; height: calc(100svh - var(--header-h) - 16px);
+      display: flex; flex-direction: column; padding: var(--s-5) var(--s-5) var(--s-3); box-shadow: 0 0 0 8px var(--c-paper);
+      container-type: size;
+    }
+    /* the terminal centres in the space the caption leaves */
+    :global(.js) .sflow__stage :global(.tface) { width: min(100%, 56cqh * 1.09); margin: auto; flex: none; }
+    :global(.js) .sflow__cap { display: grid; gap: var(--s-3); color: var(--c-cream); }
+    :global(.js) .sflow__cap p { margin: 0; }
+    :global(.js) .sflow__cap-count { display: flex; align-items: baseline; gap: var(--s-2); font-weight: 600; }
+    :global(.js) .sflow__cap-label { color: var(--c-gold); }
+    :global(.js) .sflow__cap-label::before { content: '·'; margin-right: var(--s-2); color: var(--c-mist); }
+    :global(.js) .sflow__cap .sflow__rail { max-width: none; }
+    :global(.js) .sflow__cap .sflow__seg { background: rgb(255 255 255 / 0.16); }
+    :global(.js) .sflow__cap-text { min-height: 3em; font-size: var(--fs-lead); line-height: 1.45; color: var(--c-cream); }
+    :global(.js) .sflow__fine { margin-top: var(--s-3); font-size: 0.6875rem; text-align: center; max-width: none; }
+    :global(.js) .sflow__track { order: 3; margin-top: calc(var(--header-h) + 16px - 65svh - var(--s-6)); }
+    :global(.js) .sflow__beat { min-height: 45svh; padding: 0; opacity: 0; }
+    :global(.js) .sflow__beat:last-child { padding-bottom: 35svh; }
   }
 </style>
 
@@ -127,6 +152,9 @@ const steps = [
     const count = root.querySelector<HTMLElement>('[data-sflow-count]');
     const label = root.querySelector<HTMLElement>('[data-sflow-label]');
     const segs = [...root.querySelectorAll<HTMLElement>('[data-sflow-seg]')];
+    const capCount = root.querySelector<HTMLElement>('[data-sflow-cap-count]');
+    const capLabel = root.querySelector<HTMLElement>('[data-sflow-cap-label]');
+    const capText = root.querySelector<HTMLElement>('[data-sflow-cap-text]');
     const copy = JSON.parse(root.querySelector('[data-sflow-copy]')?.textContent || '{}') as Record<string, string>;
     const ids = buttons.map((b) => b.dataset.sflowStep!);
     let index = 0;
@@ -137,10 +165,14 @@ const steps = [
       buttons.forEach((b, k) => b.setAttribute('aria-pressed', String(k === i)));
       face?.querySelectorAll<HTMLElement>('[data-screen]').forEach((img) => img.classList.toggle('is-active', img.dataset.screen === id));
       face?.classList.toggle('is-printed', id === 'ok');
+      const stepLabel = buttons[i].querySelector('.sflow__label')?.textContent || '';
       if (text) text.textContent = copy[id] || '';
+      if (capText) capText.textContent = copy[id] || '';
       if (count) count.textContent = `Step ${i + 1} of ${ids.length}`;
-      if (label) label.textContent = buttons[i].querySelector('.sflow__label')?.textContent || '';
-      segs.forEach((s, k) => s.classList.toggle('is-done', k <= i));
+      if (capCount) capCount.textContent = `Step ${i + 1} of ${ids.length}`;
+      if (label) label.textContent = stepLabel;
+      if (capLabel) capLabel.textContent = stepLabel;
+      segs.forEach((s) => s.classList.toggle('is-done', Number(s.dataset.sflowSeg) <= i));
       const last = i === ids.length - 1;
       if (next) next.hidden = last;
       if (reset) reset.hidden = !last;

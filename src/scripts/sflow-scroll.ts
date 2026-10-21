@@ -1,6 +1,6 @@
 // A4: with motion allowed, /terminal's "Step through a ride" is driven by scroll, in the home ride's grammar:
-// the stage is sticky and each beat takes it when its top reaches 62% of the viewport (80% on one column, where the
-// stage sits on top and the beats read below it). Reduced motion keeps the click-through.
+// the stage is sticky and each beat takes it when its top reaches 62% of the viewport (60% on one column, where the
+// beats run under the full-height stage). Reduced motion keeps the click-through.
 // GSAP and ScrollTrigger load on demand, only when the query matches.
 const QUERY = '(prefers-reduced-motion: no-preference)';
 
@@ -17,7 +17,7 @@ async function start() {
         beats.forEach((b, k) => b.classList.toggle('is-active', k === i));
         root.dispatchEvent(new CustomEvent('sflow:show', { detail: i }));
       };
-      const line = ctx.conditions?.narrow ? '80%' : '62%';
+      const line = ctx.conditions?.narrow ? '60%' : '62%';
       const triggers = beats.map((el, i) =>
         ScrollTrigger.create({ trigger: el, start: `top ${line}`, end: `bottom ${line}`, refreshPriority: -1, onToggle: (self) => { if (self.isActive) activate(i); } }),
       );
