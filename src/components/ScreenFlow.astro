@@ -84,7 +84,7 @@ const steps = [
     .sflow__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
     .sflow__rail { max-width: none; }
   }
-  /* A4: desktop with motion, the step-through is driven by scroll in the home ride's grammar (sticky stage, beats scroll past) */
+  /* A4: with motion (phones included), the step-through is driven by scroll in the home ride's grammar (sticky stage, beats scroll past) */
   .sflow__track { display: none; list-style: none; margin: 0; padding: 0; }
   .sflow__beat { min-height: 40vh; padding-block: 7vh; }
   .sflow__beat:last-child { padding-bottom: 30vh; }
@@ -93,7 +93,7 @@ const steps = [
   .sflow__beat-text { margin: var(--s-2) 0 0; max-width: 34ch; font-size: var(--fs-lead); color: var(--c-ink-muted); transition: color var(--dur-2) var(--ease-out); }
   .sflow__beat.is-active .sflow__beat-label, .sflow__beat.is-active .sflow__beat-text { color: var(--c-graphite); }
   .sflow__beat.is-active .sflow__beat-label .num { color: var(--c-gold-deep); }
-  @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  @media (prefers-reduced-motion: no-preference) {
     :global(.js) .sflow__grid { align-items: start; }
     :global(.js) .sflow__steps, :global(.js) .sflow__text, :global(.js) .sflow__nav, :global(.js) .sflow__hint { display: none; }
     :global(.js) .sflow__track { display: block; }
@@ -105,6 +105,15 @@ const steps = [
   .sflow__stage { border-radius: var(--r-panel); padding: clamp(20px, 3vw, 40px); }
   .sflow__fine { margin: var(--s-4) 0 0; }
   @media (max-width: 899px) { .sflow__grid { grid-template-columns: 1fr; gap: var(--s-6); } .sflow__stage { order: -1; } }
+  /* one column: the stage sticks under the header, kept short enough that the beats read below it */
+  @media (max-width: 899px) and (prefers-reduced-motion: no-preference) {
+    :global(.js) .sflow__stage { top: calc(var(--header-h) + 8px); z-index: 2; padding: var(--s-4); box-shadow: 0 0 0 8px var(--c-paper); }
+    :global(.js) .sflow__stage :global(.tface) { width: min(100%, 34svh * 1.09); margin-inline: auto; }
+    :global(.js) .sflow__fine { margin-top: var(--s-2); font-size: 0.75rem; text-align: center; max-width: none; }
+    :global(.js) .sflow__progress { position: static; }
+    :global(.js) .sflow__beat { min-height: 36svh; padding-block: 4svh; }
+    :global(.js) .sflow__beat:last-child { padding-bottom: 20svh; }
+  }
 </style>
 
 <script>

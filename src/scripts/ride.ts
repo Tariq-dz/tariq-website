@@ -1,6 +1,6 @@
 // Drives the ride sequence's sticky stage. Only runs where the staged layout is shown (see RideSequence.astro).
-// GSAP is loaded on demand, only when the query below matches, so phones and reduced-motion visitors never download it.
-const QUERY = '(min-width: 1024px) and (prefers-reduced-motion: no-preference)';
+// GSAP is loaded on demand, only when the query below matches, so reduced-motion visitors never download it.
+const QUERY = '(prefers-reduced-motion: no-preference)';
 
 // after the tap the terminal returns to idle for the next rider; the printed ticket stays out
 const SCREEN_FOR: Record<string, string> = { plan: 'idle', dest: 'dest', tap: 'tap', ok: 'ok', record: 'idle', operator: 'idle' };
@@ -18,7 +18,10 @@ async function start() {
   const video = stage.querySelector<HTMLVideoElement>('video');
   const mm = gsap.matchMedia();
 
-  mm.add('(min-width: 1024px) and (prefers-reduced-motion: no-preference)', () => {
+  // re-runs when the stage moves from beside the steps to above them (a phone rotating, a window resizing)
+  mm.add({ narrow: `(max-width: 1023px) and ${QUERY}`, wide: `(min-width: 1024px) and ${QUERY}` }, (ctx) => {
+    // on narrow screens the stage covers the top half, so a step takes it lower down, where the steps are read
+    const line = ctx.conditions?.narrow ? '80%' : '62%';
     let current = '';
     let stageVisible = false;
 
@@ -43,8 +46,8 @@ async function start() {
       ScrollTrigger.create({
         trigger: el,
         // a step takes the stage a little before its title reaches the centre, so step 6 gets a full beat before the stage unsticks
-        start: 'top 62%',
-        end: 'bottom 62%',
+        start: `top ${line}`,
+        end: `bottom ${line}`,
         onToggle: (self) => { if (self.isActive) setState(el.dataset.step!); },
       }),
     );

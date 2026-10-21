@@ -1,7 +1,7 @@
 ---
 // Signature moment 1: the ride, end to end.
-// ≥1024 px with motion: the step copy scrolls on the left while a sticky slate stage on the right changes
-// state (src/scripts/ride.ts). Below 1024 px, with reduced motion, or without JS: every step carries
+// With motion: the step copy scrolls while a sticky slate stage changes state (src/scripts/ride.ts) — beside the
+// steps at ≥1024 px, above them on narrower screens. With reduced motion or without JS: every step carries
 // its own static visual, in the same order with the same copy.
 import PhoneFrame from './PhoneFrame.astro';
 import TerminalFace from './TerminalFace.astro';
@@ -83,7 +83,7 @@ const steps = [
   .dest-pill { display: inline-flex; align-items: center; gap: 10px; margin: 0; padding: 12px 18px; border-radius: var(--r-pill); background: var(--c-slate-deep); color: var(--c-cream); font-weight: 600; font-stretch: 106%; }
   .dest-pill__dot { width: 14px; height: 14px; border-radius: 50%; background: var(--c-gold); box-shadow: 0 0 0 6px rgb(200 160 96 / 0.25); }
   .ride__stage { display: none; }
-  @media (max-width: 1023px), (prefers-reduced-motion: reduce) {
+  @media (prefers-reduced-motion: reduce) {
     .ride { content-visibility: auto; contain-intrinsic-size: auto 3400px; }
   }
   .ride__fine { margin-top: var(--s-7); }
@@ -92,9 +92,11 @@ const steps = [
     .rstep { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: var(--s-8); align-items: center; }
   }
 
-  /* staged mode: JS present, wide, motion allowed */
+  /* staged mode: JS present, motion allowed */
   @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
     :global(.js) .ride__layout { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: var(--s-8); align-items: start; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
     :global(.js) .ride__steps { gap: 0; }
     :global(.js) .ride__track { padding-left: var(--s-6); }
     :global(.js) .ride__rail { display: block; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--line); }
@@ -149,6 +151,30 @@ const steps = [
       0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.9; }
       100% { transform: translate(-50%, -50%) scale(1.35); opacity: 0; }
     }
+  }
+  /* after the shared staged rules, so these override them */
+  /* narrow: the stage sticks under the header above the steps, which scroll beneath it */
+  @media (max-width: 1023px) and (prefers-reduced-motion: no-preference) {
+    :global(.js) .ride__layout { display: flex; flex-direction: column; gap: var(--s-5); }
+    :global(.js) .ride__stage {
+      order: -1; z-index: 2; top: calc(var(--header-h) + 8px); height: min(52svh, 460px);
+      box-shadow: 0 0 0 8px var(--c-paper); --cy: 50%;
+    }
+    :global(.js) .ride__head { margin-bottom: var(--s-6); }
+    :global(.js) .rstep { min-height: 34svh; padding-block: 3svh; }
+    :global(.js) .rstep:last-of-type { padding-bottom: 24svh; }
+    .stage__face { width: min(92%, 84cqh * 1.09); left: 50%; right: auto; transform: translate(-50%, -50%) scale(0.94); }
+    .stage__phone { width: 40cqh; }
+    .stage__record { left: 50%; right: auto; width: min(84%, 320px); transform: translate(-50%, calc(-50% + 40px)); }
+    .stage__dest { left: 50%; right: auto; top: 16px; white-space: nowrap; padding: 9px 16px; transform: translate(-50%, -12px); }
+    .stage__dest::after { height: 22px; }
+    .stage__fine { left: 0; right: 0; top: auto; bottom: 8px; text-align: center; font-size: 0.6875rem; max-width: none; }
+    [data-state='dest'] .stage__face, [data-state='tap'] .stage__face, [data-state='ok'] .stage__face { transform: translate(-50%, -50%) scale(1); }
+    [data-state='record'] .stage__face, [data-state='operator'] .stage__face { transform: translate(-50%, -50%) scale(0.8); opacity: 0.18; }
+    [data-state='record'] .stage__record { transform: translate(-50%, -50%) scale(0.9); }
+    [data-state='operator'] .stage__record { transform: translate(-50%, calc(-50% + 34px)) scale(0.76); transform-origin: center; }
+    [data-state='operator'] .stage__dest { transform: translate(-50%, 0); }
+    .ride__stage.is-leaving .stage__dest { transform: translate(-50%, -12px); }
   }
 </style>
 
